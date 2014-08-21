@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <title>后台管理 | 添加管理员</title>
+    <link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen" />
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/toast.js"></script>
+</head>
+
+<body>
+    <!-- header bar -->
+    <header id="header">
+        <hgroup>
+            <h1 class="site_title">
+                <a href="/backend/news_list/">后台管理</a>
+            </h1>
+            <h2 class="section_title">添加管理员</h2>
+            <div class="btn_view_site">
+                <a href="#/">注销登录</a>
+            </div>
+        </hgroup>
+    </header>
+    <!-- end of header bar -->
+
+    <!-- secondary bar -->
+    <section id="secondary_bar">
+        <div class="user">
+            <p>管理员名称</p>
+        </div>
+        <div class="breadcrumbs_container">
+            <article class="breadcrumbs">
+                <a href="/backend/admin_list/">账户管理</a>
+                <div class="breadcrumb_divider"></div>
+                <a class="current">添加管理员</a>
+            </article>
+        </div>
+    </section>
+    <!-- end of secondary bar -->
+
+    <!-- sidebar -->
+    <aside id="sidebar" class="column">
+        <h3>新闻管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/news_list/">新闻列表</a>
+            </li>
+            <li class="icn_edit_article"><a href="/backend/news_add/">添加新闻</a>
+            </li>
+            <li class="icn_trash"><a href="/backend/news_trash/">回收站</a>
+            </li>
+        </ul>
+        <h3>导航管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/navigation_list/">导航列表</a>
+            </li>
+        </ul>
+        <h3>留言管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/message_list/">留言列表</a>
+            </li>
+        </ul>
+        <h3>账户管理</h3>
+        <ul class="toggle">
+            <li class="icn_add_user"><a href="/backend/admin_add/">添加管理员</a>
+            </li>
+            <li class="icn_view_users"><a href="/backend/admin_list/">管理员列表</a>
+            </li>
+        </ul>
+        <h3>招聘管理</h3>
+        <ul class="toggle">
+            <li class="icn_photo"><a href="/backend/job_list/">招聘列表</a>
+            </li>
+            <li class="icn_jump_back"><a href="/backend/job_publish/">发布招聘</a>
+            </li>
+        </ul>
+        <footer>
+            <hr />
+            <p>
+                <strong>Copyright &copy; 2014 深圳德厚科技有限公司</strong>
+            </p>
+        </footer>
+    </aside>
+    <!-- end of sidebar -->
+
+    <!-- add new article -->
+    <section id="main" class="column">
+        <div class="clear"></div>
+        <article class="module width_full add_item_block">
+            <form method="post" name="form" onsubmit="return validate_form(this)">
+                <header>
+                    <h3 class="form_title">添加管理员</h3>
+                </header>
+                <div class="module_content">
+                    <fieldset style="width:40%;float:left;margin-bottom:20px;">
+                        <label>姓名</label>
+                        <input type="text" name="title" class="title" style="height:25px;">
+                    </fieldset>
+                    <fieldset style="width:40%;clear:both;margin-bottom:20px;">
+                        <label>账号</label>
+                        <input type="text" name="title" class="title" style="height:25px;">
+                    </fieldset>                 
+                    <fieldset style="width:40%;clear:both;margin-bottom:20px;">
+                        <label>密码</label>
+                        <input type="password" name="title" class="title" style="height:25px;">
+                    </fieldset>
+                    <fieldset style="width:40%;clear:both;margin-bottom:20px;">
+                        <label>再次密码</label>
+                        <input type="password" name="title" class="title" style="height:25px;">
+                    </fieldset>
+                </div>
+                <footer>
+                    <div class="submit_link">
+                        <input type="submit" value="添加" class="alt_btn">
+                    </div>
+                </footer>
+            </form>
+        </article>
+        <div class="spacer"></div>
+    </section>
+    <!-- end of add new article -->
+
+</body>
+
+</html>
