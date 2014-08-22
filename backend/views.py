@@ -127,33 +127,3 @@ def admin_add(request):
 def admin_list(request):
 	return render_to_response("admin_list.html", context_instance=RequestContext(request))
 
-# ======================================
-# 	名字：添加管理员以及权限表单处理
-#   功能：超级管理员添加普通管理员以及添加权限
-#   人员：杨凯
-#   日期：2014.08.22
-# --------------------------------------
-@csrf_exempt
-def admin_add_handle(request):
-	return HttpResponse('请求成功...')
-	# if request.method == "POST":
-	# 	username = request.POST.get('username','')
-	# 	password = request.POST.get('password','')
-	# 	first_name = request.POST.get('first_name','')
-	# 	premissions = request.POST.getlist('premissions','')
-	# 	print username
-	# 	user = User(
-	# 		username = username,
-	# 		password =  user.set_password(password),
-	# 		first_name = firsr_name,
-	# 		premissions = premissions,
-	# 		)
-	# 	print '*'*50
-	# 	print user.password
-	# 	#user.save()
-	# 	#return HttpResponseRedirect('/backend/admin_list')
-	# 	return HttpResponse('请求成功...')
-	# return HttpResponse('请求方式错误...')
-
-
-
