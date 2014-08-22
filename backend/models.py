@@ -21,7 +21,7 @@ class nav(models.Model):
 #   t_id : 三级导航id
 #  title : 信息标题
 # remark : 信息简要说明
-#   img  : 图片上传路径
+#   img  : 信息封面图片
 #content : 信息内容
 # is_del : 是否删除 0表示否,1表示是,则进入回收站
 #datetime: 信息发布时间
