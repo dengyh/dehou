@@ -13,5 +13,6 @@ urlpatterns = patterns('backend.views',
 	url(r'^job_publish'    , 'job_publish'),        # 发布招聘
 	url(r'^message_list'   , 'message_list'),       # 留言列表
 	url(r'^admin_add'      , 'admin_add'),          # 添加管理员
-	url(r'^admin_list'     , 'admin_list'),         # 管理员列表
+	# url(r'^admin_add_handle', 'admin_add_handle'),# 添加管理员表单处理
+	url(r'^admin_list/$'     , 'admin_list'),         # 管理员列表
 )
