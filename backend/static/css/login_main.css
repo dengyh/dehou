@@ -30,14 +30,14 @@ select
 }
 
 a {
-  color: #96050a;
+  color: #428bca;
   text-decoration: none;
   -webkit-transition: 0.5s ease;
   -o-transition: 0.5s ease;
   transition: 0.5s ease;
 }
 a:hover, a:focus {
-  color: #640405;
+  color: #214729;
   text-decoration: underline;
   -webkit-transition: 0.5s ease;
   -o-transition: 0.5s ease;
@@ -135,7 +135,7 @@ p {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .form-control:focus {
-  border-color: #96050a;
+  border-color: #428bca;
   outline: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -197,12 +197,12 @@ p {
 
 .btn-success {
   color: white;
-  background-color: #96050a;
-  border-color: #009d95;
+  background-color: #428bca;
+  border-color: #428bca;
 }
 .btn-success:hover{
-  background-color: #640405;
-  border-color: #009d95;
+  background-color: #214769;
+  border-color: #214769;
 }
 .btn-block {
   display: block;
