@@ -10,26 +10,38 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" onsubmit="return validate_form(this)">
+            <form method="post" name="form" action="/backend/admin_add_handle/">
+                {% csrf_token %}
                 <header>
                     <h3 class="form_title">添加管理员</h3>
                 </header>
                 <div class="module_content">
                     <fieldset style="width:40%;float:left;margin-bottom:20px;">
                         <label>姓名</label>
-                        <input type="text" name="title" class="title" style="height:25px;">
+                        <input type="text" name="username" class="title" style="height:25px;">
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>账号</label>
-                        <input type="text" name="title" class="title" style="height:25px;">
+                        <input type="text" name="first_name" class="title" style="height:25px;">
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>密码</label>
-                        <input type="password" name="title" class="title" style="height:25px;">
+                        <input type="password" name="password" class="title" style="height:25px;">
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>再次密码</label>
-                        <input type="password" name="title" class="title" style="height:25px;">
+                        <input type="password" name="password2" class="title" style="height:25px;">
+                    </fieldset>
+                    <fieldset style="width:40%;clear:both;margin-bottom:20px;">
+                        <label>权限设置</label>
+                        <div style="float:left;margin:0 10px;">
+                            <input type="checkbox" name="premissions" value="1"> 导航管理&nbsp;
+                            <input type="checkbox" name="premissions" value="2"> 产品管理&nbsp;
+                            <input type="checkbox" name="premissions" value="3"> 工程管理&nbsp;
+                            <input type="checkbox" name="premissions" value="4"> 资讯管理&nbsp;<br>
+                            <input type="checkbox" name="premissions" value="5"> 招聘管理&nbsp;
+                            <input type="checkbox" name="premissions" value="6"> 留言管理
+                        </div>
                     </fieldset>
                 </div>
                 <footer>

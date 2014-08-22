@@ -135,20 +135,25 @@ def admin_list(request):
 # --------------------------------------
 @csrf_exempt
 def admin_add_handle(request):
-	if request.method == "POST":
-		username = request.POST.get('username','')
-		password = request.POST.get('password','')
-		first_name = request.POST.get('first_name','')
-		premissions = request.POST.getlist('premissions','')
-		user = User(
-			username = username,
-			password =  user.set_password(password),
-			first_name = firsr_name,
-			premissions = premissions,
-			)
-		user.save()
-		return HttpResponseRedirect('/backend/admin_list')
-	return HttpResponse('请求方式错误...')
+	return HttpResponse('请求成功...')
+	# if request.method == "POST":
+	# 	username = request.POST.get('username','')
+	# 	password = request.POST.get('password','')
+	# 	first_name = request.POST.get('first_name','')
+	# 	premissions = request.POST.getlist('premissions','')
+	# 	print username
+	# 	user = User(
+	# 		username = username,
+	# 		password =  user.set_password(password),
+	# 		first_name = firsr_name,
+	# 		premissions = premissions,
+	# 		)
+	# 	print '*'*50
+	# 	print user.password
+	# 	#user.save()
+	# 	#return HttpResponseRedirect('/backend/admin_list')
+	# 	return HttpResponse('请求成功...')
+	# return HttpResponse('请求方式错误...')
 
 
 
