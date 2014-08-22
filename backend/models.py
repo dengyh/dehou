@@ -29,7 +29,7 @@ class nav(models.Model):
 class news(models.Model):
 	p_id = models.IntegerField(max_length=11)
 	s_id = models.IntegerField(max_length=11)
-	t_id = models.IntergerField(max_length=11,blank=True,null=True)
+	t_id = models.IntegerField(max_length=11,blank=True,null=True)
 	title = models.CharField(max_length=150,blank=True,null=True)
 	remark = models.CharField(max_length=150,blank=True,null=True)
 	img  = models.ImageField(upload_to='news',blank=True,null=True)
@@ -54,7 +54,7 @@ class job(models.Model):
 	name = models.CharField(max_length=10)
 	position = models.CharField(max_length=20)
 	degree = models.CharField(max_length=20)
-	files = models.FieldField(upload_to='resume',blank=True,null=True)
+	files = models.FileField(upload_to='resume',blank=True,null=True)
 	datetime = models.DateTimeField(auto_now_add=True)
 	def __unicode__(self):
 		return self.name
