@@ -4,35 +4,6 @@ from django.shortcuts import render_to_response, RequestContext
 from backend.form import UEditorForm
 
 # ======================================
-# 	名字：新闻列表
-#   功能：分页罗列新闻
-#   人员：黄晓佳
-#   日期：2014.08.21
-# --------------------------------------
-def news_list(request):
-	return render_to_response("news_list.html", context_instance=RequestContext(request))
-
-# ======================================
-# 	名字：添加新闻
-#   功能：添加新闻进数据库
-#   人员：黄晓佳
-#   日期：2014.08.21
-# --------------------------------------
-def news_add(request):
-	# ueditor编辑器初始化
-	form = UEditorForm()
-	return render_to_response("news_add.html", {"form": form}, context_instance=RequestContext(request))
-
-# ======================================
-# 	名字：新闻列表
-#   功能：分页罗列新闻
-#   人员：黄晓佳
-#   日期：2014.08.21
-# --------------------------------------
-def news_trash(request):
-	return render_to_response("news_trash.html", context_instance=RequestContext(request))
-
-# ======================================
 # 	名字：导航列表
 #   功能：罗列导航信息
 #   人员：黄晓佳
@@ -40,6 +11,87 @@ def news_trash(request):
 # --------------------------------------
 def navigation_list(request):
 	return render_to_response("navigation_list.html", context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：产品列表
+#   功能：分页罗列产品
+#   人员：黄晓佳
+#   日期：2014.08.22
+# --------------------------------------
+def product_list(request):
+	return render_to_response("product_list.html", context_instance=RequestContext(request))
+
+
+# ======================================
+# 	名字：添加产品
+#   功能：添加产品进数据库
+#   人员：黄晓佳
+#   日期：2014.08.22
+# --------------------------------------
+def product_add(request):
+	# ueditor编辑器初始化
+	form = UEditorForm()
+	return render_to_response("product_add.html", {"form": form}, context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：工程列表
+#   功能：分页罗列工程
+#   人员：黄晓佳
+#   日期：2014.08.22
+# --------------------------------------
+def project_list(request):
+	return render_to_response("project_list.html", context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：添加工程
+#   功能：添加工程进数据库
+#   人员：黄晓佳
+#   日期：2014.08.22
+# --------------------------------------
+def project_add(request):
+	# ueditor编辑器初始化
+	form = UEditorForm()
+	return render_to_response("project_add.html", {"form": form}, context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：资讯列表
+#   功能：分页罗列资讯
+#   人员：黄晓佳
+#   日期：2014.08.21
+# --------------------------------------
+def info_list(request):
+	return render_to_response("info_list.html", context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：添加资讯
+#   功能：添加资讯进数据库
+#   人员：黄晓佳
+#   日期：2014.08.21
+# --------------------------------------
+def info_add(request):
+	# ueditor编辑器初始化
+	form = UEditorForm()
+	return render_to_response("info_add.html", {"form": form}, context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：招聘列表
+#   功能：罗列招聘信息
+#   人员：黄晓佳
+#   日期：2014.08.21
+# --------------------------------------
+def job_list(request):
+	return render_to_response("job_list.html", context_instance=RequestContext(request))
+
+# ======================================
+# 	名字：发布招聘
+#   功能：添加招聘信息进数据库
+#   人员：黄晓佳
+#   日期：2014.08.21
+# --------------------------------------
+def job_publish(request):
+	# ueditor编辑器初始化
+	form = UEditorForm()
+	return render_to_response("job_publish.html", {"form": form}, context_instance=RequestContext(request))
 
 # ======================================
 # 	名字：留言列表
@@ -67,23 +119,3 @@ def admin_add(request):
 # --------------------------------------
 def admin_list(request):
 	return render_to_response("admin_list.html", context_instance=RequestContext(request))
-
-# ======================================
-# 	名字：招聘列表
-#   功能：罗列招聘信息
-#   人员：黄晓佳
-#   日期：2014.08.21
-# --------------------------------------
-def job_list(request):
-	return render_to_response("job_list.html", context_instance=RequestContext(request))
-
-# ======================================
-# 	名字：发布招聘
-#   功能：添加招聘信息进数据库
-#   人员：黄晓佳
-#   日期：2014.08.21
-# --------------------------------------
-def job_publish(request):
-	# ueditor编辑器初始化
-	form = UEditorForm()
-	return render_to_response("job_publish.html", {"form": form}, context_instance=RequestContext(request))

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>后台管理 | 添加新闻</title>
+    <title>后台管理 | 添加工程</title>
     <link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen" />
     <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="/static/js/toast.js"></script>
@@ -16,9 +16,9 @@
     <header id="header">
         <hgroup>
             <h1 class="site_title">
-                <a href="/backend/news_list/">后台管理</a>
+                <a href="/backend/info_list/">后台管理</a>
             </h1>
-            <h2 class="section_title">添加新闻</h2>
+            <h2 class="section_title">添加工程</h2>
             <div class="btn_view_site">
                 <a href="#/">注销登录</a>
             </div>
@@ -33,9 +33,9 @@
         </div>
         <div class="breadcrumbs_container">
             <article class="breadcrumbs">
-                <a href="/backend/news_list/">新闻管理</a>
+                <a href="/backend/project_list/">工程管理</a>
                 <div class="breadcrumb_divider"></div>
-                <a class="current">添加新闻</a>
+                <a class="current">添加工程</a>
             </article>
         </div>
     </section>
@@ -43,18 +43,37 @@
 
     <!-- 左边栏目 开始 -->
     <aside id="sidebar" class="column">
-        <h3>新闻管理</h3>
-        <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/news_list/">新闻列表</a>
-            </li>
-            <li class="icn_edit_article"><a href="/backend/news_add/">添加新闻</a>
-            </li>
-            <li class="icn_trash"><a href="/backend/news_trash/">回收站</a>
-            </li>
-        </ul>
         <h3>导航管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/navigation_list/">导航列表</a>
+            </li>
+        </ul>
+        <h3>产品管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/product_list/">产品列表</a>
+            </li>
+            <li class="icn_new_article"><a href="/backend/product_add/">添加产品</a>
+            </li>
+        </ul>
+        <h3>工程管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/project_list/">工程列表</a>
+            </li>
+            <li class="icn_photo"><a href="/backend/project_add/">添加工程</a>
+            </li>
+        </ul>
+        <h3>资讯管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/info_list/">资讯列表</a>
+            </li>
+            <li class="icn_edit_article"><a href="/backend/info_add/">添加资讯</a>
+            </li>
+        </ul>
+        <h3>招聘管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/job_list/">招聘列表</a>
+            </li>
+            <li class="icn_jump_back"><a href="/backend/job_publish/">发布招聘</a>
             </li>
         </ul>
         <h3>留言管理</h3>
@@ -69,13 +88,6 @@
             <li class="icn_view_users"><a href="/backend/admin_list/">管理员列表</a>
             </li>
         </ul>
-        <h3>招聘管理</h3>
-        <ul class="toggle">
-            <li class="icn_photo"><a href="/backend/job_list/">招聘列表</a>
-            </li>
-            <li class="icn_jump_back"><a href="/backend/job_publish/">发布招聘</a>
-            </li>
-        </ul>
         <footer>
             <hr />
             <p>
@@ -85,14 +97,14 @@
     </aside>
     <!-- 左边栏目 结束 -->
 
-    <!-- 添加新闻板块 开始 -->
+    <!-- 添加工程板块 开始 -->
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
             <form method="post" name="form" onsubmit="">
             {% csrf_token %}
                 <header>
-                    <h3 class="form_title">添加新闻</h3>
+                    <h3 class="form_title">添加工程</h3>
                 </header>
                 <div class="module_content">
                     <fieldset style="width:30%;float:left;margin-bottom:20px;">
@@ -121,7 +133,7 @@
         </article>
         <div class="spacer"></div>
     </section>
-    <!-- 添加新闻板块 结束 -->
+    <!-- 添加工程板块 结束 -->
 
 </body>
 
