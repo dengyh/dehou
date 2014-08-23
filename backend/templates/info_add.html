@@ -14,7 +14,7 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" onsubmit="">
+            <form method="post" name="form" action="/backend/info_add_handle/" enctype="multipart/form-data">
             {% csrf_token %}
                 <header>
                     <h3 class="form_title">添加资讯</h3>
@@ -24,12 +24,47 @@
                         <label>标题</label>
                         <input type="text" name="title" class="title" style="height:25px;">
                     </fieldset>
-                    <fieldset style="width:30%; float:left; clear:both;margin-bottom:20px;">
-                        <label>类型</label>
-                        <select name="contentsType" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
-                            <option value="chinese">中文</option>
-                            <option value="english">English</option>
-                        </select>
+                    <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
+                        <label>产品描述</label>
+                        <input type="text" name="remark" class="title" style="height:25px;">
+                    </fieldset>
+                    <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
+                        <label>封面图片</label>
+                        <input type="file" name="img" class="title" style="height:25px;">
+                    </fieldset>
+
+                    <fieldset style="width:30%; float:left;clear:both;margin-bottom:20px;">
+                        <label>类型选择</label>
+                        <select name="p_id" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
+                            {% for list in nav_list %}
+                            {% if forloop.counter > 2 %}
+                            <option value="{{list.id}}">{{list.name}}</option>
+                            {% endif %}
+                             {% endfor %}
+                        </select>                       
+                    </fieldset>
+                   
+                    <fieldset style="width:30%; float:left;margin-left:10px;margin-bottom:20px;">
+                        <label>类型选择</label>
+                        <select name="s_id" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
+                             {% for list in nav_list %}
+                             {% for second in list.child_nav.all %}
+                            <option value="{{second.id}}">{{second.name}}</option>
+                             {% endfor %} 
+                             {% endfor %}                            
+                        </select>                       
+                    </fieldset>
+                    <fieldset style="width:30%;float:left;margin-left:10px;margin-bottom:20px;">
+                        <label>类型选择</label>
+                        <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
+                             {% for list in nav_list %}
+                             {% for second in list.child_nav.all %}
+                             {% for three in second.child_nav.all %}
+                            <option value="{{three.id}}">{{three.name}}</option>
+                             {% endfor %}
+                             {% endfor %} 
+                             {% endfor %} 
+                        </select>                       
                     </fieldset>
                     <fieldset style="clear:both;margin-bottom:20px;">
                         <label>内容</label>

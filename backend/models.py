@@ -45,7 +45,6 @@ class news(models.Model):
 	remark = models.CharField(max_length=150,blank=True,null=True)
 	img  = models.ImageField(upload_to='news',blank=True,null=True)
 	content = models.TextField()
-	is_del = models.BooleanField()
 	datetime = models.DateTimeField(auto_now_add=True)
 	def __unicode__(self):
 		return self.p_id

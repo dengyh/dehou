@@ -21,11 +21,12 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
+                        {% for list in lists %}
                         <tbody>
                             <tr>
-                                <td>标题一</td>
-                                <td>分类一</td>
-                                <td>时间一</td>
+                                <td>{{list.title}}</td>
+                                <td>{{list.remark}}</td>
+                                <td>{{list.datetime | date:"Y-m-d H:i:s"}}</td>
                                 <td>
                                     <a href="#">
                                         <input type="image" src="/static/images/icn_edit.png" title="编辑" />
@@ -36,36 +37,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody>
-                            <tr>
-                                <td>标题二</td>
-                                <td>分类二</td>
-                                <td>时间二</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="编辑" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="回收" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>标题三</td>
-                                <td>分类三</td>
-                                <td>时间三</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="编辑" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="回收" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        {% endfor %}
                     </table>
                 </div>
             </div>

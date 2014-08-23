@@ -14,36 +14,19 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" onsubmit="return validate_form(this)">
+            <form method="post" name="form" action='/backend/navigation_add_handle/'>
                 <header>
                     <h3 class="form_title">添加导航</h3>
                 </header>
                 <div class="module_content">
-                    <fieldset style="width:30%;float:left;margin-bottom:20px;">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
                         <label>导航标题</label>
-                        <input type="text" name="title" class="title" style="height:25px;">
-                    </fieldset>
-                    <fieldset style="width:30%; float:left; clear:both;margin-bottom:20px;">
-                        <label>导航级别</label>
-                        <select name="contentsType" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
-                            <option>一级导航</option>
-                            <option>二级导航</option>
-                            <option>三级导航</option>
-                        </select>
-                    </fieldset>
-                    <fieldset style="width:30%; clear:both; clear:both;margin-bottom:20px;">
-                        <label>上级导航</label>
-                        <select name="contentsType" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
-                            <option>隔热系列</option>
-                            <option>墙体系列</option>
-                            <option>石材系列</option>
-                            <option>地面系列</option>
-                        </select>
-                    </fieldset>
-      
+                        <input type="text" name="name" class="title" style="height:25px;">
+                    </fieldset>  
                 </div>
                 <footer>
                     <div class="submit_link">
+                        <input type="hidden" value="{{id}}" name="id" />
                         <input type="submit" value="添加" class="alt_btn" />
                     </div>
                 </footer>

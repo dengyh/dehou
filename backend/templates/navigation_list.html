@@ -27,20 +27,24 @@
                                 <td>{{list.name}}</td>
                                 <td>一级</td>
                                 <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="修改" />
+                                    <a href="/backend/navigation_add/?id={{list.id}}">
+                                        <input type="image" src="/static/images/icn_new_article.png" title="添加" />
                                     </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="删除" />
+                                    <a href="#"s>
+                                        <input type="image" src="/static/images/icn_edit.png" title="修改" />
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
+                        {% for second in list.child_nav.all %}
                         <tbody>
                             <tr style="background:#ececec;">
-                                <td>隔热系列</td>
+                                <td style="padding-left:15px;">--{{ second.name }}</td>
                                 <td>二级</td>
                                 <td>
+                                    <a href="/backend/navigation_add/?id={{second.id}}">
+                                        <input type="image" src="/static/images/icn_new_article.png" title="添加" />
+                                    </a>
                                     <a href="#">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
                                     </a>
@@ -50,21 +54,24 @@
                                 </td>
                             </tr>
                         </tbody>
+                        {% for three in second.child_nav.all %}
                         <tbody>
                             <tr>
-                                <td>石材系列</td>
+                                <td style="padding-left:30px;">----{{three.name}}</td>
                                 <td>三级</td>
                                 <td>
-                                    <a href="#">
+                                    <a href="#" style="padding-left:30px">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
                                     </a>
-                                    <a href="#">
+                                    <a href="#" >
                                         <input type="image" src="/static/images/icn_trash.png" title="删除" />
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
                         <tbody>
+                        {% endfor %}
+                        {% endfor %}
                         {% endfor %}                      
                     </table>
                 </div>
