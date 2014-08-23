@@ -134,6 +134,8 @@ def admin_list(request,template_name):
 	adminlist = User.objects.all()
 	return render(request,template_name,{'adminlist':adminlist})
 
+<<<<<<< HEAD
+=======
 # ======================================
 # 	名字：添加管理员以及权限表单处理
 #   功能：超级管理员添加普通管理员以及添加权限
@@ -184,3 +186,14 @@ def user_add_handle(request,template_name):
 	else:
 		form = adminForm()
 		return render(request,template_name,{'form': form})
+<<<<<<< HEAD
+=======
+
+
+
+=======
+def admin_list(request):
+	return render_to_response("admin_list.html", context_instance=RequestContext(request))
+>>>>>>> a25b7ab20ac32008b2cd0e0970fb9495002915ab
+>>>>>>> 8d111cadbe5ce37f5767ad4ccc9ebe5df799140d
+>>>>>>> 3e4589cde6516fb7f2594dca0e090436e0f05f35
