@@ -1,5 +1,16 @@
 #coding: utf-8
 from django.db import models
+from django.contrib.auth.models import User
+# ---------------------------
+# 新增用户表字段 : userInfo  扩展User表字段
+#           user : 存放User表字段
+#   premissions  : 存放管理员权限
+# ---------------------------
+class userInfo(models.Model):
+	user = models.OneToOneField(User,related_name='Info')
+	premissions = models.CharField(max_length=30,blank=True,null=True)
+	def __unicode__(self):
+		return self.user.username
 
 # ---------------------------
 # 导航表 : nav

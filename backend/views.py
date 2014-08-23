@@ -3,12 +3,17 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.template import Context,Template,RequestContext
 from django.shortcuts import render_to_response, RequestContext
-from backend.form import UEditorForm
+
 from django.shortcuts import render,redirect
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 #导入数据model
 from django.contrib.auth.models import User  #用户表
+from backend.models import userInfo  #继承User表
+from backend.models import nav
+
+#导入form表单
+from backend.form import UEditorForm,adminForm
 
 # ======================================
 # 	名字：导航列表
@@ -16,8 +21,9 @@ from django.contrib.auth.models import User  #用户表
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
-def navigation_list(request):
-	return render_to_response("navigation_list.html", context_instance=RequestContext(request))
+def navigation_list(request,template_name):
+	navlist = nav.objects.filter(level=1)
+	return render(request,template_name,{'navlist':navlist})
 
 # ======================================
 # 	名字：产品列表
@@ -124,6 +130,68 @@ def admin_add(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
+<<<<<<< HEAD
+def admin_list(request,template_name):
+	adminlist = User.objects.all()
+	return render(request,template_name,{'adminlist':adminlist})
+
+<<<<<<< HEAD
+=======
+# ======================================
+# 	名字：添加管理员以及权限表单处理
+#   功能：超级管理员添加普通管理员以及添加权限
+#   人员：杨凯
+#   日期：2014.08.22
+# --------------------------------------
+@csrf_exempt
+def user_add_handle(request,template_name):
+	if request.method == "POST":
+		premissions = request.POST.getlist('premissions','')
+		is_premissions = ''
+		#是否有权限  有
+		# stt = s.split(',')
+		# print stt[3]
+		if premissions:
+			for i in premissions:
+				is_premissions += i + ','    #以 ',' 分割,组合成字符串
+
+		form = adminForm(request.POST)
+		if form.is_valid():
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password']
+			password2 = form.cleaned_data['password2']
+			first_name = form.cleaned_data['first_name']			
+			# list1 = premissions[0]
+			# print premissions
+			checkUser = User.objects.filter(username=username)
+			pwdMatch = password == password2
+			if checkUser:
+				form.errors['username'] = u'管理员已存在'
+				return render(request,template_name,{'form':form})
+			if not pwdMatch:
+				form.errors['password'] = u'两次密码输入不一致'
+				return render(request,template_name,{'form':form})
+			new_user = User.objects.create_user(
+						username = username,
+						password = password,
+						first_name = first_name,
+					)
+			UInfo = userInfo.objects.create(
+						user = new_user,
+						premissions = is_premissions,
+				)
+			template_name = 'admin_list.html'
+			return render(request,template_name)
+		else:
+			return render(request,template_name,{'form':form})
+	else:
+		form = adminForm()
+		return render(request,template_name,{'form': form})
+
+
+
+=======
 def admin_list(request):
 	return render_to_response("admin_list.html", context_instance=RequestContext(request))
-
+>>>>>>> a25b7ab20ac32008b2cd0e0970fb9495002915ab
+>>>>>>> 8d111cadbe5ce37f5767ad4ccc9ebe5df799140d
