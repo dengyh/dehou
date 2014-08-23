@@ -20,10 +20,11 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
+                        {% for list in adminlist %}
                         <tbody>
                             <tr>
-                                <td>姓名一</td>
-                                <td>账号一</td>
+                                <td>{{list.username}}</td>
+                                <td>{{list.first_name}}</td>
                                 <td>
                                     <a href="#">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
@@ -34,7 +35,8 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody>
+                        {% endfor %}
+                        <!-- <tbody>
                             <tr>
                                 <td>姓名二</td>
                                 <td>账号二</td>
@@ -61,7 +63,7 @@
                                     </a>
                                 </td>
                             </tr>
-                        </tbody>
+                        </tbody> -->
                     </table>
                 </div>
             </div>

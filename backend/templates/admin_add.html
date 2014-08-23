@@ -10,27 +10,36 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" action="/backend/admin_add_handle/">
+            <form method="post" name="form" action="/backend/user_add_handle/">
                 {% csrf_token %}
                 <header>
                     <h3 class="form_title">添加管理员</h3>
                 </header>
+                {% if form.errors %}
+                    <p style="color: red;">
+                        <strong>对不起，添加失败</strong>
+                    </p>
+                {% endif %}
                 <div class="module_content">
                     <fieldset style="width:40%;float:left;margin-bottom:20px;">
                         <label>姓名</label>
                         <input type="text" name="username" class="title" style="height:25px;">
+                        {{form.errors.username}}
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>账号</label>
                         <input type="text" name="first_name" class="title" style="height:25px;">
+                        {{form.errors.first_name}}
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>密码</label>
                         <input type="password" name="password" class="title" style="height:25px;">
+                         {{form.errors.password}}
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>再次密码</label>
                         <input type="password" name="password2" class="title" style="height:25px;">
+                        {{form.errors.password2}}
                     </fieldset>
                     <fieldset style="width:40%;clear:both;margin-bottom:20px;">
                         <label>权限设置</label>

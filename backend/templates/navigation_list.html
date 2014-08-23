@@ -21,9 +21,10 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
+                        {% for list in navlist %}
                         <tbody>
                             <tr style="background:#d0d0d0;">
-                                <td>产品中心</td>
+                                <td>{{list.name}}</td>
                                 <td>一级</td>
                                 <td>
                                     <a href="#">
@@ -51,8 +52,8 @@
                         </tbody>
                         <tbody>
                             <tr>
-                                <td>凯哥系列</td>
-                                <td>三级片</td>
+                                <td>石材系列</td>
+                                <td>三级</td>
                                 <td>
                                     <a href="#">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
@@ -64,46 +65,7 @@
                             </tr>
                         </tbody>
                         <tbody>
-                            <tr style="background:#d0d0d0;">
-                                <td>精选案例</td>
-                                <td>一级</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="回复" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr style="background:#ececec;">
-                                <td>隔热系列</td>
-                                <td>二级</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="回复" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody><tbody>
-                            <tr style="background:#ececec;">
-                                <td>隔热系列</td>
-                                <td>二级</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="回复" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        {% endfor %}                      
                     </table>
                 </div>
                 <!-- end of #tab1 -->
