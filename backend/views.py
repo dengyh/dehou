@@ -280,3 +280,49 @@ def user_add_handle(request,template_name):
 	else:
 		form = adminForm()
 		return render(request,template_name,{'form': form})
+
+# ======================================
+# 	名字：管理员删除用户
+#   功能：删除普通管理员
+#   人员：黄晓佳
+#   日期：2014.08.23
+# --------------------------------------
+@csrf_exempt
+def admin_delete(request):
+	if request.method == "POST":					       		# 确保表单提交是post
+		id = request.POST.get('id_attr', '')			   		# 要删除的管理员id
+		password = request.POST.get('delete_attr', '')	   		# 确认密码
+
+	userInfo = User.objects.get(id=1)				       		# 获取超级管理员
+	userPassword = userInfo.password                       		# 获取超级管理员密码
+
+	if check_password(password, userPassword):             		# 如果密码一致
+		deleteInfo = User.objects.get(id = id)             		# 获取要删除的用户
+		deleteInfo.delete()                                		# 删除用户
+		return HttpResponse(u"删除了,凯哥还是傻逼")		   		# 删除成功跳转
+	else:												   		# 如果密码不一致
+		return HttpResponse(u"凯哥就是傻逼，恩，傻逼")     		# 删除不成功跳转
+
+# ======================================
+# 	名字：管理员修改跳转
+#   功能：修改跳转页面
+#   人员：黄晓佳
+#   日期：2014.08.23
+# --------------------------------------
+@csrf_exempt
+def admin_edit_url(request, template_name):
+	if request.method == "GET":							   		# 确保是get提交
+		id = request.GET.get('id','0')	                   		# 要修改的管理员id
+
+	info = User.objects.get(id = id)					   		# 获取管理员信息
+	return render(request, template_name, {'info' : info}) 		# 跳转到修改页面
+
+# ======================================
+# 	名字：管理员修改响应
+#   功能：修改数据库数据
+#   人员：黄晓佳
+#   日期：2014.08.23
+# --------------------------------------
+# @csrf_exempt
+# def admin_edit(request, template_name):
+# 	if request.method == "POST":                                # 确保表单提交是post

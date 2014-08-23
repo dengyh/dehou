@@ -42,4 +42,7 @@ urlpatterns = patterns('backend.views',
 	# 添加管理员表单处理 避免 admin_add_handle
 	url(r'^user_add_handle','user_add_handle',{'template_name' : "admin_add.html"}),
 	url(r'^admin_list/$','admin_list',{'template_name' : "admin_list.html"}), # 管理员列表 
+
+	url(r'admin_delete', 'admin_delete'),			# 删除管理员
+	url(r'admin_edit_url'  ,  'admin_edit_url', {'template_name' : "admin_edit.html"}),	
 )
