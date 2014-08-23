@@ -130,6 +130,7 @@ def admin_add(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
+<<<<<<< HEAD
 def admin_list(request,template_name):
 	adminlist = User.objects.all()
 	return render(request,template_name,{'adminlist':adminlist})
@@ -187,3 +188,7 @@ def user_add_handle(request,template_name):
 
 
 
+=======
+def admin_list(request):
+	return render_to_response("admin_list.html", context_instance=RequestContext(request))
+>>>>>>> a25b7ab20ac32008b2cd0e0970fb9495002915ab
