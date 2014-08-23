@@ -38,7 +38,14 @@ urlpatterns = patterns('backend.views',
 	url(r'^job_publish'    , 'job_publish'),        # 发布招聘
 	url(r'^message_list'   , 'message_list'),       # 留言列表
 	url(r'^admin_add'      , 'admin_add'),          # 添加管理员
+<<<<<<< HEAD
+
+	# 添加管理员表单处理 避免 admin_add_handle
+	url(r'^user_add_handle','user_add_handle',{'template_name' : "admin_add.html"}),
+	url(r'^admin_list/$','admin_list',{'template_name' : "admin_list.html"}), # 管理员列表 
+=======
 	# 添加管理员表单处理 避免 admin_add_handle
 	url(r'^user_add_handle','user_add_handle',{'template_name' : "admin_add.html"}),	
 	url(r'^admin_list/$','admin_list',{'template_name' : "admin_list.html"}), # 管理员列表
+>>>>>>> bab63cadd78ca3fd8033b20ef3c7cbc2bad0997a
 )
