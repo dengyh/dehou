@@ -567,62 +567,109 @@ def admin_edit(request, template_name):
 		return redirect('/backend/login/')
 	if request.method == "GET":							   		# 确保是get提交
 		id = request.GET.get('id','')	                   		# 要修改的管理员id
-	info = User.objects.get(id=id)					   		# 获取管理员信息
+	info = User.objects.get(id=id)					   		    # 获取管理员信息
 	premissions = public_premissions(request)
 	return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
 
 # ======================================
-# 	名字：管理员修改
-#   功能：管理员修改权限
-#   人员：杨凯
+# 	名字：管理员修改表单处理
+#   功能：修改管理员
+#   人员：黄晓佳
 #   日期：2014.08.25
 # --------------------------------------
 @csrf_exempt
-def user_edit_handle(request,template_name):
-	if not request.user.is_authenticated():
-		return redirect('/backend/login/')
+def admin_edit_handle(request):
 	if request.method == "POST":
-		admin_id = request.POST.get('id','')    # 获取管理员的id
-		premissions = request.POST.getlist('premissions','') #获取管理员权限
+		# 获取表单
+		id = request.POST['id']
+		username = request.POST['username']
+		first_name = request.POST['first_name']
+		premissions = request.POST.getlist('premissions','')
 		is_premissions = ''
-		# stt = s.split(',')
-		# print stt[3]
+		# 以 ',' 分割,组合成字符串
 		if premissions:
 			for i in premissions:
-				is_premissions += i + ','    #以 ',' 分割,组合成字符串
+				is_premissions += i + ','   	
 
-		form = edit_user_Form(request.POST)
-		if form.is_valid():
-			username = form.cleaned_data['username']
-			first_name = form.cleaned_data['first_name']			
-			# list1 = premissions[0]
-			# print premissions
-			checkUser = User.objects.filter(username=username)
-			# if checkUser:
-			# 	form.errors['username'] = u'管理员已存在'
-			# 	return render(request,template_name,{'form':form})
-			  # update User表	
-			edit_user = User.objects.get(id=admin_id)
-			edit_user.username = username
-			edit_user.first_name = first_name
-			edit_user.save()
-			  # update userInfo表
-			UInfo = userInfo.objects.get(user=edit_user)
-			UInfo.premissions = is_premissions
-			UInfo.save()
-			return HttpResponseRedirect('/backend/admin_list/')
-		else:
-			return render(request,template_name,{'form':form})
+		# 修改基本资料
+		user = User.objects.get(id = id)
+		user.username = username
+		user.first_name = first_name
+		user.save()
+
+		# 修改权限
+		usrInfo = userInfo.objects.get(user = user)
+		usrInfo.premissions = is_premissions
+		usrInfo.save()
+
+		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':"admin"})
 	else:
-		form = adminForm()
-		return render(request,template_name,{'form': form})
+		return render(request, "backend_href.html", {'title':"修改失败，请重试 :(", 'href':"admin"})
 
 # ======================================
-# 	名字：管理员修改响应
-#   功能：修改数据库数据
+# 	名字：资讯修改页面
+#   功能：修改页面显示资讯
 #   人员：黄晓佳
-#   日期：2014.08.23
+#   日期：2014.08.25
 # --------------------------------------
-# @csrf_exempt
-# def admin_edit(request, template_name):
-# 	if request.method == "POST":                                # 确保表单提交是post
+def edit_info(request, template_name):
+	if request.method == "GET":
+		ids = request.GET.get('id','')
+		types = request.GET.get('type','')
+
+	new = news.objects.get(id = ids)
+	p_id = new.p_id
+	s_id = new.s_id
+	t_id = new.t_id
+
+	p_id_name = nav.objects.get(id = p_id).name
+	s_id_name = nav.objects.get(id = s_id).name
+	
+	# ueditor编辑器初始化
+	form = UEditorForm()
+
+	param = {
+		'new':new, 
+		'type':types, 
+		'form':form,
+		'p_id_name':p_id_name,
+		's_id_name':s_id_name,
+	}
+
+	if t_id != 0:
+		t_id_name = nav.objects.get(id = t_id).name
+		param['t_id_name'] = t_id_name
+
+	return render(request, template_name, param)
+
+# ======================================
+# 	名字：资讯修改表单处理
+#   功能：修改表单
+#   人员：黄晓佳
+#   日期：2014.08.25
+# --------------------------------------
+def edit_info_handle(request):
+	if request.method == "POST":
+		ids = request.POST['id']
+		types = request.POST['type']
+		title = request.POST['title']
+		remark = request.POST['remark']
+		hiddenImg = request.POST['hiddenImg']
+		img = request.FILES.get('img', None)
+		content = request.POST['content']
+
+		# 如果没有上传图片
+		if not img:
+			img = hiddenImg
+
+		# 保存修改
+		new = news.objects.get(id = ids)
+		new.title = title
+		new.remark = remark
+		new.img = img
+		new.content = content
+		new.save()
+
+		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':types})
+	else:
+		return render(request, "backend_href.html", {'title':"修改失败，请重试 :(", 'href':types})

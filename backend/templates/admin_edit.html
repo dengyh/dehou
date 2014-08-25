@@ -10,7 +10,7 @@
 <section id="main" class="column">
     <div class="clear"></div>
     <article class="module width_full add_item_block">
-        <form method="post" name="form" action="/backend/user_edit_handle/">
+        <form method="post" name="form">
             {% csrf_token %}
             <header>
                 <h3 class="form_title">添加管理员</h3>
@@ -64,6 +64,22 @@
         for (var i = 0; i < arr.length; i++) {
             pre[arr[i]-1].checked = true;
         };
+
+        $('.alt_btn').click(function(){
+            var length = 0;
+            var checkbox = $("input[name='premissions']");
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked == true)
+                    length++;
+            };
+
+            if (length>0){
+                form.action = "/backend/admin_edit_handle/";
+            } 
+            else {
+                alert("请选择权限");
+            }
+        });
     });
 </script>
 <!-- checkbox选中 结束 -->
