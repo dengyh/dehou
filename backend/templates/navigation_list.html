@@ -48,7 +48,7 @@
                                     <a href="/backend/navigation_edit/?id={{second.id}}">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
                                     </a>
-                                    <a href="/backend/del_navigation/?id={{second.id}}">
+                                    <a href="javascript:void(0);" click_action="/backend/del_navigation/?id={{second.id}}" name="delete">
                                         <input type="image" src="/static/images/icn_trash.png" title="删除" />
                                     </a>
                                 </td>
@@ -63,7 +63,7 @@
                                     <a href="/backend/navigation_edit/?id={{three.id}}" style="padding-left:30px">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
                                     </a>
-                                    <a href="/backend/del_navigation/?id={{three.id}}" >
+                                    <a href="javascript:void(0);" click_action="/backend/del_navigation/?id={{three.id}}" name="delete">
                                         <input type="image" src="/static/images/icn_trash.png" title="删除" />
                                     </a>
                                 </td>
@@ -83,4 +83,29 @@
         <div class="spacer"></div>
     </section>
     <!-- 导航列表板块 结束 -->
+
+    <!-- 模态框（Modal）开始 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding-top:150px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="border:0;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div style="border:0;padding-left:20px;">
+                    <h3>
+                    确认删除？
+                    </h3>
+                </div>
+                <div class="modal-footer" style="border:0;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="delete">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal）结束 -->
+
+    <!-- 删除确认框 开始 -->
+    <script type="text/javascript" src="/static/js/del_info.js"></script>
+    <!-- 删除确认框 结束 -->
 {% endblock %}
