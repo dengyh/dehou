@@ -12,7 +12,7 @@ import json
 #导入数据model
 from django.contrib.auth.models import User  #用户表
 from backend.models import userInfo  #继承User表
-from backend.models import nav,news
+from backend.models import nav,news,comments
 
 #导入form表单
 from backend.form import UEditorForm,loginForm,adminForm,edit_user_Form
@@ -610,10 +610,29 @@ def job_publish(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
-def message_list(request):
+def message_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	return render_to_response("message_list.html", context_instance=RequestContext(request))
+	lists = comments.objects.all()
+	premissions = public_premissions(request)   #权限认证
+	return render(request,template_name,{'lists':lists,'premissions':premissions})
+
+# ======================================
+# 	名字：留言删除
+#   功能：删除留言信息
+#   人员：杨凯
+#   日期：2014.08.25
+# --------------------------------------
+def del_message(request):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	if request.method == "GET":
+		message_id = request.GET.get('id','')
+		delMsg = comments.objects.get(id=message_id)
+		delMsg.delete()
+		return HttpResponseRedirect('/backend/message_list/')
+	return HttpResponse('请求方法错误...')
+
 
 # ======================================
 # 	名字：添加管理员

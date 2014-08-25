@@ -15,61 +15,35 @@
                     <table class="tablesorter" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>标题</th>
+                                <th>用户名</th>
+                                <th>留言标题</th>
                                 <th>留言时间</th>
-                                <th>回复时间</th>
                                 <th>回复状态</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
+                        {% for list in lists %}
                         <tbody>
                             <tr>
-                                <td>标题一</td>
-                                <td>时间一</td>
-                                <td>时间一</td>
-                                <td>已回复</td>
+                                <td>{{list.name}}</td>
+                                <td>{{list.title}}</td>
+                                <td>{{list.send_time | date:"Y-m-d H:i:s"}}</td>
+                                {% if list.replay_content %}
+                                  <td>已回复</td>
+                                  {% else %}
+                                  <td style="color:red">未回复</td>
+                                {% endif %}
                                 <td>
-                                    <a href="#">
+                                    <a href="/backend/reply_message/?id={{list.id}}">
                                         <input type="image" src="/static/images/icn_edit.png" title="回复" />
                                     </a>
-                                    <a href="#">
+                                    <a href="/backend/del_message/?id={{list.id}}">
                                         <input type="image" src="/static/images/icn_trash.png" title="删除" />
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody>
-                            <tr>
-                                <td>标题二</td>
-                                <td>时间二</td>
-                                <td>时间二</td>
-                                <td style="color:red;">未回复</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="回复" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>标题三</td>
-                                <td>时间三</td>
-                                <td>时间三</td>
-                                <td>已回复</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="回复" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        {% endfor %}
                     </table>
                 </div>
             </div>

@@ -9,7 +9,8 @@ urlpatterns = patterns('backend.views',
 
 	url(r'^job_list'       , 'job_list'),           # 招聘列表
 	url(r'^job_publish'    , 'job_publish'),        # 发布招聘
-	url(r'^message_list'   , 'message_list'),       # 留言列表
+	url(r'^message_list/$'   , 'message_list',{'template_name':'message_list.html'}),  # 留言列表
+	url(r'^del_message/$'   , 'del_message'),                                          # 留言删除
 )
 
 urlpatterns += patterns('backend.views',
@@ -41,8 +42,8 @@ urlpatterns += patterns('backend.views',
 urlpatterns += patterns('backend.views',
 	url(r'^user_add_handle','user_add_handle',{'template_name' : "admin_add.html"}),     # 添加管理员表单处理 避免 admin_add_handle
 	url(r'^admin_list/$','admin_list',{'template_name' : "admin_list.html"}),            # 管理员列表 
-	url(r'^admin_add'      , 'admin_add'),                                               # 添加管理员
-	url(r'^admin_delete', 'admin_delete'),			                                     # 删除管理员
-	url(r'^admin_edit'  ,  'admin_edit', {'template_name' : "admin_edit.html"}),	     # 管理员编辑
+	url(r'^admin_add/$'      , 'admin_add'),                                               # 添加管理员
+	url(r'^admin_delete/$', 'admin_delete'),			                                  #删除管理员
+	url(r'^admin_edit/$'  ,  'admin_edit', {'template_name' : "admin_edit.html"}),	     # 管理员编辑
 	url(r'^admin_edit_handle/$', 'admin_edit_handle'),                                   # 修改管理员表单处理
 )
