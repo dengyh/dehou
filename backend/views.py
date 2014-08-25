@@ -179,6 +179,11 @@ def del_navigation(request):
 		return redirect('/backend/login/')
 	if request.method == "GET":
 		navId = request.GET.get('id','')
+		p = nav.objects.filter(pid=navId)
+		if p:
+			for lists in p:
+				delNav = nav.objects.get(id=lists.id)
+				delNav.delete()
 		delNav = nav.objects.get(id=navId)
 		delNav.delete()
 		return HttpResponseRedirect('/backend/navigation_list/')
@@ -781,6 +786,8 @@ def edit_info(request, template_name):
 	p_id_name = nav.objects.get(id = p_id).name
 	s_id_name = nav.objects.get(id = s_id).name
 	
+	premissions = public_premissions(request)
+
 	# ueditor编辑器初始化
 	form = UEditorForm()
 
@@ -790,6 +797,7 @@ def edit_info(request, template_name):
 		'form':form,
 		'p_id_name':p_id_name,
 		's_id_name':s_id_name,
+		'premissions':premissions,
 	}
 
 	if t_id != 0:
