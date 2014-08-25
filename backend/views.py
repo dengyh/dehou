@@ -7,6 +7,8 @@ from django.shortcuts import render_to_response, RequestContext
 from django.shortcuts import render,redirect
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+import settings
+import json
 #导入数据model
 from django.contrib.auth.models import User  #用户表
 from backend.models import userInfo  #继承User表
@@ -60,6 +62,42 @@ def navigation_add_handle(request):
 	return httpResponse('请求方法错误...')
 
 # ======================================
+# 	名字：导航删除
+#   功能：从数据库中将导航删除
+#   人员：杨凯
+#   日期：2014.08.24
+# --------------------------------------
+def del_navigation(request):
+	if request.method == "GET":
+		navId = request.GET.get('id','')
+		delNav = nav.objects.get(id=navId)
+		delNav.delete()
+		return HttpResponseRedirect('/backend/navigation_list/')
+	return httpResponse('请求方法错误...')
+
+# ======================================
+# 	名字：导航联动
+#   功能：根据父导航实现 实现二级、三级导航的 联动效果
+#   人员：杨凯
+#   日期：2014.08.24
+# --------------------------------------
+def Twolink(request):
+	if request.is_ajax():
+		nav_id = request.POST.get('id','')
+		nav_list = nav.objects.filter(pid=nav_id)  #获取 子导航
+		data = []
+		if nav_list:
+			for menu in nav_list:
+				temp = {}
+				temp['id'] = menu.id
+				temp['name'] = menu.name
+				data.append(temp)
+			return HttpResponse(json.dumps(data),content_type='application/json')
+		else:  #没有子导航的情况
+			return HttpResponse(json.dumps('error'),content_type='application/json')
+	return HttpResponse('请求方法错误...')
+
+# ======================================
 # 	名字：产品列表
 #   功能：分页罗列产品
 #   人员：黄晓佳
@@ -79,8 +117,12 @@ def product_list(request,template_name):
 def product_add(request,template_name):
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	product_nav = nav.objects.filter(id=1)  #获取 佳易得产品 一级导航 
-	return render(request,template_name,{"form": form,"product_nav":product_nav})
+	product_nav = nav.objects.filter(id=1)  #获取 佳易得产品 一级导航
+	#获取 所有二级导航
+	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
+	#获取属于当前二级导航的 三级导航
+	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav})
 
 # ======================================
 # 	名字：添加产品表单处理  同时 适用于  添加工程表单处理
@@ -131,8 +173,14 @@ def project_list(request,template_name):
 def project_add(request,template_name):
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	product_nav = nav.objects.filter(id=2)  #获取 工程应用 一级导航 
-	return render(request,template_name,{"form": form,"product_nav":product_nav})
+	product_nav = nav.objects.filter(id=2)  #获取 工程应用 一级导航
+	#获取 所有二级导航
+	# if len(product_nav) > 0:
+	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
+	#获取属于当前二级导航的 三级导航
+	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav})
+
 
 # ======================================
 # 	名字：添加工程表单处理
@@ -169,8 +217,9 @@ def pro_add_handle(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
-def info_list(request):
-	return render_to_response("info_list.html", context_instance=RequestContext(request))
+def info_list(request,template_name):
+	lists = news.objects.filter(p_id__gt=2)
+	return render(request,template_name,{'lists':lists})
 
 # ======================================
 # 	名字：添加资讯
@@ -181,8 +230,65 @@ def info_list(request):
 def info_add(request,template_name):
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	nav_list = nav.objects.filter(level=1)
-	return render(request,template_name,{"form": form,"nav_list":nav_list})
+	product_nav = nav.objects.filter(id__gt=2,level=1)   #获取  一级导航
+	#获取 所有二级导航
+	# if len(product_nav) > 0:
+	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
+	#获取属于当前二级导航的 三级导航
+	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav})
+
+# ======================================
+# 	名字：添加资讯表单处理
+#   功能：添加资讯进数据库
+#   人员：杨凯
+#   日期：2014.08.24
+# --------------------------------------
+@csrf_exempt
+def info_add_handle(request):
+	if request.method == "POST":
+		p_id  = request.POST.get('p_id','')
+		s_id  = request.POST.get('s_id','')
+		t_id  = request.POST.get('t_id','99')
+		title = request.POST.get('title','')
+		remark = request.POST.get('remark','')
+		img   = request.FILES.get('img',None)
+		content = request.POST.get('content','')
+		p = news(
+			p_id = p_id,
+			s_id = s_id,
+			t_id = t_id,
+			title = title,
+			remark = remark,
+			img = img,
+			content = content,
+			)
+		p.save()
+		return HttpResponseRedirect('/backend/info_list/')
+	return HttpResponse('请求方法错误...')
+
+# ======================================
+# 	名字：删除资讯信息
+#   功能：从数据库中将信息(包括图片处理)删除,
+#   人员：杨凯
+#   日期：2014.08.24
+# --------------------------------------
+def del_info(request):
+	if request.method == "GET":
+		newsId = request.GET.get('id','')
+		types = request.GET.get('type','')
+		print types
+		delNews = news.objects.get(id=newsId)
+		if delNews.img:       # 信息 中有 图片
+			file_directory = settings.PROJECT_PATH + delNews.path;
+			if os.path.exists(file_directory):
+				os.remove(file_directory)
+				delNews.delete()
+				return HttpResponseRedirect('/backend/'+types+'_list/')
+		else:
+			delNews.delete()
+			return HttpResponseRedirect('/backend/'+types+'_list/')
+	return HttpResponse('请求方法错误...')
 
 # ======================================
 # 	名字：招聘列表

@@ -33,37 +33,34 @@
                         <input type="file" name="img" class="title" style="height:25px;">
                     </fieldset>
                    
-                    <fieldset style="width:30%; float:left;clear:both;margin-bottom:20px;">
+                     <fieldset style="width:30%; float:left;clear:both;margin-bottom:20px;"
+                     class="parentMenu">
                         <label>类型选择</label>
-                        <select name="p_id" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
+                        <select name="p_id" style="width:92%;height:25px;" class="contentsType" id="parentMenu">
                             {% for list in product_nav %}
                             <option value="{{list.id}}">{{list.name}}</option>
                              {% endfor %}
                         </select>                       
                     </fieldset>
                    
-                    <fieldset style="width:30%; float:left;margin-left:10px;margin-bottom:20px;">
+                    <fieldset style="width:30%; float:left;margin-left:10px;margin-bottom:20px;" class="secondMenu">
                         <label>类型选择</label>
-                        <select name="s_id" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
-                             {% for list in product_nav %}
-                             {% for second in list.child_nav.all %}
-                            <option value="{{second.id}}">{{second.name}}</option>
-                             {% endfor %} 
-                             {% endfor %}                            
+                        <select name="s_id" style="width:92%;height:25px;" class="contentsType" id="secondMenu">
+                             {% for list in product_second_nav %}
+                            <option value="{{list.id}}">{{list.name}}</option>
+                             {% endfor %}                           
                         </select>                       
                     </fieldset>
-                    <fieldset style="width:30%;float:left;margin-left:10px;margin-bottom:20px;">
+
+                    <fieldset style="width:30%;float:left;margin-left:10px;margin-bottom:20px;" class="thirdMenu">
                         <label>类型选择</label>
-                        <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="linhc_control_contents">
-                             {% for list in product_nav %}
-                             {% for second in list.child_nav.all %}
-                             {% for three in second.child_nav.all %}
-                            <option value="{{three.id}}">{{three.name}}</option>
-                             {% endfor %}
-                             {% endfor %} 
+                        <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="thirdMenu">
+                             {% for list in product_third_nav %}
+                            <option value="{{list.id}}">{{list.name}}</option>
                              {% endfor %} 
                         </select>                       
                     </fieldset>
+
                     <fieldset style="clear:both;margin-bottom:20px;">
                         <label>内容</label>
                         <div style="padding:0 10px;">{{ form }}</div>
