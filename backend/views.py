@@ -18,8 +18,10 @@ from backend.models import nav,news
 from backend.form import UEditorForm,loginForm,adminForm,edit_user_Form
 
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.hashers import make_password, check_password	
+from django.contrib.auth.hashers import make_password, check_password
 
+#导入分页
+from django.core.paginator import Paginator,InvalidPage,EmptyPage
 
 # ======================================
 # 	名字：判断权限公共函数
@@ -120,8 +122,12 @@ def navigation_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	navlist = nav.objects.filter(level=1)
-	premissions = public_premissions(request)
-	return render(request,template_name,{'navlist':navlist,'premissions':premissions})
+	premissions = public_premissions(request)    #权限认证
+	return render(request,template_name,{
+			'navlist':navlist,
+			'premissions':premissions
+			}
+		)
 
 # ======================================
 # 	名字：导航添加
@@ -134,7 +140,7 @@ def navigation_add(request,template_name):
 		return redirect('/backend/login/')
 	if request.method == "GET":
 		navId = request.GET.get('id','')
-		premissions = public_premissions(request)
+		premissions = public_premissions(request)   #权限认证
 		return render(request,template_name,{'id':navId,'premissions':premissions})
 	return HttpResponse('请求方法错误...')
 
@@ -210,8 +216,58 @@ def product_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id=1)
-	premissions = public_premissions(request)
-	return render(request,template_name,{'lists':lists,'premissions':premissions})
+	premissions = public_premissions(request)   #权限认证
+	#实例化分页器
+	paginator = Paginator(lists,1)
+	#中文页码列表初始化
+	page_list = range(0,paginator.num_pages)
+	#获取中文页码列表	  
+	for x in range(0,paginator.num_pages):
+		page_list[x] = x+1
+
+	#确保传进来的中文page参数为整数，如果不是，则设置为1
+	try:
+		page = int(request.GET.get('page','1'))
+	except ValueError:
+		page = 1
+		currentpage = 1
+
+	#确保传进来的当前page为整数，如果不是，则设置为1
+	try:
+		currentpage = int(request.GET.get('currentpage','1'))
+	except ValueError:
+		currentpage = 1
+
+	#确保页面没有超出范围，否则输出最后一页的值
+	try:
+		info_list = paginator.page(page)
+		currentpage = page
+		# return HttpResponse(currentpage)
+	except ValueError (EmptyPage, InvalidPage):
+		info_list = paginator.page(paginator.num_pages)
+		currentpage =paginator.num_pages
+	# return HttpResponse(page)
+
+	
+	#获取上一页和下一页的值
+	prevpage = currentpage - 1
+	nextpage = currentpage + 1
+	
+	
+	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
+	if(prevpage < 1):
+		prevpage = 1
+	if(nextpage > paginator.num_pages):
+		nextpage = paginator.num_pages
+	return render(request,template_name,{
+		'info_list':info_list,
+		'page_list':page_list,
+		'currentpage':currentpage,
+		'prevpage':prevpage,
+		'nextpage':nextpage,
+		'premissions':premissions
+		}
+		)
 
 
 # ======================================
@@ -230,7 +286,7 @@ def product_add(request,template_name):
 	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
 	#获取属于当前二级导航的 三级导航
 	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
-	premissions = public_premissions(request)
+	premissions = public_premissions(request)    #权限认证
 	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
 
 # ======================================
@@ -275,8 +331,58 @@ def project_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id=2)
-	premissions = public_premissions(request)
-	return render(request,template_name,{'lists':lists,'premissions':premissions})
+	premissions = public_premissions(request)    #权限认证
+		#实例化分页器
+	paginator = Paginator(lists,1)
+	#中文页码列表初始化
+	page_list = range(0,paginator.num_pages)
+	#获取中文页码列表	  
+	for x in range(0,paginator.num_pages):
+		page_list[x] = x+1
+
+	#确保传进来的中文page参数为整数，如果不是，则设置为1
+	try:
+		page = int(request.GET.get('page','1'))
+	except ValueError:
+		page = 1
+		currentpage = 1
+
+	#确保传进来的当前page为整数，如果不是，则设置为1
+	try:
+		currentpage = int(request.GET.get('currentpage','1'))
+	except ValueError:
+		currentpage = 1
+
+	#确保页面没有超出范围，否则输出最后一页的值
+	try:
+		info_list = paginator.page(page)
+		currentpage = page
+		# return HttpResponse(currentpage)
+	except ValueError (EmptyPage, InvalidPage):
+		info_list = paginator.page(paginator.num_pages)
+		currentpage =paginator.num_pages
+	# return HttpResponse(page)
+
+	
+	#获取上一页和下一页的值
+	prevpage = currentpage - 1
+	nextpage = currentpage + 1
+	
+	
+	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
+	if(prevpage < 1):
+		prevpage = 1
+	if(nextpage > paginator.num_pages):
+		nextpage = paginator.num_pages
+	return render(request,template_name,{
+		'info_list':info_list,
+		'page_list':page_list,
+		'currentpage':currentpage,
+		'prevpage':prevpage,
+		'nextpage':nextpage,
+		'premissions':premissions
+		}
+		)
 
 # ======================================
 # 	名字：添加工程
@@ -295,7 +401,7 @@ def project_add(request,template_name):
 	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
 	#获取属于当前二级导航的 三级导航
 	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
-	premissions = public_premissions(request)
+	premissions = public_premissions(request)    #权限认证
 	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
 
 
@@ -340,8 +446,58 @@ def info_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id__gt=2)
-	premissions = public_premissions(request)
-	return render(request,template_name,{'lists':lists,'premissions':premissions})
+	premissions = public_premissions(request)  #权限认证  
+		#实例化分页器
+	paginator = Paginator(lists,1)
+	#中文页码列表初始化
+	page_list = range(0,paginator.num_pages)
+	#获取中文页码列表	  
+	for x in range(0,paginator.num_pages):
+		page_list[x] = x+1
+
+	#确保传进来的中文page参数为整数，如果不是，则设置为1
+	try:
+		page = int(request.GET.get('page','1'))
+	except ValueError:
+		page = 1
+		currentpage = 1
+
+	#确保传进来的当前page为整数，如果不是，则设置为1
+	try:
+		currentpage = int(request.GET.get('currentpage','1'))
+	except ValueError:
+		currentpage = 1
+
+	#确保页面没有超出范围，否则输出最后一页的值
+	try:
+		info_list = paginator.page(page)
+		currentpage = page
+		# return HttpResponse(currentpage)
+	except ValueError (EmptyPage, InvalidPage):
+		info_list = paginator.page(paginator.num_pages)
+		currentpage =paginator.num_pages
+	# return HttpResponse(page)
+
+	
+	#获取上一页和下一页的值
+	prevpage = currentpage - 1
+	nextpage = currentpage + 1
+	
+	
+	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
+	if(prevpage < 1):
+		prevpage = 1
+	if(nextpage > paginator.num_pages):
+		nextpage = paginator.num_pages
+	return render(request,template_name,{
+		'info_list':info_list,
+		'page_list':page_list,
+		'currentpage':currentpage,
+		'prevpage':prevpage,
+		'nextpage':nextpage,
+		'premissions':premissions
+		}
+		)
 
 # ======================================
 # 	名字：添加资讯

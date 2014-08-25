@@ -21,7 +21,7 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
-                        {% for list in lists %}
+                        {% for list in info_list %}
                         <tbody>
                             <tr>
                                 <td>{{list.title}}</td>
@@ -43,26 +43,25 @@
             </div>
 
         </article>
-        <!--分页显示 -->
+       <!--中文分页显示 -->
         <ul class="pagination">
-            <li><a href="#">上一页</a>
+            <li>
+                <a href="/backend/product_list/?page={{lastpage}}&currentpage={{currentpage}}">上一页</a>
             </li>
-            <li class="active"><a href="#">1</a>
+            {% for page in page_list %} {% if page == currentpage %}
+            <li class="active">
+                <a href="/backend/product_list/?page={{page}}&currentpage={{currentpage}}">{{page}}</a>
             </li>
-            <li><a href="#">2</a>
+            {% else %}
+            <li>
+                <a href="/backend/product_list/?page={{page}}&currentpage={{currentpage}}">{{page}}</a>
             </li>
-            <li><a href="#">3</a>
-            </li>
-            <li><a href="#">4</a>
-            </li>
-            <li><a href="#">5</a>
-            </li>
-            <li><a href="#">6</a>
-            </li>
-            <li><a href="#">下一页</a>
+            {%endif%} {% endfor %}
+            <li>
+                <a href="/backend/product_list/?page={{nextpage}}&currentpage={{currentpage}}">下一页</a>
             </li>
         </ul>
-        <!-- 分页显示结束 -->
+        <!-- 中文分页显示结束 -->
         <div class="spacer"></div>
     </section>
     <!-- 佳易得产品列表板块 结束 -->
