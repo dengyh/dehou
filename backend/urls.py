@@ -2,7 +2,20 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('backend.views',
-	 #导航列表
+	
+	# 登陆界面
+	url(r'^login/$','login_in',{'template_name':'login.html'}),
+
+	# 登陆检查
+	url(r'^check_login/$','check_login',{'template_name':'login.html'}),
+
+	# 登出
+	url(r'^login_out/$','login_out'),
+
+	# 后台首页
+	url(r'^home/$','home',{'template_name':'home.html'}),
+
+	#导航列表
 	url(r'^navigation_list/$', 'navigation_list',{'template_name':'navigation_list.html'}),   
 	# 导航添加
 	url(r'^navigation_add/$', 'navigation_add',{'template_name':'navigation_add.html'}),
@@ -55,6 +68,11 @@ urlpatterns = patterns('backend.views',
 	url(r'^user_add_handle','user_add_handle',{'template_name' : "admin_add.html"}),
 	url(r'^admin_list/$','admin_list',{'template_name' : "admin_list.html"}), # 管理员列表 
 
-	url(r'admin_delete', 'admin_delete'),			# 删除管理员
-	url(r'admin_edit_url'  ,  'admin_edit_url', {'template_name' : "admin_edit.html"}),	
+	url(r'admin_delete', 'admin_delete'),			# 删除管理员admin_edit_handle
+
+	# 管理员编辑
+	url(r'admin_edit'  ,  'admin_edit', {'template_name' : "admin_edit.html"}),	
+
+	# 管理员编辑表单处理
+	url(r'user_edit_handle','user_edit_handle', {'template_name' : "admin_edit.html"}),	
 )

@@ -4,20 +4,20 @@
     <!-- ueditor编辑器js与css -->
     {{ form.media }}
 {% endblock %}
-{% block title1 %}添加工程{% endblock %}
-{% block title2 %}添加工程{% endblock %}
-{% block title3 %}添加工程{% endblock %}
-{% block titleBase %}工程管理{% endblock %}
+{% block title1 %}添加工程应用{% endblock %}
+{% block title2 %}添加工程应用{% endblock %}
+{% block title3 %}添加工程应用{% endblock %}
+{% block titleBase %}工程应用管理{% endblock %}
 {% block titleBaseUrl %}project_list{% endblock %}
 {% block content %}
-    <!-- 添加工程板块 开始 -->
+    <!-- 添加工程应用板块 开始 -->
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
             <form method="post" name="form" action="/backend/pro_add_handle/" enctype="multipart/form-data">
             {% csrf_token %}
                 <header>
-                    <h3 class="form_title">添加工程</h3>
+                    <h3 class="form_title">添加工程应用</h3>
                 </header>
                 <div class="module_content">
                     <fieldset style="width:30%;float:left;margin-bottom:20px;">
@@ -76,5 +76,5 @@
         </article>
         <div class="spacer"></div>
     </section>
-    <!-- 添加工程板块 结束 -->
+    <!-- 添加工程应用板块 结束 -->
 {% endblock %}

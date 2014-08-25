@@ -19,11 +19,11 @@
     <header id="header">
         <hgroup>
             <h1 class="site_title">
-                <a href="/backend/info_list/">后台管理</a>
+                <a href="/backend/home/">后台管理</a>
             </h1>
             <h2 class="section_title">{% block title2 %}{% endblock %}</h2>
             <div class="btn_view_site">
-                <a href="#/">注销登录</a>
+                <a href="/backend/login_out/">注销登录</a>
             </div>
         </hgroup>
     </header>
@@ -32,7 +32,12 @@
     <!-- 头部小栏目 开始 -->
     <section id="secondary_bar">
         <div class="user">
-            <p>管理员名称</p>
+            <p>
+            	 欢迎管理员 : 
+            	     {% if user.is_authenticated %}  
+                       {{user.username}}
+                     {% endif %}  
+            </p>
         </div>
         <div class="breadcrumbs_container">
             <article class="breadcrumbs">
@@ -45,14 +50,20 @@
         </div>
     </section>
     <!-- 头部小栏目 结束 -->
-
+    
     <!-- 左边栏目 开始 -->
     <aside id="sidebar" class="column">
+         {% for list in premissions %}
+         {% ifequal list '1' %}
         <h3>导航管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/navigation_list/">导航列表</a>
             </li>
         </ul>
+         {% endifequal %}
+
+        
+          {% ifequal list '2' %}   
         <h3>佳易得产品管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/product_list/">产品列表</a>
@@ -60,13 +71,19 @@
             <li class="icn_new_article"><a href="/backend/product_add/">添加产品</a>
             </li>
         </ul>
-        <h3>工程管理</h3>
+          {% endifequal %}
+          
+          {% ifequal list '3' %}
+        <h3>工程应用管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/project_list/">工程列表</a>
             </li>
             <li class="icn_photo"><a href="/backend/project_add/">添加工程</a>
             </li>
         </ul>
+          {% endifequal %}
+
+          {% ifequal list '4' %}
         <h3>资讯管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/info_list/">资讯列表</a>
@@ -74,6 +91,9 @@
             <li class="icn_edit_article"><a href="/backend/info_add/">添加资讯</a>
             </li>
         </ul>
+          {% endifequal %}
+
+         {% ifequal list '5' %}
         <h3>招聘管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/job_list/">招聘列表</a>
@@ -81,11 +101,19 @@
             <li class="icn_jump_back"><a href="/backend/job_publish/">发布招聘</a>
             </li>
         </ul>
+         {% endifequal %}
+
+          {% ifequal list '6' %}
         <h3>留言管理</h3>
         <ul class="toggle">
             <li class="icn_categories"><a href="/backend/message_list/">留言列表</a>
             </li>
         </ul>
+         {% endifequal %}
+        
+         {% endfor %}
+        
+        {% if user.is_superuser %}  <!--判断是否为 超级管理员-->
         <h3>账户管理</h3>
         <ul class="toggle">
             <li class="icn_add_user"><a href="/backend/admin_add/">添加管理员</a>
@@ -93,6 +121,7 @@
             <li class="icn_view_users"><a href="/backend/admin_list/">管理员列表</a>
             </li>
         </ul>
+       {% endif %}
         <footer>
             <hr />
             <p>
