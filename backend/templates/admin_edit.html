@@ -52,16 +52,17 @@
 </section>
 <!-- 修改管理员 结束 -->
 
+<!-- checkbox选中 开始 -->
 <script type="text/javascript">
-$(document).ready(function() {
-    var checkbox = '{{info.Info.premissions}}';
-    var pre = $("input[name='premissions']");
-    alert("checkbox选中的值："+checkbox);
-    var arr = new Array();
-    arr = checkbox.split(',');
-    for (var i = 0; i < arr.length; i++) {
-        pre[arr[i]-1].checked = true;
-    };
-});
+    $(document).ready(function() {
+        var checkbox = '{{info.Info.premissions}}';
+        var pre = $("input[name='premissions']");
+        var arr = new Array();
+        arr = checkbox.split(',');
+        for (var i = 0; i < arr.length; i++) {
+            pre[arr[i]-1].checked = true;
+        };
+    });
 </script>
+<!-- checkbox选中 结束 -->
 {% endblock %}
