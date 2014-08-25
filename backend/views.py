@@ -17,6 +17,8 @@ from backend.models import nav,news
 #导入form表单
 from backend.form import UEditorForm,adminForm
 
+from django.contrib.auth.hashers import make_password, check_password	
+
 # ======================================
 # 	名字：导航列表
 #   功能：罗列导航信息
