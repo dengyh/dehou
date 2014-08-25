@@ -856,3 +856,36 @@ def edit_info_handle(request):
 		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':types})
 	else:
 		return render(request, "backend_href.html", {'title':"修改失败，请重试 :(", 'href':types})
+
+# ======================================
+# 	名字：导航修改页面
+#   功能：导航显示
+#   人员：黄晓佳
+#   日期：2014.08.25
+# --------------------------------------
+def navigation_edit(request, template_name):
+	if request.method == "GET":
+		ids = request.GET['id']
+
+		navs = nav.objects.get(id = ids)
+
+		return render(request, template_name, {'nav': navs})
+
+# ======================================
+# 	名字：导航修改表单处理
+#   功能：导航修改
+#   人员：黄晓佳
+#   日期：2014.08.25
+# --------------------------------------
+def navigation_edit_handle(request):
+	if request.method == "POST":
+		ids = request.POST['id']
+		name = request.POST['name']
+
+		navs = nav.objects.get(id = ids)
+		navs.name = name
+		navs.save()
+
+		return render(request, "backend_href.html", {'title':'修改成功 :)', 'href':'navigation'})
+	else:
+		return render(request, "backend_href.html", {'title':'修改失败，请重试 :(', 'href':'navigation'})
