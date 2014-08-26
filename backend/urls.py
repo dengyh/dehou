@@ -9,7 +9,10 @@ urlpatterns = patterns('backend.views',
 
 	url(r'^job_list/$'       , 'job_list',{'template_name':'job_list.html'}),            # 招聘列表
 	url(r'^job_publish/$'    , 'job_publish',{'template_name':'job_publish.html'}),      # 发布招聘
-	url(r'^job_publish_handle/$', 'job_publish_handle'),                   #发布招聘表单处理
+	url(r'^job_publish_handle/$', 'job_publish_handle'),                                 #发布招聘表单处理
+	url(r'^job_edit/$', 'job_edit', {'template_name':'job_edit.html'}),                  # 修改招聘
+	url(r'^job_edit_handle/$', 'job_edit_handle'),                                       # 修改招聘表单处理
+
 	url(r'^del_job/$'   , 'del_job'),                                                # 招聘信息删除
 	url(r'^message_list/$'   , 'message_list',{'template_name':'message_list.html'}),  # 留言列表
 	url(r'^del_message/$'   , 'del_message'),                                          # 留言删除

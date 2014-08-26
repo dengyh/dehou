@@ -1045,3 +1045,52 @@ def navigation_edit_handle(request):
 		return render(request, "backend_href.html", {'title':'修改成功 :)', 'href':'navigation'})
 	else:
 		return render(request, "backend_href.html", {'title':'修改失败，请重试 :(', 'href':'navigation'})
+
+# ======================================
+# 	名字：招聘修改
+#   功能：招聘修改
+#   人员：黄晓佳
+#   日期：2014.08.26
+# --------------------------------------
+def job_edit(request, template_name):
+	if request.method == "GET":
+		ids = request.GET.get('id', '')
+
+	# ueditor编辑器初始化
+	form = UEditorForm()
+	jobs = job.objects.get(id = ids)
+	return render(request, template_name, {'job': jobs, 'form': form})
+
+# ======================================
+# 	名字：招聘修改表单提交
+#   功能：招聘修改
+#   人员：黄晓佳
+#   日期：2014.08.26
+# --------------------------------------
+def job_edit_handle(request):
+	if request.method == "POST":
+		ids = request.POST.get('id', '')
+		position = request.POST['position']
+		content = request.POST['content']
+
+		jobs = job.objects.get(id = ids)
+		jobs.position = position
+		jobs.content = content
+		jobs.save()
+
+		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':"job"})
+	else:
+		return render(request, "backend_href.html", {'title':"修改失败，请重试 :(", 'href':"job"})
+
+	# if not request.user.is_authenticated():
+	# 	return redirect('/backend/login/')
+	# if request.method == "POST":
+	# 	position = request.POST.get('position','')
+	# 	content = request.POST.get('content','')
+	# 	jobs = job.objects.create(
+	# 		position = position,
+	# 		content = content,
+	# 		)
+	# 	return HttpResponseRedirect('/backend/job_list/')
+	# return HttpResponse('请求方法错误...')
+

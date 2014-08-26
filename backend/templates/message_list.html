@@ -29,14 +29,82 @@
                                 <td>{{list.title}}</td>
                                 <td>{{list.send_time | date:"Y-m-d H:i:s"}}</td>
                                 {% if list.replay_content %}
-                                  <td>已回复</td>
+                                  <td>
+                                    <a href="javascript:void(0);" style="color:black;" class="resume" id="{{list.id}}">
+                                    已回复
+                                    </a>
+                                    <!-- 模态框（Modal） -->
+                                    <div class="modal fade" id="model{{list.id}}"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="border:0;">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel" >
+                                                    已回复
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <span class="col-sm-2 control-label">留言人</span>
+                                                   <p>{{list.name}}</p><br>
+                                                   <span class="col-sm-2 control-label">留言时间</span>
+                                                   <p>{{list.send_time|date:"Y-m-d H:i:s"}}</p><br>
+                                                   <span class="col-sm-2 control-label">留言内容</span>
+                                                   <p>{{list.content}}</p>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <span class="col-sm-2 control-label">回复人</span>
+                                                   <p>{{list.admin}}</p><br>
+                                                   <span class="col-sm-2 control-label">回复时间</span>
+                                                   <p>{{list.replay_time|date:"Y-m-d H:i:s"}}</p><br>
+                                                   <span class="col-sm-2 control-label">回复内容</span>
+                                                   <p>{{list.replay_content}}</p>
+                                                </div>
+                                                <div class="modal-footer" style="border:0;">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal -->
+                                  </td>
                                   {% else %}
-                                  <td style="color:red">未回复</td>
+                                  <td>
+                                    <a href="javascript:void(0);" style="color:red" class="resume" id="{{list.id}}">
+                                    未回复
+                                    </a>
+                                    <!-- 模态框（Modal） -->
+                                    <div class="modal fade" id="model{{list.id}}"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="border:0;">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel" style="color:red">
+                                                    未回复
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <span class="col-sm-2 control-label">留言人</span>
+                                                   <p>{{list.name}}</p><br>
+                                                   <span class="col-sm-2 control-label">留言时间</span>
+                                                   <p>{{list.send_time|date:"Y-m-d H:i:s"}}</p><br>
+                                                   <span class="col-sm-2 control-label">留言内容</span>
+                                                   <p>{{list.content}}</p>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <label for="name">回复内容</label>
+                                                   <textarea class="form-control" rows="5"></textarea>
+                                                </div>
+                                                <div class="modal-footer" style="border:0;">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                    <button type="button" class="btn btn-primary">回复</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal -->
+                                  </td>
                                 {% endif %}
                                 <td>
-                                    <a href="/backend/reply_message/?id={{list.id}}">
-                                        <input type="image" src="/static/images/icn_edit.png" title="回复" />
-                                    </a>
                                     <a href="javascript:void(0);" click_action="/backend/del_message/?id={{list.id}}" name="delete">
                                         <input type="image" src="/static/images/icn_trash.png" title="删除" />
                                     </a>
@@ -95,4 +163,16 @@
     <!-- 删除确认框 开始 -->
     <script type="text/javascript" src="/static/js/del_info.js"></script>
     <!-- 删除确认框 结束 -->
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.resume').click(function(){
+            var id = $(this).attr('id');
+            var model = "#model" + id;
+            $(model).modal('show');
+        });
+    });
+
+    </script>
+
 {% endblock %}
