@@ -10,7 +10,7 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" action='/backend/navigation_edit_handle/'>
+            <form method="post" name="form">
                 <header>
                     <h3 class="form_title">修改导航</h3>
                 </header>
@@ -31,4 +31,20 @@
         <div class="spacer"></div>
     </section>
     <!-- 添加导航板块 结束 -->
+
+    <!-- 标题不能为空 开始 -->
+    <script type="text/javascript">
+    $(function(){
+        $('.alt_btn').click(function(){
+            if ($.trim($(".title").val()).length<=0) {
+                alert('内容不能为空');
+                return false;
+            }
+            else {
+                form.action = "/backend/navigation_edit_handle/";
+            }
+        });
+    });
+    </script>
+    <!-- 标题不能为空 结束 -->
 {% endblock %}

@@ -76,13 +76,23 @@
             };
 
             if (length>0){
+                // 输入框不能为空
+                if ($("input[name='username']").val().length <= 0 
+                    || $("input[name='first_name']").val().length <= 0
+                    || $("input[name='password']").val().length <= 0
+                    || $("input[name='password2']").val().length <= 0) {
+                    alert("资料不能为空");
+                    return false;
+                }
                 form.action = "/backend/user_add_handle/";
             } 
             else {
                 alert("请选择权限");
+                return false;
             }
         });
     });
     </script>
     <!-- 权限判断 结束 -->
 {% endblock %}
+-

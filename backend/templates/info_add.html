@@ -14,7 +14,7 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" action="/backend/info_add_handle/" enctype="multipart/form-data">
+            <form method="post" name="form" enctype="multipart/form-data">
             {% csrf_token %}
                 <header>
                     <h3 class="form_title">添加资讯</h3>
@@ -30,7 +30,8 @@
                     </fieldset>
                     <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
                         <label>封面图片</label>
-                        <input type="file" name="img" class="title" style="height:25px;">
+                        <input type="file" name="img" class="title" style="display:none;" />
+                        <input type="button" value="上传图片" class="clear_btn" style="margin-left:-100px;" id="uploadBtn">
                     </fieldset>
                    
                     <fieldset style="width:30%; float:left;clear:both;margin-bottom:20px;" 
@@ -76,4 +77,38 @@
         <div class="spacer"></div>
     </section>
     <!-- 添加资讯板块 结束 -->
+
+    <!-- js 开始 -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        // 上传封面图片事件
+        $('#uploadBtn').click(function(){
+            $("input[name='img']").trigger("click");
+        });
+
+        // 文本框内容不为空
+        $('.alt_btn').click(function(){
+            var ue = UE.getEditor('id_content');
+            ue.ready(function() {
+                if (ue.getContent().length <= 0) {
+                    alert("内容不能为空！");
+                    return false;
+                }
+                
+                form.action = "/backend/info_add_handle/";
+            });
+        });
+
+        // 文本置空
+        $('.clear_btn').click(function() {
+            var ue = UE.getEditor('id_content');
+            ue.ready(function() {
+                if (confirm("确定要清空文本内容吗？")) {
+                    ue.setContent('');
+                }
+            });
+        });
+    });
+    </script>
+    <!-- js 结束 -->
 {% endblock %}

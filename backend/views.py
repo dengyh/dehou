@@ -871,23 +871,23 @@ def user_add_handle(request,template_name):
 def admin_delete(request):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	if request.method == "POST":					       		# 确保表单提交是post
-		id = request.POST.get('id_attr', '')			   		# 要删除的管理员id
-		password = request.POST.get('delete_attr', '')	   		# 确认密码
-	print '*'*20
-	print id
-	userInfo = User.objects.get(id=1)				       		# 获取超级管理员
-	userPassword = userInfo.password                       		# 获取超级管理员密码
 
-	if check_password(password, userPassword):             		# 如果密码一致
-		deleteUser = User.objects.get(id = id)             		# 获取要删除的用户
-		
-		deletePremissions = userInfo.objects.get(user=id)# 删除Info表中的权限	
-		deletePremissions.delete()		                       
-		deleteUser.delete()                                		# 删除用户                
-		return HttpResponseRedirect('/backend/admin_list/')		   		# 删除成功跳转
-	else:												   		# 如果密码不一致
-		return HttpResponse(u'删除失败,请检查...')     		# 删除不成功跳转
+	if request.method == "POST":                                        # 确保表单提交是post
+		ids = request.POST.get('id_attr', '')                           # 要删除的管理员id
+		password = request.POST.get('delete_attr', '')                  # 确认密码
+
+	userInfos = User.objects.get(id=1)                                  # 获取超级管理员
+	userPassword = userInfos.password                                   # 获取超级管理员密码
+
+	if check_password(password, userPassword):                        
+		deleteUser = User.objects.get(id = ids)            		        # 获取要删除的用户
+		deletePremissions = userInfo.objects.get(user=deleteUser)       # 删除Info表中的权限	
+		deletePremissions.delete()                                      # 删除权限
+		deleteUser.delete()                                		        # 删除用户
+
+		return render(request, "backend_href.html", {'title':"用户删除成功 :)", 'href':"admin"})  # 删除成功跳转
+	else:                                                             
+		return render(request, "backend_href.html", {'title':"密码错误，删除失败 :(", 'href':"admin"})  # 删除失败跳转
 
 # ======================================
 # 	名字：管理员修改跳转
@@ -899,10 +899,12 @@ def admin_delete(request):
 def admin_edit(request, template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
+
 	if request.method == "GET":							   		# 确保是get提交
-		id = request.GET.get('id','')	                   		# 要修改的管理员id
-	info = User.objects.get(id=id)					   		    # 获取管理员信息
-	premissions = public_premissions(request)                   #权限认证
+		ids = request.GET.get('id','')	                   		# 要修改的管理员id
+
+	info = User.objects.get(id=ids)					   		    # 获取管理员信息
+	premissions = public_premissions(request)
 	return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
 
 # ======================================
@@ -915,7 +917,7 @@ def admin_edit(request, template_name):
 def admin_edit_handle(request):
 	if request.method == "POST":
 		# 获取表单
-		id = request.POST['id']
+		ids = request.POST.get('id', '')
 		username = request.POST['username']
 		first_name = request.POST['first_name']
 		premissions = request.POST.getlist('premissions','')
@@ -926,15 +928,15 @@ def admin_edit_handle(request):
 				is_premissions += i + ','   	
 
 		# 修改基本资料
-		user = User.objects.get(id = id)
-		user.username = username
-		user.first_name = first_name
-		user.save()
+		user1 = User.objects.get(id = ids)
+		user1.username = username
+		user1.first_name = first_name
+		user1.save()
 
 		# 修改权限
-		usrInfo = userInfo.objects.get(user = user)
-		usrInfo.premissions = is_premissions
-		usrInfo.save()
+		usrInfo1 = userInfo.objects.get(user = user1)
+		usrInfo1.premissions = is_premissions
+		usrInfo1.save()
 
 		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':"admin"})
 	else:

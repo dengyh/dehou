@@ -14,7 +14,7 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" action="/backend/product_add_handle/" enctype="multipart/form-data">
+            <form method="post" name="form" enctype="multipart/form-data">
             {% csrf_token %}
                 <header>
                     <h3 class="form_title">添加佳易得产品</h3>
@@ -52,7 +52,6 @@
                              {% endfor %}                           
                         </select>                       
                     </fieldset>
-                    
                     <fieldset style="width:30%;float:left;margin-left:10px;margin-bottom:20px;" class="thirdMenu">
                         <label>类型选择</label>
                         <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="thirdMenu">
@@ -79,13 +78,37 @@
     </section>
     <!-- 添加佳易得产品板块 结束 -->
 
-    <!-- 上传封面图片 开始 -->
+    <!-- js 开始 -->
     <script type="text/javascript">
     $(document).ready(function() {
+        // 上传封面图片事件
         $('#uploadBtn').click(function(){
             $("input[name='img']").trigger("click");
         });
+
+        // 文本框内容不为空
+        $('.alt_btn').click(function(){
+            var ue = UE.getEditor('id_content');
+            ue.ready(function() {
+                if (ue.getContent().length <= 0) {
+                    alert("内容不能为空！");
+                    return false;
+                }
+                
+                form.action = "/backend/product_add_handle/";
+            });
+        });
+
+        // 文本置空
+        $('.clear_btn').click(function() {
+            var ue = UE.getEditor('id_content');
+            ue.ready(function() {
+                if (confirm("确定要清空文本内容吗？")) {
+                    ue.setContent('');
+                }
+            });
+        });
     });
     </script>
-    <!-- 上传封面图片 结束 -->
+    <!-- js 结束 -->
 {% endblock %}
