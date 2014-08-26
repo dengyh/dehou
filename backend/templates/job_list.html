@@ -31,53 +31,27 @@
                     <table class="tablesorter" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>标题</th>
+                                <th>职位信息</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
+                        {% for list in info_list %}
                         <tbody>
                             <tr>
-                                <td>标题一</td>
-                                <td>时间一</td>
+                                <td>{{list.position}}</td>
+                                <td>{{list.datetime | date:"Y-m-d H:i:s"}}</td>
                                 <td>
                                     <a href="#">
                                         <input type="image" src="/static/images/icn_edit.png" title="编辑" />
                                     </a>
-                                    <a href="#">
+                                    <a href="javascript:void(0);" click_action="/backend/del_job/?id={{list.id}}" name="delete">
                                         <input type="image" src="/static/images/icn_trash.png" title="彻底删除" />
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody>
-                            <tr>
-                                <td>标题二</td>
-                                <td>时间二</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="编辑" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="彻底删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>标题三</td>
-                                <td>时间三</td>
-                                <td>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_edit.png" title="编辑" />
-                                    </a>
-                                    <a href="#">
-                                        <input type="image" src="/static/images/icn_trash.png" title="彻底删除" />
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
+                        {% endfor %}
                     </table>
                 </div>
                 <!-- end of #tab1 -->
@@ -86,27 +60,51 @@
             <!-- end of .tab_container -->
         </article>
         <!-- end of content manager article -->
-        <!--中文分页显示 -->
+       <!--中文分页显示 -->
         <ul class="pagination">
-            <li><a href="#">上一页</a>
+            <li>
+                <a href="/backend/job_list/?page={{prevpage}}&currentpage={{currentpage}}">上一页</a>
             </li>
-            <li class="active"><a href="#">1</a>
+            {% for page in page_list %} {% if page == currentpage %}
+            <li class="active">
+                <a href="/backend/job_list/?page={{page}}&currentpage={{currentpage}}">{{page}}</a>
             </li>
-            <li><a href="#">2</a>
+            {% else %}
+            <li>
+                <a href="/backend/job_list/?page={{page}}&currentpage={{currentpage}}">{{page}}</a>
             </li>
-            <li><a href="#">3</a>
-            </li>
-            <li><a href="#">4</a>
-            </li>
-            <li><a href="#">5</a>
-            </li>
-            <li><a href="#">6</a>
-            </li>
-            <li><a href="#">下一页</a>
+            {%endif%} {% endfor %}
+            <li>
+                <a href="/backend/job_list/?page={{nextpage}}&currentpage={{currentpage}}">下一页</a>
             </li>
         </ul>
         <!-- 中文分页显示结束 -->
         <div class="spacer"></div>
     </section>
     <!-- 招聘列表板块 结束 -->
+
+    <!-- 模态框（Modal）开始 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding-top:150px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="border:0;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div style="border:0;padding-left:20px;">
+                    <h3>
+                    确认删除？
+                    </h3>
+                </div>
+                <div class="modal-footer" style="border:0;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="delete">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal）结束 -->
+
+    <!-- 删除确认框 开始 -->
+    <script type="text/javascript" src="/static/js/del_info.js"></script>
+    <!-- 删除确认框 结束 -->
 {% endblock %}

@@ -14,14 +14,14 @@
     <section id="main" class="column">
         <div class="clear"></div>
         <article class="module width_full add_item_block">
-            <form method="post" name="form" onsubmit="return validate_form(this)">
+            <form method="post" name="form" action="/backend/job_publish_handle/">
                 <header>
                     <h3 class="form_title">发布招聘</h3>
                 </header>
                 <div class="module_content">
                     <fieldset style="width:30%;float:left;margin-bottom:20px;">
-                        <label>标题</label>
-                        <input type="text" name="title" class="title" style="height:25px;">
+                        <label>招聘职位</label>
+                        <input type="text" name="position" class="title" style="height:25px;">
                     </fieldset>
                     <fieldset style="width:100%;clear:both;margin-bottom:20px;">
                         <label>内容</label>

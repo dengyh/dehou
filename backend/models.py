@@ -39,7 +39,7 @@ class nav(models.Model):
 # ---------------------------
 class news(models.Model):
 	p_id = models.IntegerField(max_length=11)
-	s_id = models.IntegerField(max_length=11)
+	s_id = models.IntegerField(max_length=11,blank=True,null=True)
 	t_id = models.IntegerField(max_length=11,blank=True,null=True)
 	title = models.CharField(max_length=150,blank=True,null=True)
 	remark = models.CharField(max_length=150,blank=True,null=True)
@@ -51,6 +51,17 @@ class news(models.Model):
 
 	class Meta:
 		ordering = ['-datetime']
+
+# ---------------------------
+# 招聘表 : resume
+#   position : 招聘职位名称
+#     content: 职位介绍
+#    datetime: 发布职位时间
+# ---------------------------
+class job(models.Model):
+	position = models.CharField(max_length=20)
+	content = models.TextField()
+	datetime = models.DateTimeField(auto_now_add=True)
 
 # ---------------------------
 # 简历表 : resume

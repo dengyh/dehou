@@ -45,7 +45,7 @@
         <!--中文分页显示 -->
         <ul class="pagination">
             <li>
-                <a href="/backend/project_list/?page={{lastpage}}&currentpage={{currentpage}}">上一页</a>
+                <a href="/backend/project_list/?page={{prevpage}}&currentpage={{currentpage}}">上一页</a>
             </li>
             {% for page in page_list %} {% if page == currentpage %}
             <li class="active">

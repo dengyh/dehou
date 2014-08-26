@@ -12,7 +12,7 @@ import json
 #导入数据model
 from django.contrib.auth.models import User  #用户表
 from backend.models import userInfo  #继承User表
-from backend.models import nav,news,comments
+from backend.models import nav,news,comments,job
 
 #导入form表单
 from backend.form import UEditorForm,loginForm,adminForm,edit_user_Form
@@ -198,16 +198,27 @@ def del_navigation(request):
 def Twolink(request):
 	if request.is_ajax():
 		nav_id = request.POST.get('id','')
-		nav_list = nav.objects.filter(pid=nav_id)  #获取 子导航
+		second_nav_list = nav.objects.filter(pid=nav_id)  #获取 当前二级 子导航
 		data = []
-		if nav_list:
-			for menu in nav_list:
+		if second_nav_list:
+			for menu in second_nav_list:
 				temp = {}
 				temp['id'] = menu.id
 				temp['name'] = menu.name
 				data.append(temp)
-			return HttpResponse(json.dumps(data),content_type='application/json')
-		else:  #没有子导航的情况
+			third_nav_list = nav.objects.filter(pid=second_nav_list[0])  #获取当前三级 子导航
+			data2 = []
+			if third_nav_list:
+				for menu in third_nav_list:
+					temp2 = {}
+					temp2['id'] = menu.id
+					temp2['name'] = menu.name
+					data2.append(temp2)
+			return HttpResponse(json.dumps({
+				'data' : data,
+				'data2' : data2,
+				}),content_type='application/json')
+		else:  #没有二级导航的情况
 			return HttpResponse(json.dumps('error'),content_type='application/json')
 	return HttpResponse('请求方法错误...')
 
@@ -223,7 +234,7 @@ def product_list(request,template_name):
 	lists = news.objects.filter(p_id=1)
 	premissions = public_premissions(request)   #权限认证
 	#实例化分页器
-	paginator = Paginator(lists,1)
+	paginator = Paginator(lists,8)
 	#中文页码列表初始化
 	page_list = range(0,paginator.num_pages)
 	#获取中文页码列表	  
@@ -338,7 +349,7 @@ def project_list(request,template_name):
 	lists = news.objects.filter(p_id=2)
 	premissions = public_premissions(request)    #权限认证
 		#实例化分页器
-	paginator = Paginator(lists,1)
+	paginator = Paginator(lists,8)
 	#中文页码列表初始化
 	page_list = range(0,paginator.num_pages)
 	#获取中文页码列表	  
@@ -453,7 +464,7 @@ def info_list(request,template_name):
 	lists = news.objects.filter(p_id__gt=2)
 	premissions = public_premissions(request)  #权限认证  
 		#实例化分页器
-	paginator = Paginator(lists,1)
+	paginator = Paginator(lists,8)
 	#中文页码列表初始化
 	page_list = range(0,paginator.num_pages)
 	#获取中文页码列表	  
@@ -586,10 +597,62 @@ def del_info(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
-def job_list(request):
+def job_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	return render_to_response("job_list.html", context_instance=RequestContext(request))
+	lists = job.objects.all()
+	premissions = public_premissions(request)   #权限认证
+		#实例化分页器
+	paginator = Paginator(lists,8)
+	#中文页码列表初始化
+	page_list = range(0,paginator.num_pages)
+	#获取中文页码列表	  
+	for x in range(0,paginator.num_pages):
+		page_list[x] = x+1
+
+	#确保传进来的中文page参数为整数，如果不是，则设置为1
+	try:
+		page = int(request.GET.get('page','1'))
+	except ValueError:
+		page = 1
+		currentpage = 1
+
+	#确保传进来的当前page为整数，如果不是，则设置为1
+	try:
+		currentpage = int(request.GET.get('currentpage','1'))
+	except ValueError:
+		currentpage = 1
+
+	#确保页面没有超出范围，否则输出最后一页的值
+	try:
+		info_list = paginator.page(page)
+		currentpage = page
+		# return HttpResponse(currentpage)
+	except ValueError (EmptyPage, InvalidPage):
+		info_list = paginator.page(paginator.num_pages)
+		currentpage =paginator.num_pages
+	# return HttpResponse(page)
+
+	
+	#获取上一页和下一页的值
+	prevpage = currentpage - 1
+	nextpage = currentpage + 1
+	
+	
+	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
+	if(prevpage < 1):
+		prevpage = 1
+	if(nextpage > paginator.num_pages):
+		nextpage = paginator.num_pages
+	return render(request,template_name,{
+		'info_list':info_list,
+		'page_list':page_list,
+		'currentpage':currentpage,
+		'prevpage':prevpage,
+		'nextpage':nextpage,
+		'premissions':premissions
+		}
+		)
 
 # ======================================
 # 	名字：发布招聘
@@ -597,12 +660,49 @@ def job_list(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
-def job_publish(request):
+def job_publish(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	return render_to_response("job_publish.html", {"form": form}, context_instance=RequestContext(request))
+	premissions = public_premissions(request)   #权限认证
+	return render(request,template_name,{"form": form,'premissions':premissions})
+
+# ======================================
+# 	名字：发布招聘信息处理
+#   功能：添加招聘信息进数据库
+#   人员：杨凯
+#   日期：2014.08.26
+# --------------------------------------
+def job_publish_handle(request):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	if request.method == "POST":
+		position = request.POST.get('position','')
+		content = request.POST.get('content','')
+		jobs = job.objects.create(
+			position = position,
+			content = content,
+			)
+		return HttpResponseRedirect('/backend/job_list/')
+	return HttpResponse('请求方法错误...')
+
+# ======================================
+# 	名字：删除招聘信息
+#   功能：删除招聘信息相对应的数据
+#   人员：杨凯
+#   日期：2014.08.26
+# --------------------------------------
+def del_job(request):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	if request.method == "GET":
+		job_id = request.GET.get('id','')
+		delJob = job.objects.get(id=job_id)
+		delJob.delete()
+		premissions = public_premissions(request)   #权限认证
+		return render(request, "backend_href.html", {'title':"删除成功", 'href':"message",'premissions':premissions})
+	return HttpResponse('请求方法错误...')
 
 # ======================================
 # 	名字：留言列表
@@ -615,7 +715,57 @@ def message_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = comments.objects.all()
 	premissions = public_premissions(request)   #权限认证
-	return render(request,template_name,{'lists':lists,'premissions':premissions})
+		#实例化分页器
+	paginator = Paginator(lists,8)
+	#中文页码列表初始化
+	page_list = range(0,paginator.num_pages)
+	#获取中文页码列表	  
+	for x in range(0,paginator.num_pages):
+		page_list[x] = x+1
+
+	#确保传进来的中文page参数为整数，如果不是，则设置为1
+	try:
+		page = int(request.GET.get('page','1'))
+	except ValueError:
+		page = 1
+		currentpage = 1
+
+	#确保传进来的当前page为整数，如果不是，则设置为1
+	try:
+		currentpage = int(request.GET.get('currentpage','1'))
+	except ValueError:
+		currentpage = 1
+
+	#确保页面没有超出范围，否则输出最后一页的值
+	try:
+		info_list = paginator.page(page)
+		currentpage = page
+		# return HttpResponse(currentpage)
+	except ValueError (EmptyPage, InvalidPage):
+		info_list = paginator.page(paginator.num_pages)
+		currentpage =paginator.num_pages
+	# return HttpResponse(page)
+
+	
+	#获取上一页和下一页的值
+	prevpage = currentpage - 1
+	nextpage = currentpage + 1
+	
+	
+	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
+	if(prevpage < 1):
+		prevpage = 1
+	if(nextpage > paginator.num_pages):
+		nextpage = paginator.num_pages
+	return render(request,template_name,{
+		'info_list':info_list,
+		'page_list':page_list,
+		'currentpage':currentpage,
+		'prevpage':prevpage,
+		'nextpage':nextpage,
+		'premissions':premissions
+		}
+		)
 
 # ======================================
 # 	名字：留言删除
@@ -630,7 +780,8 @@ def del_message(request):
 		message_id = request.GET.get('id','')
 		delMsg = comments.objects.get(id=message_id)
 		delMsg.delete()
-		return HttpResponseRedirect('/backend/message_list/')
+		premissions = public_premissions(request)   #权限认证
+		return render(request, "backend_href.html", {'title':"删除成功", 'href':"message",'premissions':premissions})
 	return HttpResponse('请求方法错误...')
 
 
@@ -640,10 +791,11 @@ def del_message(request):
 #   人员：黄晓佳
 #   日期：2014.08.21
 # --------------------------------------
-def admin_add(request):
+def admin_add(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	return render_to_response("admin_add.html", context_instance=RequestContext(request))
+	premissions = public_premissions(request)   #权限认证
+	return render(request,template_name,{'premissions':premissions})
 
 # ======================================
 # 	名字：管理员列表
@@ -722,15 +874,17 @@ def admin_delete(request):
 	if request.method == "POST":					       		# 确保表单提交是post
 		id = request.POST.get('id_attr', '')			   		# 要删除的管理员id
 		password = request.POST.get('delete_attr', '')	   		# 确认密码
-
+	print '*'*20
+	print id
 	userInfo = User.objects.get(id=1)				       		# 获取超级管理员
 	userPassword = userInfo.password                       		# 获取超级管理员密码
 
 	if check_password(password, userPassword):             		# 如果密码一致
 		deleteUser = User.objects.get(id = id)             		# 获取要删除的用户
-		deleteUser.delete()                                		# 删除用户
-		deletePremissions = userInfo.objects.get(user=deleteUser)# 删除Info表中的权限	
-		deletePremissions.delete()		                                       
+		
+		deletePremissions = userInfo.objects.get(user=id)# 删除Info表中的权限	
+		deletePremissions.delete()		                       
+		deleteUser.delete()                                		# 删除用户                
 		return HttpResponseRedirect('/backend/admin_list/')		   		# 删除成功跳转
 	else:												   		# 如果密码不一致
 		return HttpResponse(u'删除失败,请检查...')     		# 删除不成功跳转
@@ -748,7 +902,7 @@ def admin_edit(request, template_name):
 	if request.method == "GET":							   		# 确保是get提交
 		id = request.GET.get('id','')	                   		# 要修改的管理员id
 	info = User.objects.get(id=id)					   		    # 获取管理员信息
-	premissions = public_premissions(request)
+	premissions = public_premissions(request)                   #权限认证
 	return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
 
 # ======================================
@@ -868,8 +1022,8 @@ def navigation_edit(request, template_name):
 		ids = request.GET['id']
 
 		navs = nav.objects.get(id = ids)
-
-		return render(request, template_name, {'nav': navs})
+		premissions = public_premissions(request)
+		return render(request, template_name, {'nav': navs,'premissions':premissions})
 
 # ======================================
 # 	名字：导航修改表单处理
