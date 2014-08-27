@@ -33,10 +33,9 @@
     <section id="secondary_bar">
         <div class="user">
             <p>
-            	 欢迎管理员 : 
-            	     {% if user.is_authenticated %}  
-                       {{user.username}}
-                     {% endif %}  
+            	欢迎管理员 : 
+        	    {% if user.is_authenticated %}{{user.username}}{% endif %}&nbsp;
+                <a href="/backend/admin_changePwd/" style="color:#696f6f">[更改密码]</a>
             </p>
         </div>
         <div class="breadcrumbs_container">
