@@ -325,7 +325,7 @@ def product_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id=1)
 	premissions = public_premissions(request)    #权限认证
-	public_pages = public_page(request,lists,1)  #分页
+	public_pages = public_page(request,lists,8)  #分页
 	#渲染页面
 	# return HttpResponse(currentpage_en)
 	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
@@ -392,7 +392,7 @@ def project_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id=2)
 	premissions = public_premissions(request)    #权限认证
-	public_pages = public_page(request,lists,1)  #分页
+	public_pages = public_page(request,lists,8)  #分页
 	#渲染页面
 	# return HttpResponse(currentpage_en)
 	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
@@ -460,7 +460,7 @@ def info_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id__gt=2)
 	premissions = public_premissions(request)    #权限认证
-	public_pages = public_page(request,lists,1)  #分页
+	public_pages = public_page(request,lists,8)  #分页
 	#渲染页面
 	# return HttpResponse(currentpage_en)
 	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
@@ -552,7 +552,7 @@ def job_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = job.objects.all()
 	premissions = public_premissions(request)    #权限认证
-	public_pages = public_page(request,lists,1)  #分页
+	public_pages = public_page(request,lists,8)  #分页
 	#渲染页面
 	# return HttpResponse(currentpage_en)
 	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
@@ -618,7 +618,7 @@ def message_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = comments.objects.all()
 	premissions = public_premissions(request)    #权限认证
-	public_pages = public_page(request,lists,1)  #分页
+	public_pages = public_page(request,lists,8)  #分页
 	#渲染页面
 	# return HttpResponse(currentpage_en)
 	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
