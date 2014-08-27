@@ -29,7 +29,14 @@
 
             if (i == 0) {                                                       // 时间为零时
                 clearInterval(timer);                                           // 清除定时器
-                window.location.href = "/backend/" + "{{href}}" + "_list/";     // 跳转页面
+                var href = "{{href}}";
+                if (href == "home") {
+                    window.location.href = "/backend/" + href +"/";            // 跳转页面
+                }         
+                else {
+                     window.location.href = "/backend/" + href + "_list/";     // 跳转页面
+                }
+               
             };
         }, 1000);                                                               // 定时器时间为1秒
     };
