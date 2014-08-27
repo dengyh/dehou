@@ -22,7 +22,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 #导入分页
 from django.core.paginator import Paginator,InvalidPage,EmptyPage
-
+from datetime import *
 # ======================================
 # 	名字：判断权限公共函数
 #   功能：根据权限显示左侧栏目
@@ -39,6 +39,98 @@ def public_premissions(request):
 		length = len(list_premissions)    
 		del(list_premissions[length-1])           #移除最后一个 ',' 元素
 	return list_premissions
+
+#---------------------------------------------------
+#      名字 ： 分页公共函数
+#      功能 :  实现分页
+#      人员 ： 杨凯
+#      日期 ： 2014.08.27
+#  all_list :  传递需要分页的 数据
+#       num :  传递每页显示的
+#---------------------------------------------------
+def public_page(request,all_list,num):
+    #确保传进来的page参数为整数，如果不是，则设置为1
+    try:
+        page = int(request.GET.get('page','1'))
+        # page =1
+    except ValueError:
+        page = 1
+        currentpage = 1
+    #分页实现
+    #实例化中文分页器
+    paginator = Paginator(all_list,num)
+    
+    #中文页码列表初始化
+    if(paginator.num_pages>10):
+        page_list = range(0,10)
+    else:
+        page_list = range(0,paginator.num_pages)
+    
+    #判断最大页数是否超过最大显示页数
+    #判断最大显示页数是否超过实际页码范围
+    if(paginator.num_pages > 10 and paginator.num_pages -page > 9):
+        # page_list[0] = 1
+        # page_list[1] = 2
+        # page_list[2] = 3
+        for x in range(0,3):
+            page_list[x] = x + 1
+        for x in range(3,8):
+            # if(paginator.num_pages - page <= 9 ):
+            #     page_list[x] = x + 9
+            if page < 3:
+                if page == 1:
+                    page_list[x] = page + x
+                else:
+                    page_list[x] = page + x - 1
+            else:
+                page_list[x] = x + page - 2
+        page_list[7] = '...'
+        for x in range(8,10):
+            page_list[x] = paginator.num_pages - 9 + x
+    
+    #如果最大页数超过最大显示页数，并且是最后几页，则只显示最后几页
+    elif(paginator.num_pages > 10 and paginator.num_pages -page <= 9):
+        for x in range(0,10):
+            page_list[x] = paginator.num_pages - 9 + x
+    
+    #如果最大页码数不超过显示页码数，则将全部页数在前台输出
+    else:     
+        for x in range(0,paginator.num_pages):
+            page_list[x] = x+1
+  
+    #确保传进来的当前page为整数，如果不是，则设置为1
+    try:
+        currentpage = int(request.GET.get('currentpage','1'))
+    except ValueError:
+        currentpage = 1
+    
+    #确保页面没有超出范围，否则输出最后一页的值
+    try:
+        info_list = paginator.page(page)
+        currentpage = page
+        # return HttpResponse(currentpage)
+    except ValueError (EmptyPage, InvalidPage):
+        info_list = paginator.page(paginator.num_pages)
+        currentpagepage =paginator.num_pages
+    
+    #获取上一页和下一页的值
+    prevpage = currentpage - 1
+    nextpage = currentpage + 1
+
+    #确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
+    if(prevpage < 1):
+        prevpage = 1
+    if(nextpage > paginator.num_pages):
+        nextpage = paginator.num_pages
+    pages = {}
+    pages['info_list'] = info_list
+    pages['page']      = page
+    pages['currentpage'] = currentpage
+    pages['prevpage'] = prevpage
+    pages['nextpage'] = nextpage
+    pages['page_list'] = page_list
+    return pages
+
 
 # ======================================
 # 	名字：后台首页
@@ -232,59 +324,11 @@ def product_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id=1)
-	premissions = public_premissions(request)   #权限认证
-	#实例化分页器
-	paginator = Paginator(lists,8)
-	#中文页码列表初始化
-	page_list = range(0,paginator.num_pages)
-	#获取中文页码列表	  
-	for x in range(0,paginator.num_pages):
-		page_list[x] = x+1
-
-	#确保传进来的中文page参数为整数，如果不是，则设置为1
-	try:
-		page = int(request.GET.get('page','1'))
-	except ValueError:
-		page = 1
-		currentpage = 1
-
-	#确保传进来的当前page为整数，如果不是，则设置为1
-	try:
-		currentpage = int(request.GET.get('currentpage','1'))
-	except ValueError:
-		currentpage = 1
-
-	#确保页面没有超出范围，否则输出最后一页的值
-	try:
-		info_list = paginator.page(page)
-		currentpage = page
-		# return HttpResponse(currentpage)
-	except ValueError (EmptyPage, InvalidPage):
-		info_list = paginator.page(paginator.num_pages)
-		currentpage =paginator.num_pages
-	# return HttpResponse(page)
-
-	
-	#获取上一页和下一页的值
-	prevpage = currentpage - 1
-	nextpage = currentpage + 1
-	
-	
-	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
-	if(prevpage < 1):
-		prevpage = 1
-	if(nextpage > paginator.num_pages):
-		nextpage = paginator.num_pages
-	return render(request,template_name,{
-		'info_list':info_list,
-		'page_list':page_list,
-		'currentpage':currentpage,
-		'prevpage':prevpage,
-		'nextpage':nextpage,
-		'premissions':premissions
-		}
-		)
-
+	premissions = public_premissions(request)    #权限认证
+	public_pages = public_page(request,lists,1)  #分页
+	#渲染页面
+	# return HttpResponse(currentpage_en)
+	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
 
 # ======================================
 # 	名字：添加产品
@@ -348,57 +392,10 @@ def project_list(request,template_name):
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id=2)
 	premissions = public_premissions(request)    #权限认证
-		#实例化分页器
-	paginator = Paginator(lists,8)
-	#中文页码列表初始化
-	page_list = range(0,paginator.num_pages)
-	#获取中文页码列表	  
-	for x in range(0,paginator.num_pages):
-		page_list[x] = x+1
-
-	#确保传进来的中文page参数为整数，如果不是，则设置为1
-	try:
-		page = int(request.GET.get('page','1'))
-	except ValueError:
-		page = 1
-		currentpage = 1
-
-	#确保传进来的当前page为整数，如果不是，则设置为1
-	try:
-		currentpage = int(request.GET.get('currentpage','1'))
-	except ValueError:
-		currentpage = 1
-
-	#确保页面没有超出范围，否则输出最后一页的值
-	try:
-		info_list = paginator.page(page)
-		currentpage = page
-		# return HttpResponse(currentpage)
-	except ValueError (EmptyPage, InvalidPage):
-		info_list = paginator.page(paginator.num_pages)
-		currentpage =paginator.num_pages
-	# return HttpResponse(page)
-
-	
-	#获取上一页和下一页的值
-	prevpage = currentpage - 1
-	nextpage = currentpage + 1
-	
-	
-	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
-	if(prevpage < 1):
-		prevpage = 1
-	if(nextpage > paginator.num_pages):
-		nextpage = paginator.num_pages
-	return render(request,template_name,{
-		'info_list':info_list,
-		'page_list':page_list,
-		'currentpage':currentpage,
-		'prevpage':prevpage,
-		'nextpage':nextpage,
-		'premissions':premissions
-		}
-		)
+	public_pages = public_page(request,lists,1)  #分页
+	#渲染页面
+	# return HttpResponse(currentpage_en)
+	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
 
 # ======================================
 # 	名字：添加工程
@@ -462,58 +459,11 @@ def info_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = news.objects.filter(p_id__gt=2)
-	premissions = public_premissions(request)  #权限认证  
-		#实例化分页器
-	paginator = Paginator(lists,8)
-	#中文页码列表初始化
-	page_list = range(0,paginator.num_pages)
-	#获取中文页码列表	  
-	for x in range(0,paginator.num_pages):
-		page_list[x] = x+1
-
-	#确保传进来的中文page参数为整数，如果不是，则设置为1
-	try:
-		page = int(request.GET.get('page','1'))
-	except ValueError:
-		page = 1
-		currentpage = 1
-
-	#确保传进来的当前page为整数，如果不是，则设置为1
-	try:
-		currentpage = int(request.GET.get('currentpage','1'))
-	except ValueError:
-		currentpage = 1
-
-	#确保页面没有超出范围，否则输出最后一页的值
-	try:
-		info_list = paginator.page(page)
-		currentpage = page
-		# return HttpResponse(currentpage)
-	except ValueError (EmptyPage, InvalidPage):
-		info_list = paginator.page(paginator.num_pages)
-		currentpage =paginator.num_pages
-	# return HttpResponse(page)
-
-	
-	#获取上一页和下一页的值
-	prevpage = currentpage - 1
-	nextpage = currentpage + 1
-	
-	
-	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
-	if(prevpage < 1):
-		prevpage = 1
-	if(nextpage > paginator.num_pages):
-		nextpage = paginator.num_pages
-	return render(request,template_name,{
-		'info_list':info_list,
-		'page_list':page_list,
-		'currentpage':currentpage,
-		'prevpage':prevpage,
-		'nextpage':nextpage,
-		'premissions':premissions
-		}
-		)
+	premissions = public_premissions(request)    #权限认证
+	public_pages = public_page(request,lists,1)  #分页
+	#渲染页面
+	# return HttpResponse(currentpage_en)
+	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
 
 # ======================================
 # 	名字：添加资讯
@@ -601,58 +551,11 @@ def job_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = job.objects.all()
-	premissions = public_premissions(request)   #权限认证
-		#实例化分页器
-	paginator = Paginator(lists,8)
-	#中文页码列表初始化
-	page_list = range(0,paginator.num_pages)
-	#获取中文页码列表	  
-	for x in range(0,paginator.num_pages):
-		page_list[x] = x+1
-
-	#确保传进来的中文page参数为整数，如果不是，则设置为1
-	try:
-		page = int(request.GET.get('page','1'))
-	except ValueError:
-		page = 1
-		currentpage = 1
-
-	#确保传进来的当前page为整数，如果不是，则设置为1
-	try:
-		currentpage = int(request.GET.get('currentpage','1'))
-	except ValueError:
-		currentpage = 1
-
-	#确保页面没有超出范围，否则输出最后一页的值
-	try:
-		info_list = paginator.page(page)
-		currentpage = page
-		# return HttpResponse(currentpage)
-	except ValueError (EmptyPage, InvalidPage):
-		info_list = paginator.page(paginator.num_pages)
-		currentpage =paginator.num_pages
-	# return HttpResponse(page)
-
-	
-	#获取上一页和下一页的值
-	prevpage = currentpage - 1
-	nextpage = currentpage + 1
-	
-	
-	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
-	if(prevpage < 1):
-		prevpage = 1
-	if(nextpage > paginator.num_pages):
-		nextpage = paginator.num_pages
-	return render(request,template_name,{
-		'info_list':info_list,
-		'page_list':page_list,
-		'currentpage':currentpage,
-		'prevpage':prevpage,
-		'nextpage':nextpage,
-		'premissions':premissions
-		}
-		)
+	premissions = public_premissions(request)    #权限认证
+	public_pages = public_page(request,lists,1)  #分页
+	#渲染页面
+	# return HttpResponse(currentpage_en)
+	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
 
 # ======================================
 # 	名字：发布招聘
@@ -701,7 +604,7 @@ def del_job(request):
 		delJob = job.objects.get(id=job_id)
 		delJob.delete()
 		premissions = public_premissions(request)   #权限认证
-		return render(request, "backend_href.html", {'title':"删除成功", 'href':"message",'premissions':premissions})
+		return render(request, "backend_href.html", {'title':"删除成功 :)", 'href':"message",'premissions':premissions})
 	return HttpResponse('请求方法错误...')
 
 # ======================================
@@ -714,58 +617,30 @@ def message_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	lists = comments.objects.all()
-	premissions = public_premissions(request)   #权限认证
-		#实例化分页器
-	paginator = Paginator(lists,8)
-	#中文页码列表初始化
-	page_list = range(0,paginator.num_pages)
-	#获取中文页码列表	  
-	for x in range(0,paginator.num_pages):
-		page_list[x] = x+1
+	premissions = public_premissions(request)    #权限认证
+	public_pages = public_page(request,lists,1)  #分页
+	#渲染页面
+	# return HttpResponse(currentpage_en)
+	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
 
-	#确保传进来的中文page参数为整数，如果不是，则设置为1
-	try:
-		page = int(request.GET.get('page','1'))
-	except ValueError:
-		page = 1
-		currentpage = 1
-
-	#确保传进来的当前page为整数，如果不是，则设置为1
-	try:
-		currentpage = int(request.GET.get('currentpage','1'))
-	except ValueError:
-		currentpage = 1
-
-	#确保页面没有超出范围，否则输出最后一页的值
-	try:
-		info_list = paginator.page(page)
-		currentpage = page
-		# return HttpResponse(currentpage)
-	except ValueError (EmptyPage, InvalidPage):
-		info_list = paginator.page(paginator.num_pages)
-		currentpage =paginator.num_pages
-	# return HttpResponse(page)
-
-	
-	#获取上一页和下一页的值
-	prevpage = currentpage - 1
-	nextpage = currentpage + 1
-	
-	
-	#确保上一页没有超出页面范围，否则分别赋值为1和最大页码数
-	if(prevpage < 1):
-		prevpage = 1
-	if(nextpage > paginator.num_pages):
-		nextpage = paginator.num_pages
-	return render(request,template_name,{
-		'info_list':info_list,
-		'page_list':page_list,
-		'currentpage':currentpage,
-		'prevpage':prevpage,
-		'nextpage':nextpage,
-		'premissions':premissions
-		}
-		)
+# ======================================
+# 	名字：留言回复表单处理
+#   功能：回复留言信息
+#   人员：杨凯
+#   日期：2014.08.26
+# --------------------------------------
+def message_replay_handle(request):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	if request.method == "POST":
+		message_id = request.POST.get('id','')
+		p = comments.objects.get(id=message_id)
+		p.admin = request.user.username
+		p.replay_content = request.POST.get('content','')
+		p.replay_time = datetime.now() 
+		p.save()
+		return HttpResponseRedirect('/backend/message_list/')
+	return HttpResponse('请求方法错误...')
 
 # ======================================
 # 	名字：留言删除
@@ -781,7 +656,7 @@ def del_message(request):
 		delMsg = comments.objects.get(id=message_id)
 		delMsg.delete()
 		premissions = public_premissions(request)   #权限认证
-		return render(request, "backend_href.html", {'title':"删除成功", 'href':"message",'premissions':premissions})
+		return render(request, "backend_href.html", {'title':"删除成功 :)", 'href':"message",'premissions':premissions})
 	return HttpResponse('请求方法错误...')
 
 
@@ -1059,7 +934,8 @@ def job_edit(request, template_name):
 	# ueditor编辑器初始化
 	form = UEditorForm()
 	jobs = job.objects.get(id = ids)
-	return render(request, template_name, {'job': jobs, 'form': form})
+	premissions = public_premissions(request)
+	return render(request, template_name, {'job': jobs, 'form': form ,'premissions':premissions})
 
 # ======================================
 # 	名字：招聘修改表单提交

@@ -15,6 +15,7 @@ urlpatterns = patterns('backend.views',
 
 	url(r'^del_job/$'   , 'del_job'),                                                # 招聘信息删除
 	url(r'^message_list/$'   , 'message_list',{'template_name':'message_list.html'}),  # 留言列表
+	url(r'^message_replay_handle/$'   , 'message_replay_handle'),                  # 留言回复表单处理
 	url(r'^del_message/$'   , 'del_message'),                                          # 留言删除
 )
 

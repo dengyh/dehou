@@ -21,7 +21,7 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
-                        {% for list in info_list %}
+                        {% for list in public_pages.info_list %}
                         <tbody>
                             <tr>
                                 <td>{{list.title}}</td>
@@ -42,22 +42,22 @@
                 </div>
             </div>
         </article>
-        <!--中文分页显示 -->
+         <!--中文分页显示 -->
         <ul class="pagination">
             <li>
-                <a href="/backend/project_list/?page={{prevpage}}&currentpage={{currentpage}}">上一页</a>
+                <a href="/backend/project_list/?page={{public_pages.prevpage}}&currentpage={{public_pages.currentpage}}">上一页</a>
             </li>
-            {% for page in page_list %} {% if page == currentpage %}
+            {% for page in public_pages.page_list %} {% if page == public_pages.currentpage %}
             <li class="active">
-                <a href="/backend/project_list/?page={{page}}&currentpage={{currentpage}}">{{page}}</a>
+                <a href="/backend/project_list/?page={{page}}&currentpage={{public_pages.currentpage}}">{{page}}</a>
             </li>
             {% else %}
             <li>
-                <a href="/backend/project_list/?page={{page}}&currentpage={{currentpage}}">{{page}}</a>
+                <a href="/backend/project_list/?page={{page}}&currentpage={{public_pages.currentpage}}">{{page}}</a>
             </li>
             {%endif%} {% endfor %}
             <li>
-                <a href="/backend/project_list/?page={{nextpage}}&currentpage={{currentpage}}">下一页</a>
+                <a href="/backend/project_list/?page={{nextpage}}&currentpage={{public_pages.currentpage}}">下一页</a>
             </li>
         </ul>
         <!-- 中文分页显示结束 -->
