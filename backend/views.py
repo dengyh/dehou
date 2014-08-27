@@ -958,15 +958,34 @@ def job_edit_handle(request):
 	else:
 		return render(request, "backend_href.html", {'title':"修改失败，请重试 :(", 'href':"job"})
 
-	# if not request.user.is_authenticated():
-	# 	return redirect('/backend/login/')
-	# if request.method == "POST":
-	# 	position = request.POST.get('position','')
-	# 	content = request.POST.get('content','')
-	# 	jobs = job.objects.create(
-	# 		position = position,
-	# 		content = content,
-	# 		)
-	# 	return HttpResponseRedirect('/backend/job_list/')
-	# return HttpResponse('请求方法错误...')
+# ======================================
+# 	名字：管理员修改密码
+#   功能：修改密码页面显示
+#   人员：黄晓佳
+#   日期：2014.08.27
+# --------------------------------------
+def admin_changePwd(request, template_name):
+	premissions = public_premissions(request)
+	return render(request, template_name, {'premissions':premissions})
 
+# ======================================
+# 	名字：管理员修改密码表单处理
+#   功能：修改密码
+#   人员：黄晓佳
+#   日期：2014.08.27
+# --------------------------------------
+def admin_changePwd_handle(request):
+	if request.method == "POST":
+		oldPwd = request.POST['oldPwd']            # 旧密码
+		newPwd = request.POST['newPwd']            # 新密码
+
+		# 旧密码如果一致，则修改密码
+		if check_password(oldPwd, request.user.password): 
+			users = User.objects.get(username = request.user.username)
+			users.password = make_password(newPwd, None, 'pbkdf2_sha256')
+			users.save()
+			return render(request, "backend_href.html", {'title':"修改密码成功 :)", 'href':"home"})
+		else:
+			return render(request, "backend_href.html", {'title':"旧密码输入不一致 :(", 'href':"home"})
+
+	return render(request, "backend_href.html", {'title':"请求失误 :(", 'href':"home"})

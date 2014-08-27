@@ -54,4 +54,6 @@ urlpatterns += patterns('backend.views',
 	url(r'^admin_delete/$', 'admin_delete'),			                                  #删除管理员
 	url(r'^admin_edit/$'  ,  'admin_edit', {'template_name' : "admin_edit.html"}),	     # 管理员编辑
 	url(r'^admin_edit_handle/$', 'admin_edit_handle'),                                   # 修改管理员表单处理
+	url(r'^admin_changePwd/$', 'admin_changePwd', {'template_name':"admin_changePwd.html"}),  # 更改密码
+	url(r'^admin_changePwd_handle$', 'admin_changePwd_handle'),                          # 更改密码表单处理
 )

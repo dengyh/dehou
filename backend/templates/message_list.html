@@ -44,19 +44,20 @@
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                   <span class="col-sm-2 control-label">留言人</span>
-                                                   <p>{{list.name}}</p><br>
-                                                   <span class="col-sm-2 control-label">留言时间</span>
-                                                   <p>{{list.send_time|date:"Y-m-d H:i:s"}}</p><br>
-                                                   <span class="col-sm-2 control-label">留言内容</span>
+                                                   <span class="col-sm-2 control-label">留言人:</span>
+                                                   <p>{{list.name}}</p>
+                                                   <span class="col-sm-2 control-label">留言时间:</span>
+                                                   <p>{{list.send_time|date:"Y-m-d H:i:s"}}</p>
+                                                   <span class="col-sm-2 control-label">留言内容:</span>
                                                    <p>{{list.content}}</p>
                                                 </div>
+                                                <hr/>
                                                 <div class="modal-body">
-                                                   <span class="col-sm-2 control-label">回复人</span>
-                                                   <p>{{list.admin}}</p><br>
-                                                   <span class="col-sm-2 control-label">回复时间</span>
-                                                   <p>{{list.replay_time|date:"Y-m-d H:i:s"}}</p><br>
-                                                   <span class="col-sm-2 control-label">回复内容</span>
+                                                   <span class="col-sm-2 control-label">回复人:</span>
+                                                   <p>{{list.admin}}</p>
+                                                   <span class="col-sm-2 control-label">回复时间:</span>
+                                                   <p>{{list.replay_time|date:"Y-m-d H:i:s"}}</p>
+                                                   <span class="col-sm-2 control-label">回复内容:</span>
                                                    <p>{{list.replay_content}}</p>
                                                 </div>
                                                 <div class="modal-footer" style="border:0;">
@@ -83,11 +84,11 @@
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                   <span class="col-sm-2 control-label">留言人</span>
-                                                   <p>{{list.name}}</p><br>
-                                                   <span class="col-sm-2 control-label">留言时间</span>
-                                                   <p>{{list.send_time|date:"Y-m-d H:i:s"}}</p><br>
-                                                   <span class="col-sm-2 control-label">留言内容</span>
+                                                   <span class="col-sm-2 control-label">留言人:</span>
+                                                   <p>{{list.name}}</p>
+                                                   <span class="col-sm-2 control-label">留言时间:</span>
+                                                   <p>{{list.send_time|date:"Y-m-d H:i:s"}}</p>
+                                                   <span class="col-sm-2 control-label">留言内容:</span>
                                                    <p>{{list.content}}</p>
                                                 </div>
                                                 <form method="post" id="myform">
@@ -135,7 +136,7 @@
             </li>
             {%endif%} {% endfor %}
             <li>
-                <a href="/backend/message_list/?page={{nextpage}}&currentpage={{public_pages.currentpage}}">下一页</a>
+                <a href="/backend/message_list/?page={{public_pages.nextpage}}&currentpage={{public_pages.currentpage}}">下一页</a>
             </li>
         </ul>
         <!-- 中文分页显示结束 -->
