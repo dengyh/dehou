@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 08 月 22 日 04:17
+-- 生成日期: 2014 年 08 月 29 日 04:32
 -- 服务器版本: 5.6.12-log
 -- PHP 版本: 5.4.12
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=37 ;
 
 --
 -- 转存表中的数据 `auth_permission`
@@ -90,18 +90,24 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (16, 'Can add site', 6, 'add_site'),
 (17, 'Can change site', 6, 'change_site'),
 (18, 'Can delete site', 6, 'delete_site'),
-(19, 'Can add nav', 7, 'add_nav'),
-(20, 'Can change nav', 7, 'change_nav'),
-(21, 'Can delete nav', 7, 'delete_nav'),
-(22, 'Can add news', 8, 'add_news'),
-(23, 'Can change news', 8, 'change_news'),
-(24, 'Can delete news', 8, 'delete_news'),
-(25, 'Can add resume', 9, 'add_resume'),
-(26, 'Can change resume', 9, 'change_resume'),
-(27, 'Can delete resume', 9, 'delete_resume'),
-(28, 'Can add comments', 10, 'add_comments'),
-(29, 'Can change comments', 10, 'change_comments'),
-(30, 'Can delete comments', 10, 'delete_comments');
+(19, 'Can add user info', 7, 'add_userinfo'),
+(20, 'Can change user info', 7, 'change_userinfo'),
+(21, 'Can delete user info', 7, 'delete_userinfo'),
+(22, 'Can add nav', 8, 'add_nav'),
+(23, 'Can change nav', 8, 'change_nav'),
+(24, 'Can delete nav', 8, 'delete_nav'),
+(25, 'Can add news', 9, 'add_news'),
+(26, 'Can change news', 9, 'change_news'),
+(27, 'Can delete news', 9, 'delete_news'),
+(28, 'Can add job', 10, 'add_job'),
+(29, 'Can change job', 10, 'change_job'),
+(30, 'Can delete job', 10, 'delete_job'),
+(31, 'Can add resume', 11, 'add_resume'),
+(32, 'Can change resume', 11, 'change_resume'),
+(33, 'Can delete resume', 11, 'delete_resume'),
+(34, 'Can add comments', 12, 'add_comments'),
+(35, 'Can change comments', 12, 'change_comments'),
+(36, 'Can delete comments', 12, 'delete_comments');
 
 -- --------------------------------------------------------
 
@@ -114,7 +120,6 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
   `password` varchar(128) COLLATE utf8_bin NOT NULL,
   `last_login` datetime NOT NULL,
   `is_superuser` tinyint(1) NOT NULL,
-  `premissions` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '管理员拥有权限',
   `username` varchar(30) COLLATE utf8_bin NOT NULL,
   `first_name` varchar(30) COLLATE utf8_bin NOT NULL,
   `last_name` varchar(30) COLLATE utf8_bin NOT NULL,
@@ -130,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
 -- 转存表中的数据 `auth_user`
 --
 
-INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `premissions`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$10000$Aovi0DBeY4Zd$ecFRwatfuhzqXt2qGrqfJdWHygA0dbckZQzKp2x1ApA=', '2014-08-22 04:08:38', 1, NULL, 'admin', '', '', '', 1, 1, '2014-08-22 04:08:38');
+INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
+(1, 'pbkdf2_sha256$10000$c9WhqTUux4xy$042oTsyCr7/gS6kf+X5+e/2vFGFxHy/0jT4nrUM2VXI=', '2014-08-29 03:22:44', 1, 'admin', '超级管理员', '', '', 1, 1, '2014-08-29 03:15:15');
 
 -- --------------------------------------------------------
 
@@ -186,17 +191,48 @@ CREATE TABLE IF NOT EXISTS `backend_comments` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `backend_job`
+--
+
+CREATE TABLE IF NOT EXISTS `backend_job` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `position` varchar(20) COLLATE utf8_bin NOT NULL,
+  `position_en` varchar(20) COLLATE utf8_bin NOT NULL,
+  `content` longtext COLLATE utf8_bin NOT NULL,
+  `content_en` longtext COLLATE utf8_bin NOT NULL,
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `backend_nav`
 --
 
 CREATE TABLE IF NOT EXISTS `backend_nav` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) COLLATE utf8_bin NOT NULL,
+  `name_en` varchar(20) COLLATE utf8_bin NOT NULL,
   `pid_id` int(11) DEFAULT NULL,
   `level` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `backend_nav_664e8aab` (`pid_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+
+--
+-- 转存表中的数据 `backend_nav`
+--
+
+INSERT INTO `backend_nav` (`id`, `name`, `name_en`, `pid_id`, `level`) VALUES
+(1, '佳易得产品', 'product', NULL, 1),
+(2, '工程应用', 'project', NULL, 1),
+(3, '核心技术', 'core', NULL, 1),
+(4, '荣誉与资质', 'honour', NULL, 1),
+(5, '共赢专区', 'win-win', NULL, 1),
+(6, '德厚新闻', 'dehou_news', NULL, 1),
+(7, '关于德厚', 'about', NULL, 1),
+(8, '联系德厚', 'contract', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -207,13 +243,15 @@ CREATE TABLE IF NOT EXISTS `backend_nav` (
 CREATE TABLE IF NOT EXISTS `backend_news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `p_id` int(11) NOT NULL,
-  `s_id` int(11) NOT NULL,
+  `s_id` int(11) DEFAULT NULL,
   `t_id` int(11) DEFAULT NULL,
   `title` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+  `title_en` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `remark` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+  `remark_en` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `img` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `content` longtext COLLATE utf8_bin NOT NULL,
-  `is_del` tinyint(1) NOT NULL,
+  `content_en` longtext COLLATE utf8_bin NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
@@ -237,6 +275,27 @@ CREATE TABLE IF NOT EXISTS `backend_resume` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `backend_userinfo`
+--
+
+CREATE TABLE IF NOT EXISTS `backend_userinfo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `premissions` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `backend_userinfo`
+--
+
+INSERT INTO `backend_userinfo` (`id`, `user_id`, `premissions`) VALUES
+(1, 1, '1,2,3,4,5,6,');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `django_content_type`
 --
 
@@ -247,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
   `model` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
 
 --
 -- 转存表中的数据 `django_content_type`
@@ -260,10 +319,12 @@ INSERT INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES
 (4, 'content type', 'contenttypes', 'contenttype'),
 (5, 'session', 'sessions', 'session'),
 (6, 'site', 'sites', 'site'),
-(7, 'nav', 'backend', 'nav'),
-(8, 'news', 'backend', 'news'),
-(9, 'resume', 'backend', 'resume'),
-(10, 'comments', 'backend', 'comments');
+(7, 'user info', 'backend', 'userinfo'),
+(8, 'nav', 'backend', 'nav'),
+(9, 'news', 'backend', 'news'),
+(10, 'job', 'backend', 'job'),
+(11, 'resume', 'backend', 'resume'),
+(12, 'comments', 'backend', 'comments');
 
 -- --------------------------------------------------------
 
@@ -278,6 +339,13 @@ CREATE TABLE IF NOT EXISTS `django_session` (
   PRIMARY KEY (`session_key`),
   KEY `django_session_b7b81f0c` (`expire_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- 转存表中的数据 `django_session`
+--
+
+INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('55g1x3owqhg7mmtgcbutcgx4sgqetbwx', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-12 03:22:45');
 
 -- --------------------------------------------------------
 
@@ -335,6 +403,12 @@ ALTER TABLE `auth_user_user_permissions`
 --
 ALTER TABLE `backend_nav`
   ADD CONSTRAINT `pid_id_refs_id_6cd4a145` FOREIGN KEY (`pid_id`) REFERENCES `backend_nav` (`id`);
+
+--
+-- 限制表 `backend_userinfo`
+--
+ALTER TABLE `backend_userinfo`
+  ADD CONSTRAINT `user_id_refs_id_ca7fdcbb` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
