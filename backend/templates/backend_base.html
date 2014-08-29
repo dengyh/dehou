@@ -11,12 +11,8 @@
     <script src="/static/js/jquery.tablesorter.min.js"></script>
     <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/toast.js"></script>
-    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-   
-
     {% block style %}{% endblock %}
 </head>
-
 <body>
     <!-- 头部栏目 开始 -->
     <header id="header">
@@ -57,61 +53,61 @@
         {% for list in premissions %} {% ifequal list '1' %}
         <h3>导航管理</h3>
         <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/navigation_list/">导航列表</a>
+            <li class="icn_categories"><a href="/backend/navigation_list/" class="link">导航列表</a>
             </li>
         </ul>
         {% endifequal %} {% ifequal list '2' %}
         <h3>佳易得产品管理</h3>
         <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/product_list/">产品列表</a>
+            <li class="icn_categories"><a href="/backend/product_list/" class="link">产品列表</a>
             </li>
-            <li class="icn_new_article"><a href="/backend/product_add/">添加产品</a>
+            <li class="icn_new_article"><a href="/backend/product_add/" class="link">添加产品</a>
             </li>
         </ul>
         {% endifequal %} {% ifequal list '3' %}
         <h3>工程应用管理</h3>
         <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/project_list/">工程列表</a>
+            <li class="icn_categories"><a href="/backend/project_list/" class="link">工程列表</a>
             </li>
-            <li class="icn_photo"><a href="/backend/project_add/">添加工程</a>
+            <li class="icn_photo"><a href="/backend/project_add/" class="link">添加工程</a>
             </li>
         </ul>
         {% endifequal %} {% ifequal list '4' %}
         <h3>资讯管理</h3>
         <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/info_list/">资讯列表</a>
+            <li class="icn_categories"><a href="/backend/info_list/" class="link">资讯列表</a>
             </li>
-            <li class="icn_edit_article"><a href="/backend/info_add/">添加资讯</a>
+            <li class="icn_edit_article"><a href="/backend/info_add/" class="link">添加资讯</a>
             </li>
         </ul>
         {% endifequal %} {% ifequal list '5' %}
         <h3>招聘管理</h3>
         <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/job_list/">招聘列表</a>
+            <li class="icn_categories"><a href="/backend/job_list/" class="link">招聘列表</a>
             </li>
-            <li class="icn_jump_back"><a href="/backend/job_publish/">发布招聘</a>
+            <li class="icn_jump_back"><a href="/backend/job_publish/" class="link">发布招聘</a>
             </li>
         </ul>
         {% endifequal %} {% ifequal list '6' %}
         <h3>留言管理</h3>
         <ul class="toggle">
-            <li class="icn_categories"><a href="/backend/message_list/">留言列表</a>
+            <li class="icn_categories"><a href="/backend/message_list/" class="link">留言列表</a>
             </li>
         </ul>
         {% endifequal %} {% endfor %} {% if user.is_superuser %}
         <!--判断是否为 超级管理员-->
         <h3>账户管理</h3>
         <ul class="toggle">
-            <li class="icn_add_user"><a href="/backend/admin_add/">添加管理员</a>
+            <li class="icn_add_user"><a href="/backend/admin_add/" class="link">添加管理员</a>
             </li>
-            <li class="icn_view_users"><a href="/backend/admin_list/">管理员列表</a>
+            <li class="icn_view_users"><a href="/backend/admin_list/" class="link">管理员列表</a>
             </li>
         </ul>
         {% endif %}
         <footer>
             <hr />
             <p>
-                <strong>Copyright &copy; 2014 深圳德厚科技有限公司</strong>
+            <strong>Copyright &copy; 2014 深圳德厚科技有限公司</strong>
             </p>
         </footer>
     </aside>
@@ -122,5 +118,15 @@
     <!-- 主体板块 结束 -->
 
 </body>
-
+<script type="text/javascript">
+$(document).ready(function(){
+    var strUrl=window.location.href;
+    var arrUrl=strUrl.split("/");
+    var strPage="/"+arrUrl[arrUrl.length-3]+"/"+arrUrl[arrUrl.length-2]+"/";
+    $("a.link").each(function(){
+        if($(this).attr("href")==strPage)
+            $(this).addClass("current_item");
+    });
+});
+</script>
 </html>

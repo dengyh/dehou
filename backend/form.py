@@ -14,6 +14,20 @@ class UEditorForm(forms.Form):
 				    "elementPathEnabled" : 0
 				    },
 		imagePath= "")
+
+# ueditor编辑器（英文版）
+class UEditorForm_en(forms.Form):
+	content_en = UEditorField(u"", 
+		initial  = "",
+		toolbars = "full", 
+		width    = "100%", 
+		height   = 300, 
+		settings = {"maximumWords" : 10000,
+				    "scaleEnabled" : 1,
+				    "elementPathEnabled" : 0
+				    },
+		imagePath= "")
+	
 #登陆验证
 class loginForm(forms.Form):
 	username = forms.CharField(max_length=20,required=True,error_messages={'required':u'账号不能为空'})

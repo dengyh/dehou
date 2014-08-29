@@ -15,7 +15,7 @@ from backend.models import userInfo  #继承User表
 from backend.models import nav,news,comments,job
 
 #导入form表单
-from backend.form import UEditorForm,loginForm,adminForm,edit_user_Form
+from backend.form import UEditorForm,UEditorForm_en,loginForm,adminForm,edit_user_Form
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.hashers import make_password, check_password
@@ -227,6 +227,7 @@ def navigation_list(request,template_name):
 #   人员：杨凯
 #   日期：2014.08.23
 # --------------------------------------
+@csrf_exempt
 def navigation_add(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
@@ -287,6 +288,7 @@ def del_navigation(request):
 #   人员：杨凯
 #   日期：2014.08.24
 # --------------------------------------
+@csrf_exempt
 def Twolink(request):
 	if request.is_ajax():
 		nav_id = request.POST.get('id','')
@@ -341,7 +343,10 @@ def product_add(request,template_name):
 		return redirect('/backend/login/')
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	product_nav = nav.objects.filter(id=1)  #获取 佳易得产品 一级导航
+	# ueditor编辑器初始化（英文版）
+	form_en = UEditorForm_en()
+	#获取 佳易得产品 一级导航
+	product_nav = nav.objects.filter(id=1)  
 	#获取 所有二级导航
 	try:
 		product_second_nav = nav.objects.filter(pid = product_nav[0])
@@ -354,7 +359,12 @@ def product_add(request,template_name):
 		product_third_nav = None
 
 	premissions = public_premissions(request)    #权限认证
-	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
+	return render(request,template_name,{"form": form,
+		"form_en": form_en,
+		"product_nav":product_nav,
+		"product_second_nav":product_second_nav,
+		"product_third_nav":product_third_nav,
+		'premissions':premissions})
 
 # ======================================
 # 	名字：添加产品表单处理  同时 适用于  添加工程表单处理
@@ -371,17 +381,23 @@ def product_add_handle(request):
 		s_id  = request.POST.get('s_id','')
 		t_id  = request.POST.get('t_id','0')
 		title = request.POST.get('title','')
+		title_en = request.POST.get('title_en', '')
 		remark = request.POST.get('remark','')
+		remark_en = request.POST.get('remark_en', '')
 		img   = request.FILES.get('img',None)
 		content = request.POST.get('content','')
+		content_en = request.POST.get('content_en', '')
 		p = news(
 			p_id = p_id,
 			s_id = s_id,
 			t_id = t_id,
 			title = title,
+			title_en =title_en,
 			remark = remark,
+			remark_en = remark_en,
 			img = img,
 			content = content,
+			content_en = content_en,
 			)
 		p.save()
 		return HttpResponseRedirect('/backend/product_list/')
@@ -415,7 +431,10 @@ def project_add(request,template_name):
 		return redirect('/backend/login/')
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	product_nav = nav.objects.filter(id=2)  #获取 工程应用 一级导航
+	# ueditor编辑器初始化（英文版）
+	form_en = UEditorForm_en()
+	#获取 工程应用 一级导航
+	product_nav = nav.objects.filter(id=2)  
 	#获取 所有二级导航
 	try:
 		product_second_nav = nav.objects.filter(pid = product_nav[0])
@@ -427,8 +446,12 @@ def project_add(request,template_name):
 	except Exception:
 		product_third_nav = None
 	premissions = public_premissions(request)    #权限认证
-	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
-
+	return render(request,template_name,{"form": form,
+		"form_en": form_en,
+		"product_nav":product_nav,
+		"product_second_nav":product_second_nav,
+		"product_third_nav":product_third_nav,
+		'premissions':premissions})
 
 # ======================================
 # 	名字：添加工程表单处理
@@ -445,17 +468,23 @@ def pro_add_handle(request):
 		s_id  = request.POST.get('s_id','')
 		t_id  = request.POST.get('t_id','0')
 		title = request.POST.get('title','')
+		title_en = request.POST.get('title_en','')
 		remark = request.POST.get('remark','')
+		remark_en = request.POST.get('remark_en','')
 		img   = request.FILES.get('img',None)
 		content = request.POST.get('content','')
+		content_en = request.POST.get('content_en','')
 		p = news(
 			p_id = p_id,
 			s_id = s_id,
 			t_id = t_id,
 			title = title,
+			title_en = title_en,
 			remark = remark,
+			remark_en = remark_en,
 			img = img,
 			content = content,
+			content_en = content_en,
 			)
 		p.save()
 		return HttpResponseRedirect('/backend/project_list/')
@@ -488,7 +517,10 @@ def info_add(request,template_name):
 		return redirect('/backend/login/')
 	# ueditor编辑器初始化
 	form = UEditorForm()
-	product_nav = nav.objects.filter(id__gt=2,level=1)   #获取  一级导航
+	# ueditor编辑器初始化（英文版）
+	form_en = UEditorForm_en()
+	#获取  一级导航
+	product_nav = nav.objects.filter(id__gt=2,level=1)  
 	#获取 所有二级导航
 	try:
 		product_second_nav = nav.objects.filter(pid = product_nav[0])
@@ -500,7 +532,12 @@ def info_add(request,template_name):
 	except Exception:
 		product_third_nav = None
 	premissions = public_premissions(request)
-	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
+	return render(request,template_name,{"form": form,
+		"form_en": form_en,
+		"product_nav":product_nav,
+		"product_second_nav":product_second_nav,
+		"product_third_nav":product_third_nav,
+		'premissions':premissions})
 
 # ======================================
 # 	名字：添加资讯表单处理
@@ -517,17 +554,23 @@ def info_add_handle(request):
 		s_id  = request.POST.get('s_id','')
 		t_id  = request.POST.get('t_id','0')
 		title = request.POST.get('title','')
+		title_en = request.POST.get('title_en','')
 		remark = request.POST.get('remark','')
+		remark_en = request.POST.get('remark_en','')
 		img   = request.FILES.get('img',None)
 		content = request.POST.get('content','')
+		content_en = request.POST.get('content_en','')
 		p = news(
 			p_id = p_id,
 			s_id = s_id,
 			t_id = t_id,
 			title = title,
+			title_en = title_en,
 			remark = remark,
+			remark_en = remark_en,
 			img = img,
 			content = content,
+			content_en = content_en,
 			)
 		p.save()
 		return HttpResponseRedirect('/backend/info_list/')
@@ -585,8 +628,10 @@ def job_publish(request,template_name):
 		return redirect('/backend/login/')
 	# ueditor编辑器初始化
 	form = UEditorForm()
+	# ueditor编辑器初始化（英文版）
+	form_en = UEditorForm_en()
 	premissions = public_premissions(request)   #权限认证
-	return render(request,template_name,{"form": form,'premissions':premissions})
+	return render(request,template_name,{"form": form,"form_en": form_en,'premissions':premissions})
 
 # ======================================
 # 	名字：发布招聘信息处理
@@ -594,15 +639,20 @@ def job_publish(request,template_name):
 #   人员：杨凯
 #   日期：2014.08.26
 # --------------------------------------
+@csrf_exempt
 def job_publish_handle(request):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	if request.method == "POST":
 		position = request.POST.get('position','')
 		content = request.POST.get('content','')
+		position_en = request.POST.get('position_en','')
+		content_en = request.POST.get('content_en','')
 		jobs = job.objects.create(
 			position = position,
 			content = content,
+			position_en = position_en,
+			content_en = content_en,
 			)
 		return HttpResponseRedirect('/backend/job_list/')
 	return HttpResponse('请求方法错误...')
@@ -613,6 +663,7 @@ def job_publish_handle(request):
 #   人员：杨凯
 #   日期：2014.08.26
 # --------------------------------------
+@csrf_exempt
 def del_job(request):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
@@ -646,6 +697,7 @@ def message_list(request,template_name):
 #   人员：杨凯
 #   日期：2014.08.26
 # --------------------------------------
+@csrf_exempt
 def message_replay_handle(request):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
@@ -857,11 +909,14 @@ def edit_info(request, template_name):
 
 	# ueditor编辑器初始化
 	form = UEditorForm()
+	# ueditor编辑器初始化
+	form_en = UEditorForm_en()
 
 	param = {
 		'new':new, 
 		'type':types, 
 		'form':form,
+		'form_en':form_en,
 		'p_id_name':p_id_name,
 		's_id_name':s_id_name,
 		'premissions':premissions,
@@ -879,15 +934,19 @@ def edit_info(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.08.25
 # --------------------------------------
+@csrf_exempt
 def edit_info_handle(request):
 	if request.method == "POST":
 		ids = request.POST['id']
 		types = request.POST['type']
 		title = request.POST['title']
+		title_en = request.POST['title_en']
 		remark = request.POST['remark']
+		remark_en = request.POST['remark_en']
 		hiddenImg = request.POST['hiddenImg']
 		img = request.FILES.get('img', None)
 		content = request.POST['content']
+		content_en = request.POST['content_en']
 
 		# 如果没有上传图片
 		if not img:
@@ -896,9 +955,12 @@ def edit_info_handle(request):
 		# 保存修改
 		new = news.objects.get(id = ids)
 		new.title = title
+		new.title_en = title_en
 		new.remark = remark
+		new.remark_en = remark_en
 		new.img = img
 		new.content = content
+		new.content_en = content_en
 		new.save()
 
 		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':types})
@@ -911,6 +973,7 @@ def edit_info_handle(request):
 #   人员：黄晓佳
 #   日期：2014.08.25
 # --------------------------------------
+@csrf_exempt
 def navigation_edit(request, template_name):
 	if request.method == "GET":
 		ids = request.GET['id']
@@ -925,13 +988,16 @@ def navigation_edit(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.08.25
 # --------------------------------------
+@csrf_exempt
 def navigation_edit_handle(request):
 	if request.method == "POST":
 		ids = request.POST['id']
 		name = request.POST['name']
+		name_en=request.POST['name_en']
 
 		navs = nav.objects.get(id = ids)
 		navs.name = name
+		navs.name_en=name_en
 		navs.save()
 
 		return render(request, "backend_href.html", {'title':'修改成功 :)', 'href':'navigation'})
@@ -944,6 +1010,7 @@ def navigation_edit_handle(request):
 #   人员：黄晓佳
 #   日期：2014.08.26
 # --------------------------------------
+@csrf_exempt
 def job_edit(request, template_name):
 	if request.method == "GET":
 		ids = request.GET.get('id', '')
@@ -960,6 +1027,7 @@ def job_edit(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.08.26
 # --------------------------------------
+@csrf_exempt
 def job_edit_handle(request):
 	if request.method == "POST":
 		ids = request.POST.get('id', '')
@@ -991,6 +1059,7 @@ def admin_changePwd(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.08.27
 # --------------------------------------
+@csrf_exempt
 def admin_changePwd_handle(request):
 	if request.method == "POST":
 		oldPwd = request.POST['oldPwd']            # 旧密码
