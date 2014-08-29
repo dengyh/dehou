@@ -1,10 +1,5 @@
 {% extends "backend_base.html" %}
- <script type="text/javascript">
-    $(document).ready(function() {
-        // alert("加载完成");
-        $(".tablesorter").tablesorter();
-    });
-    </script>
+ 
 {% block title1 %}佳易得产品列表{% endblock %}
 {% block title2 %}佳易得产品列表{% endblock %}
 {% block title3 %}佳易得产品列表{% endblock %}
@@ -95,4 +90,11 @@
     <!-- 删除确认框 开始 -->
     <script type="text/javascript" src="/static/js/del_info.js"></script>
     <!-- 删除确认框 结束 -->
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        // alert("加载完成");
+        $(".tablesorter").tablesorter();
+    });
+    </script>
 {% endblock %}

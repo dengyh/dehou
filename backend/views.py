@@ -929,9 +929,11 @@ def navigation_edit_handle(request):
 	if request.method == "POST":
 		ids = request.POST['id']
 		name = request.POST['name']
+		name_en=request.POST['name_en']
 
 		navs = nav.objects.get(id = ids)
 		navs.name = name
+		navs.name_en=name_en
 		navs.save()
 
 		return render(request, "backend_href.html", {'title':'修改成功 :)', 'href':'navigation'})
