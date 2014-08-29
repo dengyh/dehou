@@ -14,12 +14,14 @@ class userInfo(models.Model):
 
 # ---------------------------
 # 导航表 : nav
-#   name : 导航名称
+#   name : 中文导航
+#name_en : 英文导航
 #   pid  : 存放子导航
 #  level : 导航级数
 # ---------------------------
 class nav(models.Model):
 	name = models.CharField(max_length=20)
+	name_en = models.CharField(max_length=20)
 	pid  = models.ForeignKey('self',blank=True,null=True,related_name='child_nav')
 	level = models.IntegerField(max_length=2)
 	def __unicode__(self):
@@ -30,11 +32,13 @@ class nav(models.Model):
 #   p_id : 一级导航id
 #   s_id : 二级导航id
 #   t_id : 三级导航id
-#  title : 信息标题
-# remark : 信息简要说明
+#  title : 中文信息标题
+#title_en: 英文信息标题
+# remark : 中文信息简要说明
+#remark_en:英文信息简要说明
 #   img  : 信息封面图片(固定大小)
-#content : 信息内容
-# is_del : 是否删除 0表示否,1表示是,则进入回收站
+#content : 中文信息内容
+#content_en: 英文信息内容
 #datetime: 信息发布时间
 # ---------------------------
 class news(models.Model):
@@ -42,9 +46,12 @@ class news(models.Model):
 	s_id = models.IntegerField(max_length=11,blank=True,null=True)
 	t_id = models.IntegerField(max_length=11,blank=True,null=True)
 	title = models.CharField(max_length=150,blank=True,null=True)
+	title_en = models.CharField(max_length=150,blank=True,null=True)
 	remark = models.CharField(max_length=150,blank=True,null=True)
+	remark_en = models.CharField(max_length=150,blank=True,null=True)
 	img  = models.ImageField(upload_to='news',blank=True,null=True)
 	content = models.TextField()
+	content_en = models.TextField()
 	datetime = models.DateTimeField(auto_now_add=True)
 	def __unicode__(self):
 		return self.p_id
@@ -54,13 +61,17 @@ class news(models.Model):
 
 # ---------------------------
 # 招聘表 : resume
-#   position : 招聘职位名称
-#     content: 职位介绍
+#   position : 中文招聘职位名称
+#position_en : 英文招聘职位名称
+#     content: 中文职位介绍
+#  content_en: 英文职位介绍
 #    datetime: 发布职位时间
 # ---------------------------
 class job(models.Model):
 	position = models.CharField(max_length=20)
+	position_en = models.CharField(max_length=20)
 	content = models.TextField()
+	content_en = models.TextField()
 	datetime = models.DateTimeField(auto_now_add=True)
 
 # ---------------------------

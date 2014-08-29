@@ -194,7 +194,7 @@ def check_login(request,template_name):
 			user = authenticate(username=username,password=password)
 			if user is not None:
 				login(request,user)
-				return HttpResponseRedirect('/backend/home/')
+				return HttpResponseRedirect('/backend/')
 			else:
 				form.errors['username'] = u'用户名或密码错误'
 				return render(request,template_name,{'form':form})
@@ -343,9 +343,16 @@ def product_add(request,template_name):
 	form = UEditorForm()
 	product_nav = nav.objects.filter(id=1)  #获取 佳易得产品 一级导航
 	#获取 所有二级导航
-	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
+	try:
+		product_second_nav = nav.objects.filter(pid = product_nav[0])
+	except Exception:
+		product_second_nav = None
 	#获取属于当前二级导航的 三级导航
-	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	try:
+		product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	except Exception:
+		product_third_nav = None
+
 	premissions = public_premissions(request)    #权限认证
 	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
 
@@ -410,10 +417,15 @@ def project_add(request,template_name):
 	form = UEditorForm()
 	product_nav = nav.objects.filter(id=2)  #获取 工程应用 一级导航
 	#获取 所有二级导航
-	# if len(product_nav) > 0:
-	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
+	try:
+		product_second_nav = nav.objects.filter(pid = product_nav[0])
+	except Exception:
+		product_second_nav = None
 	#获取属于当前二级导航的 三级导航
-	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	try:
+		product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	except Exception:
+		product_third_nav = None
 	premissions = public_premissions(request)    #权限认证
 	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
 
@@ -478,10 +490,15 @@ def info_add(request,template_name):
 	form = UEditorForm()
 	product_nav = nav.objects.filter(id__gt=2,level=1)   #获取  一级导航
 	#获取 所有二级导航
-	# if len(product_nav) > 0:
-	product_second_nav = nav.objects.filter(pid = product_nav[0]) 
+	try:
+		product_second_nav = nav.objects.filter(pid = product_nav[0])
+	except Exception:
+		product_second_nav = None
 	#获取属于当前二级导航的 三级导航
-	product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	try:
+		product_third_nav = nav.objects.filter(pid = product_second_nav[0])
+	except Exception:
+		product_third_nav = None
 	premissions = public_premissions(request)
 	return render(request,template_name,{"form": form,"product_nav":product_nav,"product_second_nav":product_second_nav,"product_third_nav":product_third_nav,'premissions':premissions})
 

@@ -5,6 +5,7 @@ urlpatterns = patterns('backend.views',
 	url(r'^login/$','login_in',{'template_name':'login.html'}),          # 登陆界面
 	url(r'^check_login/$','check_login',{'template_name':'login.html'}), # 登陆检查
 	url(r'^login_out/$','login_out'),                                    # 登出
+	url(r'^$','home',{'template_name':'home.html'}),                # 后台首页
 	url(r'^home/$','home',{'template_name':'home.html'}),                # 后台首页
 
 	url(r'^job_list/$'       , 'job_list',{'template_name':'job_list.html'}),            # 招聘列表
