@@ -858,3 +858,9 @@ select {
     border-radius: 5px;
     height: 25px;
 }
+
+/* 当前条目指示*/
+.current_item{
+    font-size:large;
+    font-weight:bold;
+    }
