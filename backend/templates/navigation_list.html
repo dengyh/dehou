@@ -17,6 +17,7 @@
                         <thead>
                             <tr>
                                 <th>名称</th>
+                                <th>名称(英文)</th>
                                 <th>导航级别</th>
                                 <th>操作</th>
                             </tr>
@@ -24,7 +25,9 @@
                         {% for list in navlist %}
                         <tbody>
                             <tr style="background:#d0d0d0;">
+
                                 <td>{{list.name}}</td>
+                                 <td>name_en</td>
                                 <td>一级</td>
                                 <td>
                                     <a href="/backend/navigation_add/?id={{list.id}}">
@@ -40,6 +43,7 @@
                         <tbody>
                             <tr style="background:#ececec;">
                                 <td style="padding-left:15px;">--{{ second.name }}</td>
+                                 <td>name_en</td>
                                 <td>二级</td>
                                 <td>
                                     <a href="/backend/navigation_add/?id={{second.id}}">
@@ -58,6 +62,7 @@
                         <tbody>
                             <tr>
                                 <td style="padding-left:30px;">----{{three.name}}</td>
+                                <td>name_en</td>
                                 <td>三级</td>
                                 <td>
                                     <a href="/backend/navigation_edit/?id={{three.id}}" style="padding-left:30px">
