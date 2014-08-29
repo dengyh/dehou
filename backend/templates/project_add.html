@@ -3,6 +3,7 @@
 {% block style %}
     <!-- ueditor编辑器js与css -->
     {{ form.media }}
+    {{ form_en.media }}
 {% endblock %}
 {% block title1 %}添加工程应用{% endblock %}
 {% block title2 %}添加工程应用{% endblock %}
@@ -31,10 +32,9 @@
                     <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
                         <label>封面图片</label>
                         <input type="file" name="img" class="title" style="display:none;" />
-                        <input type="button" value="上传图片" class="clear_btn" style="margin-left:-100px;" id="uploadBtn">
+                        <input type="button" value="上传图片" style="margin-left:-100px;" id="uploadBtn">
                     </fieldset>
-                   
-                     <fieldset style="width:30%; float:left;clear:both;margin-bottom:20px;"
+                    <fieldset style="width:30%; float:left;clear:both;margin-bottom:20px;"
                      class="parentMenu">
                         <label>类型选择</label>
                         <select name="p_id" style="width:92%;height:25px;" class="contentsType" id="parentMenu">
@@ -43,7 +43,6 @@
                              {% endfor %}
                         </select>                       
                     </fieldset>
-                   
                     <fieldset style="width:30%; float:left;margin-left:10px;margin-bottom:20px;" class="secondMenu">
                         <label>类型选择</label>
                         <select name="s_id" style="width:92%;height:25px;" class="contentsType" id="secondMenu">
@@ -52,7 +51,6 @@
                              {% endfor %}                           
                         </select>                       
                     </fieldset>
-
                     <fieldset style="width:30%;float:left;margin-left:10px;margin-bottom:20px;" class="thirdMenu">
                         <label>类型选择</label>
                         <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="thirdMenu">
@@ -61,10 +59,21 @@
                              {% endfor %} 
                         </select>                       
                     </fieldset>
-
                     <fieldset style="clear:both;margin-bottom:20px;">
                         <label>内容</label>
                         <div style="padding:0 10px;">{{ form }}</div>
+                    </fieldset>
+                    <fieldset style="width:30%;float:left;margin-bottom:20px;">
+                        <label>标题（英文版）</label>
+                        <input type="text" name="title_en" class="title" style="height:25px;">
+                    </fieldset>
+                    <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
+                        <label>产品描（英文版）</label>
+                        <input type="text" name="remark_en" class="title" style="height:25px;">
+                    </fieldset>
+                    <fieldset style="clear:both;margin-bottom:20px;">
+                        <label>内容（英文版）</label>
+                        <div style="padding:0 10px;">{{ form_en }}</div>
                     </fieldset>
                 </div>
                 <footer>
@@ -80,35 +89,11 @@
     <!-- 添加工程应用板块 结束 -->
 
     <!-- js 开始 -->
+    <script type="text/javascript" src="/static/js/add_info.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-        // 上传封面图片事件
-        $('#uploadBtn').click(function(){
-            $("input[name='img']").trigger("click");
-        });
-
-        // 文本框内容不为空
-        $('.alt_btn').click(function(){
-            var ue = UE.getEditor('id_content');
-            ue.ready(function() {
-                if (ue.getContent().length <= 0) {
-                    alert("内容不能为空！");
-                    return false;
-                }
-                
-                form.action = "/backend/pro_add_handle/";
-            });
-        });
-
-        // 文本置空
-        $('.clear_btn').click(function() {
-            var ue = UE.getEditor('id_content');
-            ue.ready(function() {
-                if (confirm("确定要清空文本内容吗？")) {
-                    ue.setContent('');
-                }
-            });
-        });
+        var url = "/backend/pro_add_handle/";
+        add_info(url);
     });
     </script>
     <!-- js 结束 -->
