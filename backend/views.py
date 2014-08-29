@@ -768,7 +768,7 @@ def admin_delete(request):
 		ids = request.POST.get('id_attr', '')                           # 要删除的管理员id
 		password = request.POST.get('delete_attr', '')                  # 确认密码
 
-	userInfos = User.objects.get(id=1)                                  # 获取超级管理员
+	userInfos = User.objects.get(is_superuser=1)                         # 获取超级管理员
 	userPassword = userInfos.password                                   # 获取超级管理员密码
 
 	if check_password(password, userPassword):                        
@@ -794,10 +794,10 @@ def admin_edit(request, template_name):
 
 	if request.method == "GET":							   		# 确保是get提交
 		ids = request.GET.get('id','')	                   		# 要修改的管理员id
-
-	info = User.objects.get(id=ids)					   		    # 获取管理员信息
-	premissions = public_premissions(request)
-	return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
+		info = User.objects.get(id=ids)					   		    # 获取管理员信息
+		premissions = public_premissions(request)
+		return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
+	return HttpResponse('请求方法错误...')
 
 # ======================================
 # 	名字：管理员修改表单处理
