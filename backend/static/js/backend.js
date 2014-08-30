@@ -1,4 +1,5 @@
 $(function(){
+	 $('#sidebar').css('height','800px');
     //判断二级导航 option个数 是否为真，也就是 有二级导航
 	if($('#secondMenu option').length){
 	 $('.secondMenu').css('display','block');

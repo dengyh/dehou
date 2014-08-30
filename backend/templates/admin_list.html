@@ -29,9 +29,11 @@
                                     <a href="/backend/admin_edit/?id={{list.id}}">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改" />
                                     </a>
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#myModal" name="delete" id="{{list.id}}_delete">
+                                    {% if not list.is_superuser %}
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal" name="delete" id="{{list.id}}_delete">
                                         <input type="image" src="/static/images/icn_trash.png" title="删除" />
                                     </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         </tbody>
