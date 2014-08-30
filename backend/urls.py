@@ -25,7 +25,7 @@ urlpatterns += patterns('backend.views',
 	url(r'^navigation_add/$', 'navigation_add',{'template_name':'navigation_add.html'}),     # 导航添加
 	url(r'^navigation_add_handle/$','navigation_add_handle'),                                # 导航添加表单处理
 	url(r'^del_navigation/$','del_navigation'),                                              # 导航删除处理
-	url(r'^Twolink/$','Twolink'),                                                            # 二级、三级导航联动
+	url(r'^Twolink/$','Twolink',{'template_name':'Twolink.html'}),                                                            # 二级、三级导航联动
 	url(r'^navigation_edit/$', 'navigation_edit', {'template_name':'navigation_edit.html'}), # 导航修改
 	url(r'^navigation_edit_handle/$', 'navigation_edit_handle'),                             # 导航修改表单处理
 )

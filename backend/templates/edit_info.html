@@ -5,10 +5,10 @@
     {{ form.media }}
     {{ form_en.media }}
 {% endblock %}
-{% block title1 %}修改资讯{% endblock %}
-{% block title2 %}修改资讯{% endblock %}
-{% block title3 %}修改资讯{% endblock %}
-{% block titleBase %}修改资讯{% endblock %}
+{% block title1 %}{{edit_type}}{% endblock %}
+{% block title2 %}{{edit_type}}{% endblock %}
+{% block title3 %}{{edit_type}}{% endblock %}
+{% block titleBase %}{{edit_type}}{% endblock %}
 {% block titleBaseUrl %}{{type}}_list{% endblock %}
 {% block content %}
     <!-- 修改资讯板块 开始 -->
@@ -20,7 +20,7 @@
                 <input type="hidden" name="id" value="{{new.id}}" />
                 <input type="hidden" name="type" value="{{type}}" />
                 <header>
-                    <h3 class="form_title">添加佳易得产品</h3>
+                    <h3 class="form_title">{{edit_type}}</h3>
                 </header>
                 <div class="module_content">
                     <fieldset style="width:30%;float:left;margin-bottom:20px;">
@@ -28,7 +28,7 @@
                         <input type="text" name="title" class="title" style="height:25px;" value="{{new.title}}">
                     </fieldset>
                     <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
-                        <label>产品描述</label>
+                        <label>描述</label>
                         <input type="text" name="remark" class="title" style="height:25px;" value="{{new.remark}}">
                     </fieldset>
                     <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
@@ -70,7 +70,7 @@
                         <input type="text" name="title_en" class="title" style="height:25px;" value="{{new.title_en}}">
                     </fieldset>
                     <fieldset style="width:30%;float:left;clear:both;margin-bottom:20px;">
-                        <label>产品描述（英文版）</label>
+                        <label>描述（英文版）</label>
                         <input type="text" name="remark_en" class="title" style="height:25px;" value="{{new.remark_en}}">
                     </fieldset>
                     <fieldset style="clear:both;margin-bottom:20px;">
@@ -99,6 +99,12 @@
         var ue = UE.getEditor('id_content');
         ue.ready(function() {
             ue.setContent(content);
+        });
+
+        var content_en = '{{ new.content_en|safe }}'
+        var ue_en = UE.getEditor('id_content_en');
+        ue_en.ready(function() {
+            ue_en.setContent(content_en);
         });
         
         var url = "/backend/pro_add_handle/";

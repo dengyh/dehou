@@ -9,7 +9,7 @@ class UEditorForm(forms.Form):
 		toolbars = "full", 
 		width    = "100%", 
 		height   = 350, 
-		settings = {"maximumWords" : 5000,
+		settings = {"maximumWords" : 10000,
 				    "scaleEnabled" : 1,
 				    "elementPathEnabled" : 0
 				    },
