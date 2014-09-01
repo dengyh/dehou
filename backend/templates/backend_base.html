@@ -49,7 +49,7 @@
     <!-- 头部小栏目 结束 -->
 
     <!-- 左边栏目 开始 -->
-    <aside id="sidebar" class="column">
+    <aside id="sidebar">
         {% for list in premissions %} {% ifequal list '1' %}
         <h3>导航管理</h3>
         <ul class="toggle">
@@ -127,6 +127,13 @@ $(document).ready(function(){
         if($(this).attr("href")==strPage)
             $(this).addClass("current_item");
     });
+
+    var h=document.body.clientWidth; 
+    var h1=document.body.clientHeight ;
+    var h2=window.screen.availHeight 
+    // alert(h2);
+    // alert($(document).height());
+    // $("#sidebar").height(h);
 });
 </script>
 </html>
