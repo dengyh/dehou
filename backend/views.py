@@ -252,9 +252,11 @@ def navigation_add_handle(request):
 		# print '*'*40
 		# print navId
 		nav_name = request.POST.get('name','')
+		nav_name_en = request.POST.get('name_en','')
 		p_nav = nav.objects.get(id=navId)   #找到父ID
 		p = nav(
               name = nav_name,
+              name_en = nav_name_en,
               pid  = p_nav,
 			)
 		p.save()
@@ -289,32 +291,46 @@ def del_navigation(request):
 #   日期：2014.08.24
 # --------------------------------------
 @csrf_exempt
-def Twolink(request):
+def Twolink(request,template_name):
 	if request.is_ajax():
-		nav_id = request.POST.get('id','')
-		second_nav_list = nav.objects.filter(pid=nav_id)  #获取 当前二级 子导航
-		data = []
-		if second_nav_list:
-			for menu in second_nav_list:
-				temp = {}
-				temp['id'] = menu.id
-				temp['name'] = menu.name
-				data.append(temp)
-			third_nav_list = nav.objects.filter(pid=second_nav_list[0])  #获取当前三级 子导航
-			data2 = []
-			if third_nav_list:
-				for menu in third_nav_list:
-					temp2 = {}
-					temp2['id'] = menu.id
-					temp2['name'] = menu.name
-					data2.append(temp2)
-			return HttpResponse(json.dumps({
-				'data' : data,
-				'data2' : data2,
-				}),content_type='application/json')
-		else:  #没有二级导航的情况
-			return HttpResponse(json.dumps('error'),content_type='application/json')
+		nav_id = int(request.POST.get('id',''))
+		product_nav = nav.objects.filter(id__gt=2,level=1)  
+		if nav_id <= 8:          #一级导航id <= 8
+			p_id = nav_id        #父导航 id
+			s_id = ''  		     #二级导航 id
+			product_nav1 = nav.objects.filter(id=nav_id)   #获取当前导航  
+			try:
+				product_second_nav = nav.objects.filter(pid=product_nav1[0])
+			except Exception:
+				product_second_nav = None
+			try:
+				product_third_nav = nav.objects.filter(pid=product_second_nav[0])
+			except Exception:
+				product_third_nav = None
+		else:					 #二级导航以上id >8
+			pid = int(request.POST.get('pid',''))                   
+			#product_nav = nav.objects.filter(id=p_id)
+			p_id = pid     #父导航   id
+			print '*'*20
+			s_id = nav_id  #二级导航 id
+			try:
+				product_second_nav = nav.objects.filter(pid=p_id)     #获取所有二级导航
+				product_second_nav1 = nav.objects.filter(id=nav_id)   #获取当前导航 
+				product_third_nav = nav.objects.filter(pid=nav_id)
+			except Exception:
+				product_third_nav = None
+		print p_id
+		print s_id
+		return render(request,template_name,{
+				'product_nav':product_nav,
+				'Pid':p_id,
+				'Sid':s_id,
+				'product_second_nav':product_second_nav,
+				'product_third_nav':product_third_nav,
+			}
+			)
 	return HttpResponse('请求方法错误...')
+
 
 # ======================================
 # 	名字：产品列表
@@ -328,9 +344,33 @@ def product_list(request,template_name):
 	lists = news.objects.filter(p_id=1)
 	premissions = public_premissions(request)    #权限认证
 	public_pages = public_page(request,lists,8)  #分页
+	public_pages['list_type_name'] = []      #初始化一个 list
+	#for 循环用来获取 文章 相对应的 导航名称
+	for menu in lists:
+		temp = {}
+		temp['p_name'] = nav.objects.get(id=menu.p_id).name  #获取父导航名字
+		try:
+			temp['s_name'] = nav.objects.get(id=menu.s_id).name  #获取二级导航名字
+		except Exception:
+			temp['s_name'] = None
+		try:
+			temp['t_name'] = nav.objects.get(id=menu.t_id).name  #获取三级导航名字
+		except Exception:
+			temp['t_name'] = None	
+		public_pages['list_type_name'].append(temp)
+	# 用来 将 info_list 和 导航组合在一起，在模板中循环的时候就可以一一对应
+	data = []
+	for index in range(len(public_pages['info_list'])):
+		data.append({
+			'news': public_pages['info_list'][index],
+			'navs': public_pages['list_type_name'][index]
+			})
+	# print '*'*20
+	# for item in data:
+	# 	print item['news']
 	#渲染页面
 	# return HttpResponse(currentpage_en)
-	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
+	return render(request,template_name,{'public_pages':public_pages,'data':data,'premissions':premissions})
 
 # ======================================
 # 	名字：添加产品
@@ -416,9 +456,33 @@ def project_list(request,template_name):
 	lists = news.objects.filter(p_id=2)
 	premissions = public_premissions(request)    #权限认证
 	public_pages = public_page(request,lists,8)  #分页
+	public_pages['list_type_name'] = []      #初始化一个 list
+	#for 循环用来获取 文章 相对应的 导航名称
+	for menu in lists:
+		temp = {}
+		temp['p_name'] = nav.objects.get(id=menu.p_id).name  #获取父导航名字
+		try:
+			temp['s_name'] = nav.objects.get(id=menu.s_id).name  #获取二级导航名字
+		except Exception:
+			temp['s_name'] = None
+		try:
+			temp['t_name'] = nav.objects.get(id=menu.t_id).name  #获取三级导航名字
+		except Exception:
+			temp['t_name'] = None	
+		public_pages['list_type_name'].append(temp)
+	# 用来 将 info_list 和 导航组合在一起，在模板中循环的时候就可以一一对应
+	data = []
+	for index in range(len(public_pages['info_list'])):
+		data.append({
+			'news': public_pages['info_list'][index],
+			'navs': public_pages['list_type_name'][index]
+			})
+	# print '*'*20
+	# for item in data:
+	# 	print item['news']
 	#渲染页面
 	# return HttpResponse(currentpage_en)
-	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
+	return render(request,template_name,{'public_pages':public_pages,'data':data,'premissions':premissions})
 
 # ======================================
 # 	名字：添加工程
@@ -487,7 +551,7 @@ def pro_add_handle(request):
 			content_en = content_en,
 			)
 		p.save()
-		return HttpResponseRedirect('/backend/project_list/')
+		return HttpResponseRedirect('/backend/product_list/')
 	return HttpResponse('请求方法错误...')
 
 # ======================================
@@ -502,9 +566,33 @@ def info_list(request,template_name):
 	lists = news.objects.filter(p_id__gt=2)
 	premissions = public_premissions(request)    #权限认证
 	public_pages = public_page(request,lists,8)  #分页
+	public_pages['list_type_name'] = []      #初始化一个 list
+	#for 循环用来获取 文章 相对应的 导航名称
+	for menu in lists:
+		temp = {}
+		temp['p_name'] = nav.objects.get(id=menu.p_id).name  #获取父导航名字
+		try:
+			temp['s_name'] = nav.objects.get(id=menu.s_id).name  #获取二级导航名字
+		except Exception:
+			temp['s_name'] = None
+		try:
+			temp['t_name'] = nav.objects.get(id=menu.t_id).name  #获取三级导航名字
+		except Exception:
+			temp['t_name'] = None	
+		public_pages['list_type_name'].append(temp)
+	# 用来 将 info_list 和 导航组合在一起，在模板中循环的时候就可以一一对应
+	data = []
+	for index in range(len(public_pages['info_list'])):
+		data.append({
+			'news': public_pages['info_list'][index],
+			'navs': public_pages['list_type_name'][index]
+			})
+	# print '*'*20
+	# for item in data:
+	# 	print item['news']
 	#渲染页面
 	# return HttpResponse(currentpage_en)
-	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
+	return render(request,template_name,{'public_pages':public_pages,'data':data,'premissions':premissions})
 
 # ======================================
 # 	名字：添加资讯
@@ -820,7 +908,7 @@ def admin_delete(request):
 		ids = request.POST.get('id_attr', '')                           # 要删除的管理员id
 		password = request.POST.get('delete_attr', '')                  # 确认密码
 
-	userInfos = User.objects.get(id=1)                                  # 获取超级管理员
+	userInfos = User.objects.get(is_superuser=1)                         # 获取超级管理员
 	userPassword = userInfos.password                                   # 获取超级管理员密码
 
 	if check_password(password, userPassword):                        
@@ -846,10 +934,10 @@ def admin_edit(request, template_name):
 
 	if request.method == "GET":							   		# 确保是get提交
 		ids = request.GET.get('id','')	                   		# 要修改的管理员id
-
-	info = User.objects.get(id=ids)					   		    # 获取管理员信息
-	premissions = public_premissions(request)
-	return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
+		info = User.objects.get(id=ids)					   		    # 获取管理员信息
+		premissions = public_premissions(request)
+		return render(request, template_name, {'info' : info,'premissions':premissions}) # 跳转到修改页面
+	return HttpResponse('请求方法错误...')
 
 # ======================================
 # 	名字：管理员修改表单处理
@@ -905,6 +993,12 @@ def edit_info(request, template_name):
 	p_id_name = nav.objects.get(id = p_id).name
 	s_id_name = nav.objects.get(id = s_id).name
 	
+	if types == 'product':
+		edit_type = u'修改佳易得产品'
+	elif types == 'project':
+		edit_type = u'修给工程应用'
+	else:
+		edit_type = u'修改资讯'
 	premissions = public_premissions(request)
 
 	# ueditor编辑器初始化
@@ -919,6 +1013,7 @@ def edit_info(request, template_name):
 		'form_en':form_en,
 		'p_id_name':p_id_name,
 		's_id_name':s_id_name,
+		'edit_type':edit_type,
 		'premissions':premissions,
 	}
 

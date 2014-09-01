@@ -16,22 +16,36 @@
                         <thead>
                             <tr>
                                 <th>标题</th>
-                                <th>分类</th>
+                                <th>所属类型</th>
+                                <th>英文版面</th>
                                 <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
-                        </thead>
-                        {% for list in public_pages.info_list %}
+                        </thead> 
+                        {% for list in data %}
                         <tbody>
                             <tr>
-                                <td>{{list.title}}</td>
-                                <td>{{list.remark}}</td>
-                                <td>{{list.datetime | date:"Y-m-d H:i:s"}}</td>
+                                <td>{{list.news.title}}</td>
                                 <td>
-                                    <a href="/backend/edit_info/?type=product&id={{list.id}}">
+                                {% if list.navs.t_name %}
+                                 {{list.navs.p_name}}-{{list.navs.s_name}}-{{list.navs.t_name}}
+                                {% elif list.navs.s_name %}
+                                     {{list.navs.p_name}}-{{list.navs.s_name}}
+                                {% else%}
+                                     {{list.navs.p_name}}
+                                {% endif %}
+                                </td>
+                                {% if list.news.content_en %}
+                                    <td>是</td>
+                                {% else %}
+                                    <td>否</td>
+                                {% endif %}
+                                <td>{{list.news.datetime | date:"Y-m-d H:i:s"}}</td>
+                                <td>
+                                    <a href="/backend/edit_info/?type=product&id={{list.news.id}}">
                                         <input type="image" src="/static/images/icn_edit.png" title="编辑" />
                                     </a>
-                                    <a href="javascript:void(0);" click_action="/backend/del_info/?type=product&id={{list.id}}" name="delete">
+                                    <a href="javascript:void(0);" click_action="/backend/所属类型del_info/?type=product&id={{list.news.id}}" name="delete">
                                         <input type="image" src="/static/images/icn_trash.png" title="回收" />
                                     </a>
                                 </td>

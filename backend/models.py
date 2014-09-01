@@ -23,7 +23,7 @@ class nav(models.Model):
 	name = models.CharField(max_length=20)
 	name_en = models.CharField(max_length=20)
 	pid  = models.ForeignKey('self',blank=True,null=True,related_name='child_nav')
-	level = models.IntegerField(max_length=2)
+	level = models.IntegerField(max_length=2,blank=True,null=True)
 	def __unicode__(self):
 		return self.name
 
@@ -54,7 +54,7 @@ class news(models.Model):
 	content_en = models.TextField()
 	datetime = models.DateTimeField(auto_now_add=True)
 	def __unicode__(self):
-		return self.p_id
+		return unicode(self.p_id)
 
 	class Meta:
 		ordering = ['-datetime']
