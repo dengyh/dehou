@@ -182,16 +182,12 @@ article.breadcrumbs {
 
 aside#sidebar {
     width: 23%;
-<<<<<<< HEAD
-    background:url(../images/sidebar.png) repeat;
-=======
-    background-image:url(../images/sidebar.png) repeat;
     background-color: #E0E0E3 ;
->>>>>>> bb567eb05c1879d17fdf8809f86551ab2f31fb7f
     float: left;
     min-height: 500px;
     margin-top: -4px;
-    height: 100% !important;
+    height: 100%;
+    overflow: hidden;
 }
 #sidebar hr {
     border: none;
@@ -342,6 +338,7 @@ aside#sidebar {
 }
 #sidebar footer {
     margin-top: 20%;
+     background-color: #E0E0E3 ;
 }
 /* Main Content */
 

@@ -11,15 +11,9 @@
     <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/toast.js"></script>
     <script src="/static/js/jquery.tablesorter.min.js"></script>
-    <script type="text/javascript">
-	$(document).ready(function() 
-    	{ 
-      	  $(".tablesorter").tablesorter(); 
-   	 } 
-	);
-	</script>
     {% block style %}{% endblock %}
 </head>
+
 <body>
     <!-- 头部栏目 开始 -->
     <header id="header">
@@ -114,7 +108,7 @@
         <footer>
             <hr />
             <p>
-            <strong>Copyright &copy; 2014 深圳德厚科技有限公司</strong>
+                <strong>Copyright &copy; 2014 深圳德厚科技有限公司</strong>
             </p>
         </footer>
     </aside>
@@ -126,21 +120,25 @@
 
 </body>
 <script type="text/javascript">
-$(document).ready(function(){
-    var strUrl=window.location.href;
-    var arrUrl=strUrl.split("/");
-    var strPage="/"+arrUrl[arrUrl.length-3]+"/"+arrUrl[arrUrl.length-2]+"/";
-    $("a.link").each(function(){
-        if($(this).attr("href")==strPage)
+// 设置当前样式
+$(document).ready(function() {
+    var strUrl = window.location.href;
+    var arrUrl = strUrl.split("/");
+    var strPage = "/" + arrUrl[arrUrl.length - 3] + "/" + arrUrl[arrUrl.length - 2] + "/";
+    $("a.link").each(function() {
+
+        if ($(this).attr("href") == strPage)
+        // alert($(this).attr("href")==strPage);
             $(this).addClass("current_item");
     });
-
-    var h=document.body.clientWidth; 
-    var h1=document.body.clientHeight ;
-    var h2=window.screen.availHeight 
-    // alert(h2);
-    // alert($(document).height());
-    // $("#sidebar").height(h);
+});
+//当文档加载完毕后设置左侧样式高度，折中做法
+$(window).load(function() {
+    var height = $("section#main").height();
+    var h1 = $(document).height();
+    var h = (height > h1) ? height : h1;
+    $("#sidebar").height(h);
 });
 </script>
+
 </html>
