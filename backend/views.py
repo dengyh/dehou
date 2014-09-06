@@ -1170,3 +1170,30 @@ def admin_changePwd_handle(request):
 			return render(request, "backend_href.html", {'title':"旧密码输入不一致 :(", 'href':"home"})
 
 	return render(request, "backend_href.html", {'title':"请求失误 :(", 'href':"home"})
+
+# ======================================
+# 	名字：产品优势列表
+#   功能：列表
+#   人员：黄晓佳
+#   日期：2014.09.06
+# --------------------------------------
+def advantanges_list(request, template_name):
+	return render(request, template_name)
+
+# ======================================
+# 	名字：产品优势修改
+#   功能：修改
+#   人员：黄晓佳
+#   日期：2014.09.06
+# --------------------------------------
+def advantanges_edit(request, template_name):
+	return render(request, template_name)
+
+# ======================================
+# 	名字：产品优势修改表单处理
+#   功能：修改表单处理
+#   人员：黄晓佳
+#   日期：2014.09.06
+# --------------------------------------
+def advantanges_edit_handle(request):
+	return HttpResponseRedirect('d')
