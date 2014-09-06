@@ -12,7 +12,7 @@ import json
 #导入数据model
 from django.contrib.auth.models import User  #用户表
 from backend.models import userInfo  #继承User表
-from backend.models import nav,news,comments,job
+from backend.models import nav,news,comments,job,advantages
 
 #导入form表单
 from backend.form import UEditorForm,UEditorForm_en,loginForm,adminForm,edit_user_Form
@@ -1177,8 +1177,12 @@ def admin_changePwd_handle(request):
 #   人员：黄晓佳
 #   日期：2014.09.06
 # --------------------------------------
-def advantanges_list(request, template_name):
-	return render(request, template_name)
+def advantages_list(request, template_name):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	advantangeslist = advantages.objects.all()
+	premissions = public_premissions(request)
+	return render(request,template_name,{'advantangeslist':advantangeslist,'premissions':premissions})
 
 # ======================================
 # 	名字：产品优势修改
@@ -1186,8 +1190,11 @@ def advantanges_list(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.09.06
 # --------------------------------------
-def advantanges_edit(request, template_name):
-	return render(request, template_name)
+def advantages_edit(request, template_name):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	premissions = public_premissions(request)
+	return render(request,template_name,{'premissions':premissions})
 
 # ======================================
 # 	名字：产品优势修改表单处理
@@ -1195,5 +1202,5 @@ def advantanges_edit(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.09.06
 # --------------------------------------
-def advantanges_edit_handle(request):
+def advantages_edit_handle(request):
 	return HttpResponseRedirect('d')

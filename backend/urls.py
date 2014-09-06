@@ -19,9 +19,9 @@ urlpatterns = patterns('backend.views',
 	url(r'^message_replay_handle/$'   , 'message_replay_handle'),                                    # 留言回复表单处理
 	url(r'^del_message/$'   , 'del_message'),                                                        # 留言删除
  
-	url(r'^advantanges_list/$', 'advantanges_list', {'template_name':'advantanges_list.html'}),      # 产品优势列表
-	url(r'^advantanges_edit/$', 'advantanges_edit', {'template_name':'advantanges_edit.html'}),      # 产品优势修改
-	url(r'^advantanges_edit_handle/$', 'advantanges_edit_handle'),                                   # 产品优势修改表单处理
+	url(r'^advantages_list/$', 'advantages_list', {'template_name':'advantages_list.html'}),      # 产品优势列表
+	url(r'^advantages_edit/$', 'advantages_edit', {'template_name':'advantages_edit.html'}),      # 产品优势修改
+	url(r'^advantages_edit_handle/$', 'advantages_edit_handle'),                                   # 产品优势修改表单处理
 )
 
 urlpatterns += patterns('backend.views',
