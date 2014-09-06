@@ -95,6 +95,12 @@
             <li class="icn_categories"><a href="/backend/message_list/" class="link">留言列表</a>
             </li>
         </ul>
+        {% endifequal %} {% ifequal list '7' %}
+        <h3>产品优势管理</h3>
+        <ul class="toggle">
+            <li class="icn_categories"><a href="/backend/advantanges_list/" class="link">产品优势列表</a>
+            </li>
+        </ul>
         {% endifequal %} {% endfor %} {% if user.is_superuser %}
         <!--判断是否为 超级管理员-->
         <h3>账户管理</h3>
