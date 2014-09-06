@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 09 月 06 日 03:04
+-- 生成日期: 2014 年 09 月 06 日 03:15
 -- 服务器版本: 5.6.12-log
 -- PHP 版本: 5.4.12
 
@@ -388,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `backend_userinfo` (
 --
 
 INSERT INTO `backend_userinfo` (`id`, `user_id`, `premissions`) VALUES
-(1, 1, '1,2,3,4,5,6,'),
+(1, 1, '1,2,3,4,5,6,7,'),
 (2, 2, '1,2,3,5,6,'),
 (3, 3, '1,2,');
 
