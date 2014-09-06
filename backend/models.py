@@ -114,3 +114,30 @@ class comments(models.Model):
 	replay_time = models.DateTimeField(blank=True,null=True)
 	def __unicode__(self):
 		return self.name
+
+# ---------------------------
+# advantanges: 产品优势表
+#  	 problem : 产品问题
+#	solution1: 解决方法1
+#   solution2: 解决方法2
+#   solution3: 解决方法3
+#   solution4: 解决方法4
+#  	 problem_en : 英文产品问题
+#	solution1_en: 解决方法1
+#   solution2_en: 解决方法2
+#   solution3_en: 解决方法3
+#   solution4_en: 解决方法4
+# ---------------------------
+class advantages(models.Model):
+	problem = models.CharField(max_length=200,blank=True,null=True)
+	solution1 = models.CharField(max_length=200,blank=True,null=True)
+	solution2 = models.CharField(max_length=200,blank=True,null=True)
+	solution3 = models.CharField(max_length=200,blank=True,null=True)
+	solution4 = models.CharField(max_length=200,blank=True,null=True)
+	problem_en = models.CharField(max_length=200,blank=True,null=True)
+	solution1_en = models.CharField(max_length=200,blank=True,null=True)
+	solution2_en = models.CharField(max_length=200,blank=True,null=True)
+	solution3_en = models.CharField(max_length=200,blank=True,null=True)
+	solution4_en = models.CharField(max_length=200,blank=True,null=True)
+	def __unicode__(self):
+		return self.problem

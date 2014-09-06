@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 08 月 29 日 04:32
+-- 生成日期: 2014 年 09 月 06 日 03:15
 -- 服务器版本: 5.6.12-log
 -- PHP 版本: 5.4.12
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=46 ;
 
 --
 -- 转存表中的数据 `auth_permission`
@@ -107,7 +107,16 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (33, 'Can delete resume', 11, 'delete_resume'),
 (34, 'Can add comments', 12, 'add_comments'),
 (35, 'Can change comments', 12, 'change_comments'),
-(36, 'Can delete comments', 12, 'delete_comments');
+(36, 'Can delete comments', 12, 'delete_comments'),
+(37, 'Can add message', 13, 'add_message'),
+(38, 'Can change message', 13, 'change_message'),
+(39, 'Can delete message', 13, 'delete_message'),
+(40, 'Can add feedback', 14, 'add_feedback'),
+(41, 'Can change feedback', 14, 'change_feedback'),
+(42, 'Can delete feedback', 14, 'delete_feedback'),
+(43, 'Can add advantages', 15, 'add_advantages'),
+(44, 'Can change advantages', 15, 'change_advantages'),
+(45, 'Can delete advantages', 15, 'delete_advantages');
 
 -- --------------------------------------------------------
 
@@ -129,14 +138,16 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
   `date_joined` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `auth_user`
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$10000$c9WhqTUux4xy$042oTsyCr7/gS6kf+X5+e/2vFGFxHy/0jT4nrUM2VXI=', '2014-08-29 03:22:44', 1, 'admin', '超级管理员', '', '', 1, 1, '2014-08-29 03:15:15');
+(1, 'pbkdf2_sha256$10000$c9WhqTUux4xy$042oTsyCr7/gS6kf+X5+e/2vFGFxHy/0jT4nrUM2VXI=', '2014-09-05 12:20:14', 1, 'admin', '超级管理员', '', '', 1, 1, '2014-08-29 03:15:15'),
+(2, 'pbkdf2_sha256$10000$ml9tfmfhI1oB$xCvwwrG3QH0eDFgZ1KfU0bseYd5SnV/0UDj0hA4q8vg=', '2014-08-29 06:12:41', 0, 'yoyo', 'yoyo', '', '', 0, 1, '2014-08-29 06:12:41'),
+(3, 'pbkdf2_sha256$10000$V5GQT25Kdotb$YneEZXv5UxG/zNwBzVIrYP9hcrs1ofKcRoQ/G48BE7g=', '2014-09-05 12:28:25', 0, 'aa', 'aa', '', '', 0, 1, '2014-09-05 12:28:25');
 
 -- --------------------------------------------------------
 
@@ -169,6 +180,39 @@ CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
   KEY `auth_user_user_permissions_6340c63c` (`user_id`),
   KEY `auth_user_user_permissions_83d7f98b` (`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `backend_advantages`
+--
+
+CREATE TABLE IF NOT EXISTS `backend_advantages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `problem` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution1` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution2` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution3` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution4` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `problem_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution1_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution2_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution3_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `solution4_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+
+--
+-- 转存表中的数据 `backend_advantages`
+--
+
+INSERT INTO `backend_advantages` (`id`, `problem`, `solution1`, `solution2`, `solution3`, `solution4`, `problem_en`, `solution1_en`, `solution2_en`, `solution3_en`, `solution4_en`) VALUES
+(1, '第一个问题', '解决一', '解决二', '解决三', '解决四', '英文-第一个问题', '英文-解决一', '英文-解决二', '英文-解决三', '英文-解决四'),
+(2, '第二个问题', '解决1', '解决2', '解决3', '解决4', '英文-第二个问题', '解决1', '解决2', '解决3', '解决4'),
+(3, '第三个问题', '解决1', '解决2', '解决3', '解决4', '英文-第四个问题', '解决1', '解决2', '解决3', '解决4'),
+(4, '第四个问题', '解决1', '解决2', '解决3', '解决4', '英文-第四个问题', '解决1', '解决2', '解决3', '解决4'),
+(5, '第五个问题', '解决1', '解决2', '解决3', '解决4', '英文-第五个问题', '解决1', '解决2', '解决3', '解决4'),
+(6, '第六个问题', '解决1', '解决2', '解决3', '解决4', '英文-第六个问题', '解决1', '解决2', '解决3\r\n', '解决4');
 
 -- --------------------------------------------------------
 
@@ -215,10 +259,10 @@ CREATE TABLE IF NOT EXISTS `backend_nav` (
   `name` varchar(20) COLLATE utf8_bin NOT NULL,
   `name_en` varchar(20) COLLATE utf8_bin NOT NULL,
   `pid_id` int(11) DEFAULT NULL,
-  `level` int(11) NOT NULL,
+  `level` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `backend_nav_664e8aab` (`pid_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=51 ;
 
 --
 -- 转存表中的数据 `backend_nav`
@@ -232,7 +276,49 @@ INSERT INTO `backend_nav` (`id`, `name`, `name_en`, `pid_id`, `level`) VALUES
 (5, '共赢专区', 'win-win', NULL, 1),
 (6, '德厚新闻', 'dehou_news', NULL, 1),
 (7, '关于德厚', 'about', NULL, 1),
-(8, '联系德厚', 'contract', NULL, 1);
+(8, '联系德厚', 'contract', NULL, 1),
+(9, '玻璃隔热涂膜', '玻璃隔热涂膜_en', 1, NULL),
+(10, '墙体材料', '墙体材料_en', 1, NULL),
+(11, '地面材料', '地面材料_en', 1, NULL),
+(12, '最新工程', '最新工程_en', 2, NULL),
+(13, '家庭项目', '家庭项目_en', 2, NULL),
+(14, '办公项目', '办公项目_en', 2, NULL),
+(15, '工程项目', '工程项目_en', 2, NULL),
+(16, '技术研发', '技术研发_en', 3, NULL),
+(17, '博士团队', '博士团队_en', 3, NULL),
+(18, '施工团队', '施工团队_en', 3, NULL),
+(19, '半自动淋涂设备', '半自动_en', 3, NULL),
+(20, '全自动生产线', '全自动_en', 3, NULL),
+(21, '专利证书', '专利证书_en', 4, NULL),
+(22, '荣誉奖项', '荣誉奖项_en', 4, NULL),
+(23, '国家标准、行业标准', '国家标准_en', 4, NULL),
+(24, '检测报告', '检测报告_en', 4, NULL),
+(25, '合作伙伴', '合作伙伴_en', 4, NULL),
+(26, '代理加盟', '代理加盟_en', 5, NULL),
+(27, '工程项目合作', '工程项目合作_en', 5, NULL),
+(28, '旗舰店', '旗舰店_en', 5, NULL),
+(29, '合同能源管理（EMC）', '合同_en', 5, NULL),
+(30, '公司动态', '公司动态_en', 6, NULL),
+(31, '行业新闻', '行业新闻_en', 6, NULL),
+(32, '节能科普小知识', '节能_en', 6, NULL),
+(33, '德厚简介', '德厚简介_en', 7, NULL),
+(34, '商标释义', '商标释义_en', 7, NULL),
+(35, '总经理介绍和致辞', '总经理_en', 7, NULL),
+(36, '公司实力', '公司实力_en', 7, NULL),
+(37, '人才资源', '人才资源_en', 7, NULL),
+(38, '合作伙伴', '合作伙伴_en', 7, NULL),
+(39, '人才理念', '人才理念_en', 37, NULL),
+(40, '成长空间', '成长空间_en', 37, NULL),
+(41, '职位信息', '职位信息_en', 37, NULL),
+(42, '建筑玻璃应用', '建筑_en', 9, NULL),
+(43, '其他玻璃应用', '其他_en', 9, NULL),
+(44, '隔热中空玻璃', '隔热_en', 9, NULL),
+(45, '内墙涂料', '内墙_en', 10, NULL),
+(46, '外墙涂料', '外墙_en', 10, NULL),
+(47, '墙体防水涂料', '墙体_en', 10, NULL),
+(48, '石材防护剂', '石材_en', 11, NULL),
+(49, '地面晶化剂', '地面_en', 11, NULL),
+(50, '地面防水涂料', '地面防水_en', 11, NULL);
 
 -- --------------------------------------------------------
 
@@ -254,7 +340,18 @@ CREATE TABLE IF NOT EXISTS `backend_news` (
   `content_en` longtext COLLATE utf8_bin NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+
+--
+-- 转存表中的数据 `backend_news`
+--
+
+INSERT INTO `backend_news` (`id`, `p_id`, `s_id`, `t_id`, `title`, `title_en`, `remark`, `remark_en`, `img`, `content`, `content_en`, `datetime`) VALUES
+(1, 1, 9, 42, '第一个产品（中文）', '第一个产品（英文）', '第一个产品（中文）', '第一个产品（英文）', '', '<p>第一个产品（中文）<br/></p>', '<p>第一个产品（英文）</p>', '2014-08-29 15:33:18'),
+(2, 2, 12, 0, '第一个工程（）', '第一个工程（英文）', '第一个工程', '第一个工程（英文）', '', '<p>第一个工程&nbsp;&nbsp;&nbsp;&nbsp;<br/></p>', '<p>第一个工程（英文）<br/></p>', '2014-08-30 02:49:37'),
+(3, 1, 10, 45, '第二个产品', '第二个产品（英文）', '第二个产品', '第二个产品（英文）', '', '<p>第二个产品&nbsp;&nbsp;&nbsp;&nbsp;<br/></p>', '<p>第二个产品（英文）<br/></p>', '2014-08-30 02:50:29'),
+(4, 1, 11, 48, '第三个产品', '第三个产品呢', '第三个产品', '第三个产品', '', '<p>第三个产品<br/></p>', '<p>第三个产品（英文）<br/></p>', '2014-08-30 02:53:20'),
+(6, 3, 16, 0, '第二条资讯', '', '第二天资讯', '', '', '<p>发反反复复<br/></p>', '', '2014-08-30 14:04:59');
 
 -- --------------------------------------------------------
 
@@ -284,14 +381,88 @@ CREATE TABLE IF NOT EXISTS `backend_userinfo` (
   `premissions` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `backend_userinfo`
 --
 
 INSERT INTO `backend_userinfo` (`id`, `user_id`, `premissions`) VALUES
-(1, 1, '1,2,3,4,5,6,');
+(1, 1, '1,2,3,4,5,6,7,'),
+(2, 2, '1,2,3,5,6,'),
+(3, 3, '1,2,');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `chat_feedback`
+--
+
+CREATE TABLE IF NOT EXISTS `chat_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customID` varchar(128) COLLATE utf8_bin NOT NULL,
+  `isDisplay` tinyint(1) NOT NULL,
+  `content` varchar(256) COLLATE utf8_bin NOT NULL,
+  `time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+
+--
+-- 转存表中的数据 `chat_feedback`
+--
+
+INSERT INTO `chat_feedback` (`id`, `customID`, `isDisplay`, `content`, `time`) VALUES
+(1, 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', 1, '你也是  逗比', '2014-09-03 09:21:40'),
+(2, 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', 1, '你 没啊', '2014-09-03 09:21:57'),
+(3, 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', 1, 'dfasdfdsf', '2014-09-03 09:30:53'),
+(4, 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 1, '你大爷', '2014-09-03 12:32:23'),
+(5, 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 1, '点点滴滴', '2014-09-05 04:05:34');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `chat_message`
+--
+
+CREATE TABLE IF NOT EXISTS `chat_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `isDisplay` tinyint(1) NOT NULL,
+  `content` varchar(256) COLLATE utf8_bin NOT NULL,
+  `customID` varchar(128) COLLATE utf8_bin NOT NULL,
+  `name` varchar(16) COLLATE utf8_bin NOT NULL,
+  `phone` varchar(16) COLLATE utf8_bin NOT NULL,
+  `time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=24 ;
+
+--
+-- 转存表中的数据 `chat_message`
+--
+
+INSERT INTO `chat_message` (`id`, `isDisplay`, `content`, `customID`, `name`, `phone`, `time`) VALUES
+(1, 1, '个', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 09:18:33'),
+(2, 1, '你才是逗比', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 09:21:49'),
+(3, 1, '你大爷 啊', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 09:22:06'),
+(4, 1, '靠 你打', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 09:22:09'),
+(5, 1, '靠', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 09:23:07'),
+(6, 1, '大大的擦  ', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 10:09:55'),
+(7, 1, '打算', 'f90f8d61-334a-11e4-a65d-206a8a5d2ed1', '范德萨', '飞洒', '2014-09-03 10:10:15'),
+(8, 1, 'd', 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 'ddd', 'x', '2014-09-03 11:50:47'),
+(9, 1, 'j', 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 'ddd', 'x', '2014-09-03 11:50:50'),
+(10, 1, 'j', 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 'ddd', 'x', '2014-09-03 11:50:52'),
+(11, 1, 'f', 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 'ddd', 'x', '2014-09-03 12:13:06'),
+(12, 1, 'fdsfsd', 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 'ddd', 'x', '2014-09-03 12:13:09'),
+(13, 1, 'ni daye', 'f1d0cc21-335f-11e4-9cc7-206a8a5d2ed1', 'ddd', 'x', '2014-09-03 12:35:12'),
+(14, 1, 'fdsfdsdsaas ', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:27'),
+(15, 1, 'dsfds', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:29'),
+(16, 1, 'f', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:30'),
+(17, 1, 'd', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:31'),
+(18, 1, 's', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:31'),
+(19, 1, 'sd', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:32'),
+(20, 1, 'sd', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:32'),
+(21, 1, 's', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:32'),
+(22, 1, 'sd', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:33'),
+(23, 1, 'ds', 'b8cbb08f-34b1-11e4-b57d-206a8a5d2ed1', 'ffffv ', ' dddd', '2014-09-05 04:04:33');
 
 -- --------------------------------------------------------
 
@@ -306,7 +477,7 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
   `model` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;
 
 --
 -- 转存表中的数据 `django_content_type`
@@ -324,7 +495,10 @@ INSERT INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES
 (9, 'news', 'backend', 'news'),
 (10, 'job', 'backend', 'job'),
 (11, 'resume', 'backend', 'resume'),
-(12, 'comments', 'backend', 'comments');
+(12, 'comments', 'backend', 'comments'),
+(13, 'message', 'chat', 'message'),
+(14, 'feedback', 'chat', 'feedback'),
+(15, 'advantages', 'backend', 'advantages');
 
 -- --------------------------------------------------------
 
@@ -345,7 +519,15 @@ CREATE TABLE IF NOT EXISTS `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('55g1x3owqhg7mmtgcbutcgx4sgqetbwx', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-12 03:22:45');
+('162t14grgxd1gumww9ak5jrhr8xu44v2', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-13 12:01:34'),
+('55g1x3owqhg7mmtgcbutcgx4sgqetbwx', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-12 03:22:45'),
+('881emgt0nd2968s4fxc97k3xg15vtd9b', 'NTczOTdjN2JiODk2ZGNmNzc0NzdjOTg3ZWZmMDlkOWQ5MjU5MTE0Nzp7fQ==', '2014-09-16 01:48:42'),
+('nme43e11rqrrme6o7b3vil7m8elqatba', 'M2M3YzliMzg1MDI0ODNjYTE2YjRkMTUwYzUwNThhZTY5ZWE2Mzk3ZDqAAn1xAVUGY3VzdG9tcQIoY2NoYXQudmlld3MKQ3VzdG9tCnEDb31xBChVBXBob25lcQVYBgAAAOmjnua0knEGVQJpZHEHY3V1aWQKVVVJRApxCCmBcQl9cQpVA2ludHELihHRLl2KaiBdpuQRSjNhjQ/5AHNiVQRuYW1lcQxYCQAAAOiMg+W+t+iQqHENdWJzLg==', '2014-09-17 09:16:22'),
+('o5mlczrd09q6row2kiavknmavxtr7atm', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-15 03:13:53'),
+('tubmit4oaq034pjmh3cyfyh9l1jodlm3', 'MGRjZmM2MjAyZTBkNGQwMzgwYjA4YTkzMWVkNjBjY2QxMGY5YjA3YjqAAn1xAVUGY3VzdG9tcQIoY2NoYXQudmlld3MKQ3VzdG9tCnEDb31xBChVBXBob25lcQVYAQAAAHhVAmlkcQZjdXVpZApVVUlECnEHKYFxCH1xCVUDaW50cQqKEdEuXYpqIMec5BFfMyHM0PEAc2JVBG5hbWVxC1gDAAAAZGRkcQx1YnMu', '2014-09-17 11:46:30'),
+('tyq5grwxk87l4ege8gvcgl5occz2ocdt', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-12 14:41:45'),
+('vbds2up0nxuo9br4960fv148qi9sy72g', 'MTdiNWIxNWQ0ZTE3YzI0MjY2Mzc0NDIwNGZhODZhMzhjZDVkM2U1OTqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQSKAQFVBmN1c3RvbShjY2hhdC52aWV3cwpDdXN0b20KcQVvfXEGKFUFcGhvbmVxB1gFAAAAIGRkZGRVAmlkcQhjdXVpZApVVUlECnEJKYFxCn1xC1UDaW50cQyKEdEuXYpqIH215BGxNI+wy7gAc2JVBG5hbWVxDVgGAAAAZmZmZnYgdWJ1Lg==', '2014-09-19 12:20:14'),
+('vsw35rz4184wh8zsg0xba29g2jlmhngr', 'ZjhkZTk2ZTMzYmRmZDRhYzdkMTI2NTllZWFhMTdlYzZhYmIxN2IwMDp7Il9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=', '2014-09-13 06:05:43');
 
 -- --------------------------------------------------------
 
@@ -388,15 +570,15 @@ ALTER TABLE `auth_permission`
 -- 限制表 `auth_user_groups`
 --
 ALTER TABLE `auth_user_groups`
-  ADD CONSTRAINT `user_id_refs_id_40c41112` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  ADD CONSTRAINT `group_id_refs_id_274b862c` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`);
+  ADD CONSTRAINT `group_id_refs_id_274b862c` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  ADD CONSTRAINT `user_id_refs_id_40c41112` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- 限制表 `auth_user_user_permissions`
 --
 ALTER TABLE `auth_user_user_permissions`
-  ADD CONSTRAINT `user_id_refs_id_4dc23c39` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  ADD CONSTRAINT `permission_id_refs_id_35d9ac25` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`);
+  ADD CONSTRAINT `permission_id_refs_id_35d9ac25` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  ADD CONSTRAINT `user_id_refs_id_4dc23c39` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- 限制表 `backend_nav`
