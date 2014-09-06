@@ -120,6 +120,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(os.path.dirname(__file__), 'backend/templates').replace('\\','/'),
+    os.path.join(os.path.dirname(__file__), 'chat/templates').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -130,10 +131,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'backend',          # 后台
+    'chat',
     'DjangoUeditor',    # ueditor编辑器
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
