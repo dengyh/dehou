@@ -1190,11 +1190,16 @@ def advantages_list(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.09.06
 # --------------------------------------
+@csrf_exempt
 def advantages_edit(request, template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
 	premissions = public_premissions(request)
-	return render(request,template_name,{'premissions':premissions})
+
+	if request.method == "GET":
+		ids = request.GET.get('id', '')
+		adv = advantages.objects.get(id = ids)
+		return render(request,template_name,{'premissions':premissions, 'adv':adv})
 
 # ======================================
 # 	名字：产品优势修改表单处理
@@ -1202,5 +1207,35 @@ def advantages_edit(request, template_name):
 #   人员：黄晓佳
 #   日期：2014.09.06
 # --------------------------------------
+@csrf_exempt
 def advantages_edit_handle(request):
-	return HttpResponseRedirect('d')
+	if request.method == "POST":
+		ids = request.POST.get('id', '')
+		problem = request.POST['problem']
+		solution1 = request.POST['solution1']
+		solution2 = request.POST['solution2']
+		solution3 = request.POST['solution3']
+		solution4 = request.POST['solution4']
+		problem_en = request.POST['problem_en']
+		solution1_en = request.POST['solution1_en']
+		solution2_en = request.POST['solution2_en']
+		solution3_en = request.POST['solution3_en']
+		solution4_en = request.POST['solution4_en']
+
+		adv = advantages.objects.get(id = ids)
+		adv.problem = problem
+		adv.solution1 = solution1
+		adv.solution2 = solution2
+		adv.solution3 = solution3
+		adv.solution4 = solution4
+		adv.problem_en = problem_en
+		adv.solution1_en = solution1_en
+		adv.solution2_en = solution2_en
+		adv.solution3_en = solution3_en
+		adv.solution4_en = solution4_en
+		adv.save()
+
+		return render(request, "backend_href.html", {'title':"修改产品优势成功 :)", 'href':"advantages"})
+
+	return render(request, "backend_href.html", {'title':"请求失误 :(", 'href':"advantages"})
+
