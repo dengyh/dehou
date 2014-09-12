@@ -26,6 +26,44 @@
                         <input type="text" name="name_en" class="title" style="height:25px;" value="{{nav.name_en}}">
                     </fieldset>  
                 </div>
+                {% if nav.level %}
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
+                        <label>页面标题</label>
+                        <input type="text" name="title" class="title" style="height:25px;" value="{{nav.title}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
+                        <label>页面标题（英文）</label>
+                        <input type="text" name="title_en" class="title" style="height:25px;" value="{{nav.title_en}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
+                        <label>页面关键字</label>
+                        <input type="text" name="keywords" class="title" style="height:25px;" value="{{nav.keywords}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
+                        <label>页面关键字（英文）</label>
+                        <input type="text" name="keywords_en" class="title" style="height:25px;" value="{{nav.keywords_en}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
+                        <label>页面描述</label>
+                        <input type="text" name="description" class="title" style="height:25px;" value="{{nav.description}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both; margin-bottom:50px;margin-top:50px">
+                        <label>页面描述（英文）</label>
+                        <input type="text" name="description_en" class="title" style="height:25px;" value="{{nav.description_en}}">
+                    </fieldset>  
+                </div>
+                {% endif %}
                 <footer>
                     <div class="submit_link">
                         <input type="hidden" value="{{nav.id}}" name="id" />
