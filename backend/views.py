@@ -1127,6 +1127,8 @@ def edit_info_handle(request):
 	if request.method == "POST":
 		ids = request.POST['id']
 		types = request.POST['type']
+		print '*'*200
+		print types
 		title = request.POST['title']
 		title_en = request.POST['title_en']
 		remark = request.POST['remark']
