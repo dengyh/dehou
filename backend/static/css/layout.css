@@ -182,10 +182,7 @@ article.breadcrumbs {
 
 aside#sidebar {
     width: 23%;
-<<<<<<< HEAD
     background-image:url(../images/sidebar.png) repeat;
-=======
->>>>>>> 975d7b7b2579ca3006e138e298b6dd659444ad62
     background-color: #E0E0E3 ;
     float: left;
     min-height: 500px;
