@@ -1,8 +1,8 @@
 function add_info(url) {
 	// 上传封面图片事件
-    $('#uploadBtn').click(function(){
-        $("input[name='img']").trigger("click");
-    });
+    // $('#uploadBtn').click(function(){
+    //     $("input[name='img']").trigger("click");
+    // });
 
     // 文本框内容不为空
     $('.alt_btn').click(function(){
