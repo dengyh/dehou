@@ -104,27 +104,11 @@
 
 <!-- js 开始 -->
 <script type="text/javascript" src="/static/js/add_info.js"></script>
+<script type="text/javascript" src="/static/js/tab_toggle.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     var url = "/backend/pro_add_handle/";
     add_info(url);
-    //tab样式设置
-      //当页面载入完成
-    $(".tab_content").hide(); //隐藏所有表格
-    $("ul.tabs li:first").addClass("active").show(); //激活第一个中文选项卡
-    $(".tab_content:first").show(); //展示第一张中文表的内容
-
-    //点击事件
-    $("ul.tabs li").click(function() {
-
-        $("ul.tabs li").removeClass("active"); //移除当前的类
-        $(this).addClass("active"); //将active类加在所选的选项卡上
-        $(".tab_content").hide(); //隐藏所有tab元素
-
-        var activeTab = $(this).find("a").attr("href"); //获取对应href
-        $(activeTab).fadeIn(); //淡入所选tab
-        return false;
-    });
 });
 </script>
 <!-- js 结束 -->

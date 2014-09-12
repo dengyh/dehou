@@ -9,7 +9,74 @@
     <!-- 添加产品优势板块 开始 -->
     <section id="main" class="column">
         <div class="clear"></div>
-        <article class="module width_full add_item_block">
+         <!-- 中英文切换区 开始-->
+        <article class="module width_full">
+          <form action="/backend/advantages_edit_handle/" method="post" name="form">
+            <header>
+                <h3 class="tabs_involved">修改产品优势</h3>
+                <ul class="tabs">
+                    <li><a href="#tab1">中文</a>
+                    </li>
+                    <li><a href="#tab2">英文</a>
+                    </li>
+                </ul>
+            </header>
+
+            <div class="tab_container">
+                <div id="tab1" class="tab_content">
+                <div class="module_content">
+                    <fieldset style="width:30%;clear:both;margin-bottom:20px;">
+                        <label>问题</label>
+                        <input type="text" name="problem" class="title" style="height:25px;" value="{{adv.problem}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:40%;clear:both;margin-bottom:30px;">
+                        <label>回答1</label>
+                        <input type="text" name="solution1" class="title" style="height:25px;margin-bottom:10px;" value="{{adv.solution1}}">
+                        <label>回答2</label>
+                        <input type="text" name="solution2" class="title" style="height:25px;margin-bottom:10px;" value="{{adv.solution2}}">
+                        <label>回答3</label>
+                        <input type="text" name="solution3" class="title" style="height:25px;margin-bottom:10px;" value="{{adv.solution3}}">
+                        <label>回答4</label>
+                        <input type="text" name="solution4" class="title" style="height:25px;" value="{{adv.solution4}}">
+                    </fieldset>  
+                </div>
+                </div>
+                <!-- end of #tab1 -->
+                <div id="tab2" class="tab_content">
+                    <div class="module_content">
+                    <fieldset style="width:30%;clear:both;">
+                        <label>问题（英文）</label>
+                        <input type="text" name="problem_en" class="title" style="height:25px;" value="{{adv.problem_en}}">
+                    </fieldset>  
+                </div>
+                <div class="module_content">
+                    <fieldset style="width:40%;clear:both;margin-bottom:30px;">
+                        <label>回答1（英文）</label>
+                        <input type="text" name="solution1_en" class="title" style="height:25px;margin-bottom:10px;" value="{{adv.solution1_en}}">
+                        <label>回答2（英文）</label>
+                        <input type="text" name="solution2_en" class="title" style="height:25px;margin-bottom:10px;" value="{{adv.solution2_en}}">
+                        <label>回答3（英文）</label>
+                        <input type="text" name="solution3_en" class="title" style="height:25px;margin-bottom:10px;" value="{{adv.solution3_en}}">
+                        <label>回答4（英文）</label>
+                        <input type="text" name="solution4_en" class="title" style="height:25px;" value="{{adv.solution4_en}}">
+                    </fieldset>  
+                </div>
+                </div>
+                <!-- end of #tab2 -->
+
+            </div>
+            <!-- end of .tab_container -->
+        <footer>
+                    <div class="submit_link">
+                        <input type="submit" value="修改" class="alt_btn" />
+                    </div>
+                </footer>
+            </form>
+        </article>
+        <!-- 中英文切换区 结束 -->
+        <!-- <article class="module width_full add_item_block">
             <form action="/backend/advantages_edit_handle/" method="post" name="form">
                 <header>
                     <h3 class="form_title">修改产品优势</h3>
@@ -57,8 +124,9 @@
                     </div>
                 </footer>
             </form>
-        </article>
+        </article> -->
         <div class="spacer"></div>
     </section>
     <!-- 添加产品优势板块 结束 -->
+<script type="text/javascript" src="/static/js/tab_toggle.js"></script>
 {% endblock %}

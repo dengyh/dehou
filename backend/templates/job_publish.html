@@ -31,7 +31,7 @@
                         <label>招聘职位</label>
                         <input type="text" name="position" class="title" style="height:25px;">
                     </fieldset>
-                    <fieldset style="width:100%;clear:both;margin-bottom:10px;">
+                    <fieldset style="width:98%;clear:both;margin:10px;">
                         <label>内容</label>
                         <div style="padding:0 10px;">{{ form }}</div>
                     </fieldset>
@@ -42,7 +42,7 @@
                         <label>招聘职位（英文版）</label>
                         <input type="text" name="position_en" class="title" style="height:25px;">
                     </fieldset>
-                    <fieldset style="width:100%;clear:both;margin-bottom:20px;">
+                    <fieldset style="width:98%;clear:both;margin:10px;">
                         <label>内容（英文版）</label>
                         <div style="padding:0 10px;">{{ form_en }}</div>
                     </fieldset>
@@ -62,26 +62,5 @@
     <div class="spacer"></div>
 </section>
 <!-- 发布招聘板块 结束 -->
-
-<script type="text/javascript">
-$(document).ready(function() {
-    //tab样式设置
-    //当页面载入完成
-    $(".tab_content").hide(); //隐藏所有表格
-    $("ul.tabs li:first").addClass("active").show(); //激活第一个中文选项卡
-    $(".tab_content:first").show(); //展示第一张中文表的内容
-
-    //点击事件
-    $("ul.tabs li").click(function() {
-
-        $("ul.tabs li").removeClass("active"); //移除当前的类
-        $(this).addClass("active"); //将active类加在所选的选项卡上
-        $(".tab_content").hide(); //隐藏所有tab元素
-
-        var activeTab = $(this).find("a").attr("href"); //获取对应href
-        $(activeTab).fadeIn(); //淡入所选tab
-        return false;
-    });
-});
-</script>
+<script type="text/javascript" src="/static/js/tab_toggle.js"></script>
 {% endblock %}
