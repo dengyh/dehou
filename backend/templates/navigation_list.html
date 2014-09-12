@@ -30,9 +30,11 @@
                                  <td>{{list.name_en}}</td>
                                 <td>一级</td>
                                 <td>
+                                   {% if not  forloop.first %}
                                     <a href="/backend/navigation_add/?id={{list.id}}">
                                         <input type="image" src="/static/images/icn_new_article.png" title="添加子导航" />
                                     </a>
+                                    {% endif %}
                                     <a href="/backend/navigation_edit/?id={{list.id}}">
                                         <input type="image" src="/static/images/icn_edit.png" title="修改名称" />
                                     </a>

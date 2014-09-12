@@ -44,20 +44,20 @@
                     class="parentMenu">
                         <label>类型选择</label>
                         <select name="p_id" style="width:92%;height:25px;" class="contentsType" id="parentMenu">
-                            <option value="{{new.p_id}}">{{p_id_name}}</option>
+                            <option value="{{new.p_id}}">{{p_id_name}}--{{p_id_name_en}}</option>
                         </select>                       
                     </fieldset>
                     <fieldset style="width:30%; float:left;margin-left:10px;margin-bottom:20px;" class="secondMenu">
                         <label>类型选择</label>
                         <select name="s_id" style="width:92%;height:25px;" class="contentsType" id="secondMenu">
-                            <option value="{{new.s_id}}">{{s_id_name}}</option>                    
+                            <option value="{{new.s_id}}">{{s_id_name}}--{{p_id_name_en}}</option>                    
                         </select>                       
                     </fieldset>
                     {% if new.t_id != 0  %}
                     <fieldset style="width:30%;float:left;margin-left:10px;margin-bottom:20px;" class="thirdMenu">
                         <label>类型选择</label>
                         <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="thirdMenu">
-                            <option value="{{new.t_id}}">{{t_id_name}}</option>
+                            <option value="{{new.t_id}}">{{t_id_name}}--{{p_id_name_en}}</option>
                         </select>                       
                     </fieldset>
                     {% endif %}

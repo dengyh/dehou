@@ -30,6 +30,7 @@ urlpatterns += patterns('backend.views',
 	url(r'^navigation_add_handle/$','navigation_add_handle'),                                # 导航添加表单处理
 	url(r'^del_navigation/$','del_navigation'),                                              # 导航删除处理
 	url(r'^Twolink/$','Twolink',{'template_name':'Twolink.html'}),                           # 二级、三级导航联动
+	url(r'^Twolink2/$','Twolink2',{'template_name':'Twolink2.html'}),                           # 二级、三级导航联动
 	url(r'^navigation_edit/$', 'navigation_edit', {'template_name':'navigation_edit.html'}), # 导航修改
 	url(r'^navigation_edit_handle/$', 'navigation_edit_handle'),                             # 导航修改表单处理
 )
@@ -62,3 +63,9 @@ urlpatterns += patterns('backend.views',
 	url(r'^admin_changePwd/$', 'admin_changePwd', {'template_name':"admin_changePwd.html"}),  # 更改密码
 	url(r'^admin_changePwd_handle$', 'admin_changePwd_handle'),                               # 更改密码表单处理
 )
+
+# urlpatterns += patterns('backend.views',
+# 	url(r'^page_keyword_list/','page_keyword_list',{'template_name' : "page_keyword_list"}),          # 关键词列表
+# 	url(r'^page_keyword_edit/$','page_keyword_edit',{'template_name' : "page_keyword_edit.html"}),                 # 关键词编辑
+# 	url(r'^page_keyword_edit_handle/$' , 'page_keyword_edit_handle'),       #关键词表单处理
+# )
