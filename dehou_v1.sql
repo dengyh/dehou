@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 09 月 06 日 03:15
+-- 生成日期: 2014 年 09 月 12 日 06:58
 -- 服务器版本: 5.6.12-log
 -- PHP 版本: 5.4.12
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=49 ;
 
 --
 -- 转存表中的数据 `auth_permission`
@@ -116,7 +116,10 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (42, 'Can delete feedback', 14, 'delete_feedback'),
 (43, 'Can add advantages', 15, 'add_advantages'),
 (44, 'Can change advantages', 15, 'change_advantages'),
-(45, 'Can delete advantages', 15, 'delete_advantages');
+(45, 'Can delete advantages', 15, 'delete_advantages'),
+(46, 'Can add page_keywords', 16, 'add_page_keywords'),
+(47, 'Can change page_keywords', 16, 'change_page_keywords'),
+(48, 'Can delete page_keywords', 16, 'delete_page_keywords');
 
 -- --------------------------------------------------------
 
@@ -145,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$10000$c9WhqTUux4xy$042oTsyCr7/gS6kf+X5+e/2vFGFxHy/0jT4nrUM2VXI=', '2014-09-05 12:20:14', 1, 'admin', '超级管理员', '', '', 1, 1, '2014-08-29 03:15:15'),
+(1, 'pbkdf2_sha256$10000$c9WhqTUux4xy$042oTsyCr7/gS6kf+X5+e/2vFGFxHy/0jT4nrUM2VXI=', '2014-09-10 06:15:57', 1, 'admin', '超级管理员', '', '', 1, 1, '2014-08-29 03:15:15'),
 (2, 'pbkdf2_sha256$10000$ml9tfmfhI1oB$xCvwwrG3QH0eDFgZ1KfU0bseYd5SnV/0UDj0hA4q8vg=', '2014-08-29 06:12:41', 0, 'yoyo', 'yoyo', '', '', 0, 1, '2014-08-29 06:12:41'),
 (3, 'pbkdf2_sha256$10000$V5GQT25Kdotb$YneEZXv5UxG/zNwBzVIrYP9hcrs1ofKcRoQ/G48BE7g=', '2014-09-05 12:28:25', 0, 'aa', 'aa', '', '', 0, 1, '2014-09-05 12:28:25');
 
@@ -189,16 +192,22 @@ CREATE TABLE IF NOT EXISTS `auth_user_user_permissions` (
 
 CREATE TABLE IF NOT EXISTS `backend_advantages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `problem` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution1` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution2` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution3` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution4` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `problem_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution1_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution2_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution3_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
-  `solution4_en` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `problem` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `big_title` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `big_title_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `title1` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `title1_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `title2` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `title2_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution1` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution2` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution3` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution4` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `problem_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution1_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution2_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution3_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
+  `solution4_en` varchar(120) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
 
@@ -206,13 +215,13 @@ CREATE TABLE IF NOT EXISTS `backend_advantages` (
 -- 转存表中的数据 `backend_advantages`
 --
 
-INSERT INTO `backend_advantages` (`id`, `problem`, `solution1`, `solution2`, `solution3`, `solution4`, `problem_en`, `solution1_en`, `solution2_en`, `solution3_en`, `solution4_en`) VALUES
-(1, '第一个问题', '解决一', '解决二', '解决三', '解决四', '英文-第一个问题', '英文-解决一', '英文-解决二', '英文-解决三', '英文-解决四'),
-(2, '第二个问题', '解决1', '解决2', '解决3', '解决4', '英文-第二个问题', '解决1', '解决2', '解决3', '解决4'),
-(3, '第三个问题', '解决1', '解决2', '解决3', '解决4', '英文-第四个问题', '解决1', '解决2', '解决3', '解决4'),
-(4, '第四个问题', '解决1', '解决2', '解决3', '解决4', '英文-第四个问题', '解决1', '解决2', '解决3', '解决4'),
-(5, '第五个问题', '解决1', '解决2', '解决3', '解决4', '英文-第五个问题', '解决1', '解决2', '解决3', '解决4'),
-(6, '第六个问题', '解决1', '解决2', '解决3', '解决4', '英文-第六个问题', '解决1', '解决2', '解决3\r\n', '解决4');
+INSERT INTO `backend_advantages` (`id`, `problem`, `big_title`, `big_title_en`, `title1`, `title1_en`, `title2`, `title2_en`, `solution1`, `solution2`, `solution3`, `solution4`, `problem_en`, `solution1_en`, `solution2_en`, `solution3_en`, `solution4_en`) VALUES
+(1, '第一个问题', 'AAAAAAAAAAA', 'AAAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAAAA', 'AAAA', 'AAAAAAAAAAA', 'AAAAAAAAAAAAA', 'AAAAAAAAAAAAA', 'AAAAAAAAAAAAAA', 'AAAAAAAAAAAAAA', 'AAAAAAAAAAA', 'AAAAAAAAAAAAA', 'AAAAAAAAAAAAAAA'),
+(2, '第二个问题', 'BBBBBBBBBB', 'BBBBBBBBBBB', 'BBBBBBB', 'BBBBBBBB', 'BBBBBBBBBBBBB', 'BBBBBBBBBB', 'BBBBBBBB', 'BBBBBBBBBB', 'BBBBBBBBBB', 'BBBBBBBBBBBB', 'BBBBBBBBBBB', 'BBBBBBBB', 'BBBBBBBBBBBB', 'BBBBBBBBB', 'BBBBBBBBBB'),
+(3, '第三个问题 ', 'CCCCCCCCCCC', 'CCCCCCCC', 'CCCCCCCC', 'CCCCCCCCCCC', 'CCCCCCCC', 'CCCCCCCCCCCC', 'CCCCCCCCC', 'CCCCCCCCCC', 'CCCCCCCCCCCCC', 'CCCCCCCCCCCC', 'CCCCCCCCCC', 'CCCCCCCCCCC', 'CCCCCCCCCCCCC', 'CCCCCCCCCCCC', 'CCCCCCCCCCCCC'),
+(4, '第四个问题', 'DDDDDDDDDD', 'DDDDDDDDDDDD', 'DDDDDDDDDD', 'DDDDDDDDDDD', 'DDDDDDDDDDDDDD', 'DDDDDDDDDDDDD', 'DDDDDDDD', 'DDDDDDDD', 'DDDDDDDDDDDD', 'DDDDDDDDDD', 'DDDDDDDDDDDDD', 'DDDDDDDDDDD', 'DDDDDDDDDDD', 'DDDDDDDDDD', 'DDDDDDDDDDDDDD'),
+(5, '第五个问题', 'EEEEEEEEEEE', 'EEEEEEEEEE', 'EEEEEEEEEEEE', 'EEEEEEEEEEEEEEEE', 'EEEEEEEEEEE', 'EEEEEEEEEEEEE', 'EEEEEEEEEEE', 'EEEEEEEEEEEE', 'EEEEEEEEEEEEEE', 'EEEEEEEEEEEE', 'EEEEEEEEEEEEEEEE', 'EEEEEEEEEEEEEEEE', 'EEEEEEEEEEEEEE', 'EEEEEEEEEEEEEE', 'EEEEEEEEEEEEEEEE'),
+(6, '第六个问题', 'FFFFFFFFFFFF', 'FFFFFFFFFFF', 'FFFFFFFFF', 'FFFFFFFFF', 'FFFFFFFFFFFFF', 'FFFFFFFFFFFFF', 'FFFFFFFFFFFFFF', 'FFFFFFFFFFFFF', 'FFFFFFFFFFFFFFFFF', 'FFFFFFFFFFFFFFFFFF', 'FFFFFFFFFFFFFF', 'FFFFFFFFFFFFFF', 'FFFFFFFFFFFFF', 'FFFFFFFFFFFFFF', 'FFFFFFFFFFFFFFFFF');
 
 -- --------------------------------------------------------
 
@@ -260,65 +269,68 @@ CREATE TABLE IF NOT EXISTS `backend_nav` (
   `name_en` varchar(20) COLLATE utf8_bin NOT NULL,
   `pid_id` int(11) DEFAULT NULL,
   `level` int(11) DEFAULT NULL,
+  `title` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `title_en` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `keywords` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `keywords_en` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `description` varchar(256) COLLATE utf8_bin DEFAULT NULL,
+  `description_en` varchar(256) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `backend_nav_664e8aab` (`pid_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=48 ;
 
 --
 -- 转存表中的数据 `backend_nav`
 --
 
-INSERT INTO `backend_nav` (`id`, `name`, `name_en`, `pid_id`, `level`) VALUES
-(1, '佳易得产品', 'product', NULL, 1),
-(2, '工程应用', 'project', NULL, 1),
-(3, '核心技术', 'core', NULL, 1),
-(4, '荣誉与资质', 'honour', NULL, 1),
-(5, '共赢专区', 'win-win', NULL, 1),
-(6, '德厚新闻', 'dehou_news', NULL, 1),
-(7, '关于德厚', 'about', NULL, 1),
-(8, '联系德厚', 'contract', NULL, 1),
-(9, '玻璃隔热涂膜', '玻璃隔热涂膜_en', 1, NULL),
-(10, '墙体材料', '墙体材料_en', 1, NULL),
-(11, '地面材料', '地面材料_en', 1, NULL),
-(12, '最新工程', '最新工程_en', 2, NULL),
-(13, '家庭项目', '家庭项目_en', 2, NULL),
-(14, '办公项目', '办公项目_en', 2, NULL),
-(15, '工程项目', '工程项目_en', 2, NULL),
-(16, '技术研发', '技术研发_en', 3, NULL),
-(17, '博士团队', '博士团队_en', 3, NULL),
-(18, '施工团队', '施工团队_en', 3, NULL),
-(19, '半自动淋涂设备', '半自动_en', 3, NULL),
-(20, '全自动生产线', '全自动_en', 3, NULL),
-(21, '专利证书', '专利证书_en', 4, NULL),
-(22, '荣誉奖项', '荣誉奖项_en', 4, NULL),
-(23, '国家标准、行业标准', '国家标准_en', 4, NULL),
-(24, '检测报告', '检测报告_en', 4, NULL),
-(25, '合作伙伴', '合作伙伴_en', 4, NULL),
-(26, '代理加盟', '代理加盟_en', 5, NULL),
-(27, '工程项目合作', '工程项目合作_en', 5, NULL),
-(28, '旗舰店', '旗舰店_en', 5, NULL),
-(29, '合同能源管理（EMC）', '合同_en', 5, NULL),
-(30, '公司动态', '公司动态_en', 6, NULL),
-(31, '行业新闻', '行业新闻_en', 6, NULL),
-(32, '节能科普小知识', '节能_en', 6, NULL),
-(33, '德厚简介', '德厚简介_en', 7, NULL),
-(34, '商标释义', '商标释义_en', 7, NULL),
-(35, '总经理介绍和致辞', '总经理_en', 7, NULL),
-(36, '公司实力', '公司实力_en', 7, NULL),
-(37, '人才资源', '人才资源_en', 7, NULL),
-(38, '合作伙伴', '合作伙伴_en', 7, NULL),
-(39, '人才理念', '人才理念_en', 37, NULL),
-(40, '成长空间', '成长空间_en', 37, NULL),
-(41, '职位信息', '职位信息_en', 37, NULL),
-(42, '建筑玻璃应用', '建筑_en', 9, NULL),
-(43, '其他玻璃应用', '其他_en', 9, NULL),
-(44, '隔热中空玻璃', '隔热_en', 9, NULL),
-(45, '内墙涂料', '内墙_en', 10, NULL),
-(46, '外墙涂料', '外墙_en', 10, NULL),
-(47, '墙体防水涂料', '墙体_en', 10, NULL),
-(48, '石材防护剂', '石材_en', 11, NULL),
-(49, '地面晶化剂', '地面_en', 11, NULL),
-(50, '地面防水涂料', '地面防水_en', 11, NULL);
+INSERT INTO `backend_nav` (`id`, `name`, `name_en`, `pid_id`, `level`, `title`, `title_en`, `keywords`, `keywords_en`, `description`, `description_en`) VALUES
+(1, '首页', '首页_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, '佳易得产品', '佳易得产品_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, '工程应用', '工程应用_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, '核心技术', '核心技术_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, '荣誉与资质', '荣誉与资质_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, '共赢专区', '共赢专区_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(7, '德厚新闻', '德厚新闻_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, '关于德厚', '关于德厚_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(9, '联系德厚', '联系德厚_en', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(10, '玻璃隔热涂膜', '玻璃隔热涂膜_en', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(11, '建筑玻璃应用', '建筑玻璃应用_en', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(12, '其它玻璃应用', '其它玻璃应用_en', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(13, '隔热中空玻璃', '隔热中空玻璃', 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(14, '墙体材料', '墙体材料_en', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(15, '内墙涂料', '内墙涂料_en', 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(16, '外墙涂料', '外墙涂料_en', 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, '墙体防水涂料', '墙体防水涂料_en', 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(18, '最新工程', '最新工程_en', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(19, '家庭项目', '家庭项目_en', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(20, '办公项目', '办公项目_en', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(21, '工程项目', '工程项目_en', 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(22, '技术研发', '技术研发_en', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(23, '博士团队', '博士团队_en', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(24, '施工团队', '施工团队_en', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(25, '半自动淋涂设备', '半自动淋涂设备_en', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(26, '全自动生产线', '全自动生产线_en', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(27, '专利证书', '专利证书_en', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(28, '荣誉奖项', '荣誉奖项_en', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(29, '国家标准、行业标准', '国家标准_en', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(30, '检测报告', '检测报告_en', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(31, '合作伙伴', '合作伙伴_en', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(32, '代理加盟', '代理加盟_en', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(33, '工程项目合作', '工程项目合作_en', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(34, '旗舰店', '旗舰店_en', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(35, '合同能源管理（EMC）', 'EMC_en', 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(36, '公司动态', '公司动态_en', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(37, '行业新闻', '行业新闻_en', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(38, '节能科普小知识', '节能科普小知识', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(39, '德厚简介', '德厚简介_en', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(40, '商标释义', '商标释义_en', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(41, '总经理介绍和致辞', '总经理介绍和致辞_en', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(42, '公司实力', '公司实力_en', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(43, '人才资源', '人才资源_en', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(44, '人才理念', '人才理念_en', 43, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(45, '成长空间', '成长空间_en', 43, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(46, '职位信息', '职位信息_en', 43, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(47, '合作伙伴', '合作伙伴_en', 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -331,27 +343,43 @@ CREATE TABLE IF NOT EXISTS `backend_news` (
   `p_id` int(11) NOT NULL,
   `s_id` int(11) DEFAULT NULL,
   `t_id` int(11) DEFAULT NULL,
+  `page_title` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `page_title_en` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `page_keywords` varchar(256) COLLATE utf8_bin NOT NULL,
+  `page_keywords_en` varchar(256) COLLATE utf8_bin DEFAULT NULL,
+  `page_description` varchar(256) COLLATE utf8_bin NOT NULL,
+  `page_description_en` varchar(256) COLLATE utf8_bin DEFAULT NULL,
   `title` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `title_en` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `remark` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `remark_en` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+  `url` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+  `url_en` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `img` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `content` longtext COLLATE utf8_bin NOT NULL,
   `content_en` longtext COLLATE utf8_bin NOT NULL,
   `datetime` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 
 --
--- 转存表中的数据 `backend_news`
+-- 表的结构 `backend_page_keywords`
 --
 
-INSERT INTO `backend_news` (`id`, `p_id`, `s_id`, `t_id`, `title`, `title_en`, `remark`, `remark_en`, `img`, `content`, `content_en`, `datetime`) VALUES
-(1, 1, 9, 42, '第一个产品（中文）', '第一个产品（英文）', '第一个产品（中文）', '第一个产品（英文）', '', '<p>第一个产品（中文）<br/></p>', '<p>第一个产品（英文）</p>', '2014-08-29 15:33:18'),
-(2, 2, 12, 0, '第一个工程（）', '第一个工程（英文）', '第一个工程', '第一个工程（英文）', '', '<p>第一个工程&nbsp;&nbsp;&nbsp;&nbsp;<br/></p>', '<p>第一个工程（英文）<br/></p>', '2014-08-30 02:49:37'),
-(3, 1, 10, 45, '第二个产品', '第二个产品（英文）', '第二个产品', '第二个产品（英文）', '', '<p>第二个产品&nbsp;&nbsp;&nbsp;&nbsp;<br/></p>', '<p>第二个产品（英文）<br/></p>', '2014-08-30 02:50:29'),
-(4, 1, 11, 48, '第三个产品', '第三个产品呢', '第三个产品', '第三个产品', '', '<p>第三个产品<br/></p>', '<p>第三个产品（英文）<br/></p>', '2014-08-30 02:53:20'),
-(6, 3, 16, 0, '第二条资讯', '', '第二天资讯', '', '', '<p>发反反复复<br/></p>', '', '2014-08-30 14:04:59');
+CREATE TABLE IF NOT EXISTS `backend_page_keywords` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nav_id` int(11) NOT NULL,
+  `title` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `title_en` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `keywords` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `keywords_en` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `description` varchar(256) COLLATE utf8_bin DEFAULT NULL,
+  `description_en` varchar(256) COLLATE utf8_bin DEFAULT NULL,
+  `datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -477,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `django_content_type` (
   `model` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
 
 --
 -- 转存表中的数据 `django_content_type`
@@ -498,7 +526,8 @@ INSERT INTO `django_content_type` (`id`, `name`, `app_label`, `model`) VALUES
 (12, 'comments', 'backend', 'comments'),
 (13, 'message', 'chat', 'message'),
 (14, 'feedback', 'chat', 'feedback'),
-(15, 'advantages', 'backend', 'advantages');
+(15, 'advantages', 'backend', 'advantages'),
+(16, 'page_keywords', 'backend', 'page_keywords');
 
 -- --------------------------------------------------------
 
@@ -519,6 +548,7 @@ CREATE TABLE IF NOT EXISTS `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('0yarqrh7ggut64p2xnjsx9p8fc1rhr7z', 'M2RjODllZjI0MTdmYTRlMmFhMDMwYjljMDExZTI4YWY5OThiMjIzOTqAAn1xAShVEl9hdXRoX3VzZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHEDVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==', '2014-09-24 06:15:58'),
 ('162t14grgxd1gumww9ak5jrhr8xu44v2', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-13 12:01:34'),
 ('55g1x3owqhg7mmtgcbutcgx4sgqetbwx', 'ZWYzYmQ2MTZlMmY5ZTVmZWUwMjI3ODFmM2ZhOTg0ZjMwMjIwMjU0Yzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=', '2014-09-12 03:22:45'),
 ('881emgt0nd2968s4fxc97k3xg15vtd9b', 'NTczOTdjN2JiODk2ZGNmNzc0NzdjOTg3ZWZmMDlkOWQ5MjU5MTE0Nzp7fQ==', '2014-09-16 01:48:42'),

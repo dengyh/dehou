@@ -42,7 +42,6 @@
                         <input type="file" name="img" class="title" />
                         <!-- <input type="button" value="上传图片" style="margin-left:-100px;" id="uploadBtn"> -->
                     </fieldset>
-<<<<<<< HEAD
 
                     <div id="selectOption">
                      {% if product_nav %}
@@ -80,35 +79,7 @@
                     {% endif %}
 
                     </div>
-
-                    <fieldset style="clear:both;margin-bottom:20px;">
-=======
-                    <fieldset style="width:30%; float:left;clear:both;margin:10px;" class="parentMenu">
-                        <label>类型选择</label>
-                        <select name="p_id" style="width:92%;height:25px;" class="contentsType" id="parentMenu">
-                            {% for list in product_nav %}
-                            <option value="{{list.id}}">{{list.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </fieldset>
-                    <fieldset style="width:30%; float:left;margin-left:10px;margin:10px;" class="secondMenu">
-                        <label>类型选择</label>
-                        <select name="s_id" style="width:92%;height:25px;" class="contentsType" id="secondMenu">
-                            {% for list in product_second_nav %}
-                            <option value="{{list.id}}">{{list.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </fieldset>
-                    <fieldset style="width:30%;float:left;margin-left:10px;margin:10px;" class="thirdMenu">
-                        <label>类型选择</label>
-                        <select name="t_id" style="width:92%;height:25px;" class="contentsType" id="thirdMenu">
-                            {% for list in product_third_nav %}
-                            <option value="{{list.id}}">{{list.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </fieldset>
                     <fieldset style="clear:both;margin:10px;">
->>>>>>> 6525f52f5305ab38ffc80d4c1380b6ae8b02ecf9
                         <label>内容</label>
                         <div style="padding:0 10px;">{{ form }}</div>
                     </fieldset>
