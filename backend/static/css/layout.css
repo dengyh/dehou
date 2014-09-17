@@ -2,6 +2,7 @@
 作者：梁银乔
 last modified:2014.8.11*/
 
+
 html, div, map, dt, isindex, form, header, aside, section, section, article, footer {
     display: block;
 }
@@ -188,6 +189,7 @@ aside#sidebar {
     min-height: 500px;
     margin-top: -4px;
     height: 100%;
+    overflow: hidden;
 }
 #sidebar hr {
     border: none;
@@ -338,6 +340,7 @@ aside#sidebar {
 }
 #sidebar footer {
     margin-top: 20%;
+     background-color: #E0E0E3 ;
 }
 /* Main Content */
 

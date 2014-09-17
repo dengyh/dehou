@@ -18,12 +18,24 @@ class userInfo(models.Model):
 #name_en : 英文导航
 #   pid  : 存放子导航
 #  level : 导航级数
+#  	 title : 页面标题
+#  	 title_en : 英文页面标题
+#	keywords:页面关键字
+#	keywords_en:英文页面关键字
+#  	 description: 页面描述
+#  	 description_en: 英文页面描述
 # ---------------------------
 class nav(models.Model):
 	name = models.CharField(max_length=20)
 	name_en = models.CharField(max_length=20)
 	pid  = models.ForeignKey('self',blank=True,null=True,related_name='child_nav')
-	level = models.IntegerField(max_length=2)
+	level = models.IntegerField(max_length=2,blank=True,null=True)
+	title = models.CharField(max_length=128,blank=True,null=True)
+	title_en = models.CharField(max_length=128,blank=True,null=True)
+	keywords = models.CharField(max_length=128,blank=True,null=True)
+	keywords_en = models.CharField(max_length=128,blank=True,null=True)
+	description = models.CharField(max_length=256,blank=True,null=True)
+	description_en = models.CharField(max_length=256,blank=True,null=True)
 	def __unicode__(self):
 		return self.name
 
@@ -32,10 +44,18 @@ class nav(models.Model):
 #   p_id : 一级导航id
 #   s_id : 二级导航id
 #   t_id : 三级导航id
+#       page_title : 页面标题
+#     page_title_en: 英文页面标题
+#     page_keywords: 页面关键字
+#  page_keywords_en: 英文页面关键字
+#  page_description: 页面描述
+#page_description_en: 英文页面描述
 #  title : 中文信息标题
 #title_en: 英文信息标题
 # remark : 中文信息简要说明
 #remark_en:英文信息简要说明
+# url : 信息跳转页面
+#url_en: 英文信息跳转页面
 #   img  : 信息封面图片(固定大小)
 #content : 中文信息内容
 #content_en: 英文信息内容
@@ -45,16 +65,24 @@ class news(models.Model):
 	p_id = models.IntegerField(max_length=11)
 	s_id = models.IntegerField(max_length=11,blank=True,null=True)
 	t_id = models.IntegerField(max_length=11,blank=True,null=True)
+	page_title = models.CharField(max_length=128,blank=True,null=True)
+	page_title_en = models.CharField(max_length=128,blank=True,null=True)
+	page_keywords = models.CharField(max_length=256)
+	page_keywords_en = models.CharField(max_length=256,blank=True,null=True)
+	page_description = models.CharField(max_length=256)
+	page_description_en = models.CharField(max_length=256,blank=True,null=True)
 	title = models.CharField(max_length=150,blank=True,null=True)
 	title_en = models.CharField(max_length=150,blank=True,null=True)
 	remark = models.CharField(max_length=150,blank=True,null=True)
 	remark_en = models.CharField(max_length=150,blank=True,null=True)
+	url = models.CharField(max_length=150,blank=True,null=True)
+	url_en = models.CharField(max_length=150,blank=True,null=True)
 	img  = models.ImageField(upload_to='news',blank=True,null=True)
 	content = models.TextField()
 	content_en = models.TextField()
 	datetime = models.DateTimeField(auto_now_add=True)
 	def __unicode__(self):
-		return self.p_id
+		return unicode(self.p_id)
 
 	class Meta:
 		ordering = ['-datetime']
@@ -114,3 +142,62 @@ class comments(models.Model):
 	replay_time = models.DateTimeField(blank=True,null=True)
 	def __unicode__(self):
 		return self.name
+
+# ---------------------------
+# advantanges: 产品优势表
+#  	 problem : 产品问题
+#  	big_title : 大标题
+#  	big_title_en : 英文大标题
+#  	 title1 : 标题1
+#  	 title1_en : 标题1
+#  	 title2 : 标题2
+#  	 title2_en : 标题1
+#	solution1: 解决方法1
+#   solution2: 解决方法2
+#   solution3: 解决方法3
+#   solution4: 解决方法4
+#  	 problem_en : 英文产品问题
+#	solution1_en: 解决方法1
+#   solution2_en: 解决方法2
+#   solution3_en: 解决方法3
+#   solution4_en: 解决方法4
+# ---------------------------
+class advantages(models.Model):
+	problem = models.CharField(max_length=120,blank=True,null=True)
+	big_title = models.CharField(max_length=120,blank=True,null=True)
+	big_title_en = models.CharField(max_length=120,blank=True,null=True)
+	title1 = models.CharField(max_length=120,blank=True,null=True)
+	title1_en = models.CharField(max_length=120,blank=True,null=True)
+	title2 = models.CharField(max_length=120,blank=True,null=True)
+	title2_en = models.CharField(max_length=120,blank=True,null=True)
+	solution1 = models.CharField(max_length=120,blank=True,null=True)
+	solution2 = models.CharField(max_length=120,blank=True,null=True)
+	solution3 = models.CharField(max_length=120,blank=True,null=True)
+	solution4 = models.CharField(max_length=120,blank=True,null=True)
+	problem_en = models.CharField(max_length=120,blank=True,null=True)
+	solution1_en = models.CharField(max_length=120,blank=True,null=True)
+	solution2_en = models.CharField(max_length=120,blank=True,null=True)
+	solution3_en = models.CharField(max_length=120,blank=True,null=True)
+	solution4_en = models.CharField(max_length=120,blank=True,null=True)
+	def __unicode__(self):
+		return self.problem
+
+# ---------------------------
+# page_keywords: 页面关键字表
+#  	 nav_id: 导航类型
+#  	 title : 页面标题
+#  	 title_en : 英文页面标题
+#	keywords:页面关键字
+#	keywords_en:英文页面关键字
+#  	 description: 页面描述
+#  	 description_en: 英文页面描述
+# ---------------------------
+# class page_keywords(models.Model):
+# 	nav_id = models.IntegerField(max_length=11)
+# 	title = models.CharField(max_length=128,blank=True,null=True)
+# 	title_en = models.CharField(max_length=128,blank=True,null=True)
+# 	keywords = models.CharField(max_length=128,blank=True,null=True)
+# 	keywords_en = models.CharField(max_length=128,blank=True,null=True)
+# 	description = models.CharField(max_length=256,blank=True,null=True)
+# 	description_en = models.CharField(max_length=256,blank=True,null=True)
+# 	datetime = models.DateTimeField(auto_now_add=True)

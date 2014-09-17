@@ -12,7 +12,7 @@ import json
 #导入数据model
 from django.contrib.auth.models import User  #用户表
 from backend.models import userInfo  #继承User表
-from backend.models import nav,news,comments,job
+from backend.models import nav,news,comments,job,advantages
 
 #导入form表单
 from backend.form import UEditorForm,UEditorForm_en,loginForm,adminForm,edit_user_Form
@@ -252,11 +252,25 @@ def navigation_add_handle(request):
 		# print '*'*40
 		# print navId
 		nav_name = request.POST.get('name','')
-		p_nav = nav.objects.get(id=navId)   #找到父ID
+		nav_name_en = request.POST.get('name_en','')
+		title = request.POST.get('title','')
+		title_en = request.POST.get('title_en','')
+		keywords = request.POST.get('keywords','')
+		keywords_en = request.POST.get('keywords_en','')
+		description = request.POST.get('description','')
+		description_en = request.POST.get('description_en','')
+		p_nav = nav.objects.get(id=navId)   #找到父ID】
 		p = nav(
-              name = nav_name,
-              pid  = p_nav,
-			)
+			name = nav_name,
+			name_en = nav_name_en,
+			pid  = p_nav,
+			title = title,
+			title_en = title_en,
+			keywords = keywords,
+			keywords_en = keywords_en,
+			description = description,
+			description_en = description_en,
+		)
 		p.save()
 		return HttpResponseRedirect('/backend/navigation_list/')
 	return httpResponse('请求方法错误...')
@@ -289,31 +303,78 @@ def del_navigation(request):
 #   日期：2014.08.24
 # --------------------------------------
 @csrf_exempt
-def Twolink(request):
+def Twolink(request,template_name):
 	if request.is_ajax():
-		nav_id = request.POST.get('id','')
-		second_nav_list = nav.objects.filter(pid=nav_id)  #获取 当前二级 子导航
-		data = []
-		if second_nav_list:
-			for menu in second_nav_list:
-				temp = {}
-				temp['id'] = menu.id
-				temp['name'] = menu.name
-				data.append(temp)
-			third_nav_list = nav.objects.filter(pid=second_nav_list[0])  #获取当前三级 子导航
-			data2 = []
-			if third_nav_list:
-				for menu in third_nav_list:
-					temp2 = {}
-					temp2['id'] = menu.id
-					temp2['name'] = menu.name
-					data2.append(temp2)
-			return HttpResponse(json.dumps({
-				'data' : data,
-				'data2' : data2,
-				}),content_type='application/json')
-		else:  #没有二级导航的情况
-			return HttpResponse(json.dumps('error'),content_type='application/json')
+		nav_id = int(request.POST.get('id',''))
+		product_nav = nav.objects.filter(id__gt=3,level=1)  
+		if nav_id <= 9:          #一级导航id <= 9
+			p_id = nav_id        #父导航 id
+			s_id = ''  		     #二级导航 id
+			product_nav1 = nav.objects.filter(id=nav_id)   #获取当前导航  
+			try:
+				product_second_nav = nav.objects.filter(pid=product_nav1[0])
+			except Exception:
+				product_second_nav = None
+			try:
+				product_third_nav = nav.objects.filter(pid=product_second_nav[0])
+			except Exception:
+				product_third_nav = None
+		else:					 #二级导航以上id >9
+			pid = int(request.POST.get('pid',''))                   
+			#product_nav = nav.objects.filter(id=p_id)
+			p_id = pid     #父导航   id
+			# print '*'*20
+			s_id = nav_id  #二级导航 id
+			try:
+				product_second_nav = nav.objects.filter(pid=p_id)     #获取所有二级导航
+				product_second_nav1 = nav.objects.filter(id=nav_id)   #获取当前导航 
+				product_third_nav = nav.objects.filter(pid=nav_id)
+			except Exception:
+				product_third_nav = None
+		# print p_id
+		# print s_id
+		return render(request,template_name,{
+				'product_nav':product_nav,
+				'Pid':p_id,
+				'Sid':s_id,
+				'product_second_nav':product_second_nav,
+				'product_third_nav':product_third_nav,
+			}
+			)
+	return HttpResponse('请求方法错误...')
+
+# ======================================
+# 	名字：导航联动   应用于 佳易德产品 和  工程应用
+#   功能：根据父导航实现 实现二级、三级导航的 联动效果
+#   人员：杨凯
+#   日期：2014.08.24
+# --------------------------------------
+@csrf_exempt
+def Twolink2(request,template_name):
+	if request.is_ajax():
+		nav_id = int(request.POST.get('id',''))  #二级id
+		pid = int(request.POST.get('pid',''))   #  父id
+		product_nav = nav.objects.filter(id=pid)  #获取父导航              
+		#product_nav = nav.objects.filter(id=p_id)
+		p_id = pid     #父导航   id
+		# print '*'*20
+		s_id = nav_id  #二级导航 id
+		try:
+			product_second_nav = nav.objects.filter(pid=p_id)     #获取所有二级导航
+			product_second_nav1 = nav.objects.filter(id=nav_id)   #获取当前导航 
+			product_third_nav = nav.objects.filter(pid=nav_id)
+		except Exception:
+			product_third_nav = None
+	# print p_id
+	# print s_id
+	return render(request,template_name,{
+			'product_nav':product_nav,
+			'Pid':p_id,
+			'Sid':s_id,
+			'product_second_nav':product_second_nav,
+			'product_third_nav':product_third_nav,
+		}
+		)
 	return HttpResponse('请求方法错误...')
 
 # ======================================
@@ -325,12 +386,36 @@ def Twolink(request):
 def product_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	lists = news.objects.filter(p_id=1)
+	lists = news.objects.filter(p_id=2)
 	premissions = public_premissions(request)    #权限认证
 	public_pages = public_page(request,lists,8)  #分页
+	public_pages['list_type_name'] = []      #初始化一个 list
+	#for 循环用来获取 文章 相对应的 导航名称
+	for menu in lists:
+		temp = {}
+		temp['p_name'] = nav.objects.get(id=menu.p_id).name  #获取父导航名字
+		try:
+			temp['s_name'] = nav.objects.get(id=menu.s_id).name  #获取二级导航名字
+		except Exception:
+			temp['s_name'] = None
+		try:
+			temp['t_name'] = nav.objects.get(id=menu.t_id).name  #获取三级导航名字
+		except Exception:
+			temp['t_name'] = None	
+		public_pages['list_type_name'].append(temp)
+	# 用来 将 info_list 和 导航组合在一起，在模板中循环的时候就可以一一对应
+	data = []
+	for index in range(len(public_pages['info_list'])):
+		data.append({
+			'news': public_pages['info_list'][index],
+			'navs': public_pages['list_type_name'][index]
+			})
+	# print '*'*20
+	# for item in data:
+	# 	print item['news']
 	#渲染页面
 	# return HttpResponse(currentpage_en)
-	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
+	return render(request,template_name,{'public_pages':public_pages,'data':data,'premissions':premissions})
 
 # ======================================
 # 	名字：添加产品
@@ -346,7 +431,7 @@ def product_add(request,template_name):
 	# ueditor编辑器初始化（英文版）
 	form_en = UEditorForm_en()
 	#获取 佳易得产品 一级导航
-	product_nav = nav.objects.filter(id=1)  
+	product_nav = nav.objects.filter(id=2)  
 	#获取 所有二级导航
 	try:
 		product_second_nav = nav.objects.filter(pid = product_nav[0])
@@ -387,17 +472,33 @@ def product_add_handle(request):
 		img   = request.FILES.get('img',None)
 		content = request.POST.get('content','')
 		content_en = request.POST.get('content_en', '')
+		page_title = request.POST.get('page_title','')
+		page_title_en = request.POST.get('page_title_en','')
+		page_keywords = request.POST.get('page_keywords','')
+		page_keywords_en = request.POST.get('page_keywords_en','')
+		page_description = request.POST.get('page_description','')
+		page_description_en = request.POST.get('page_description_en','')
+		url = request.POST.get('url','')
+		url_en = request.POST.get('url_en','')
 		p = news(
 			p_id = p_id,
 			s_id = s_id,
 			t_id = t_id,
 			title = title,
-			title_en =title_en,
+			title_en = title_en,
 			remark = remark,
 			remark_en = remark_en,
 			img = img,
 			content = content,
 			content_en = content_en,
+			page_title = page_title,
+			page_title_en = page_title_en,
+			page_keywords = page_keywords,
+			page_keywords_en = page_keywords_en,
+			page_description = page_description,
+			page_description_en = page_description_en,
+			url = url,
+			url_en = url_en,
 			)
 		p.save()
 		return HttpResponseRedirect('/backend/product_list/')
@@ -413,12 +514,36 @@ def product_add_handle(request):
 def project_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	lists = news.objects.filter(p_id=2)
+	lists = news.objects.filter(p_id=3)
 	premissions = public_premissions(request)    #权限认证
 	public_pages = public_page(request,lists,8)  #分页
+	public_pages['list_type_name'] = []      #初始化一个 list
+	#for 循环用来获取 文章 相对应的 导航名称
+	for menu in lists:
+		temp = {}
+		temp['p_name'] = nav.objects.get(id=menu.p_id).name  #获取父导航名字
+		try:
+			temp['s_name'] = nav.objects.get(id=menu.s_id).name  #获取二级导航名字
+		except Exception:
+			temp['s_name'] = None
+		try:
+			temp['t_name'] = nav.objects.get(id=menu.t_id).name  #获取三级导航名字
+		except Exception:
+			temp['t_name'] = None	
+		public_pages['list_type_name'].append(temp)
+	# 用来 将 info_list 和 导航组合在一起，在模板中循环的时候就可以一一对应
+	data = []
+	for index in range(len(public_pages['info_list'])):
+		data.append({
+			'news': public_pages['info_list'][index],
+			'navs': public_pages['list_type_name'][index]
+			})
+	# print '*'*20
+	# for item in data:
+	# 	print item['news']
 	#渲染页面
 	# return HttpResponse(currentpage_en)
-	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
+	return render(request,template_name,{'public_pages':public_pages,'data':data,'premissions':premissions})
 
 # ======================================
 # 	名字：添加工程
@@ -434,7 +559,7 @@ def project_add(request,template_name):
 	# ueditor编辑器初始化（英文版）
 	form_en = UEditorForm_en()
 	#获取 工程应用 一级导航
-	product_nav = nav.objects.filter(id=2)  
+	product_nav = nav.objects.filter(id=3)  
 	#获取 所有二级导航
 	try:
 		product_second_nav = nav.objects.filter(pid = product_nav[0])
@@ -474,6 +599,14 @@ def pro_add_handle(request):
 		img   = request.FILES.get('img',None)
 		content = request.POST.get('content','')
 		content_en = request.POST.get('content_en','')
+		page_title = request.POST.get('page_title','')
+		page_title_en = request.POST.get('page_title_en','')
+		page_keywords = request.POST.get('page_keywords','')
+		page_keywords_en = request.POST.get('page_keywords_en','')
+		page_description = request.POST.get('page_description','')
+		page_description_en = request.POST.get('page_description_en','')
+		url = request.POST.get('url','')
+		url_en = request.POST.get('url_en','')
 		p = news(
 			p_id = p_id,
 			s_id = s_id,
@@ -485,6 +618,14 @@ def pro_add_handle(request):
 			img = img,
 			content = content,
 			content_en = content_en,
+			page_title = page_title,
+			page_title_en = page_title_en,
+			page_keywords = page_keywords,
+			page_keywords_en = page_keywords_en,
+			page_description = page_description,
+			page_description_en = page_description_en,
+			url = url,
+			url_en = url_en,
 			)
 		p.save()
 		return HttpResponseRedirect('/backend/project_list/')
@@ -499,12 +640,36 @@ def pro_add_handle(request):
 def info_list(request,template_name):
 	if not request.user.is_authenticated():
 		return redirect('/backend/login/')
-	lists = news.objects.filter(p_id__gt=2)
+	lists = news.objects.filter(p_id__gt=3)
 	premissions = public_premissions(request)    #权限认证
 	public_pages = public_page(request,lists,8)  #分页
+	public_pages['list_type_name'] = []      #初始化一个 list
+	#for 循环用来获取 文章 相对应的 导航名称
+	for menu in lists:
+		temp = {}
+		temp['p_name'] = nav.objects.get(id=menu.p_id).name  #获取父导航名字
+		try:
+			temp['s_name'] = nav.objects.get(id=menu.s_id).name  #获取二级导航名字
+		except Exception:
+			temp['s_name'] = None
+		try:
+			temp['t_name'] = nav.objects.get(id=menu.t_id).name  #获取三级导航名字
+		except Exception:
+			temp['t_name'] = None	
+		public_pages['list_type_name'].append(temp)
+	# 用来 将 info_list 和 导航组合在一起，在模板中循环的时候就可以一一对应
+	data = []
+	for index in range(len(public_pages['info_list'])):
+		data.append({
+			'news': public_pages['info_list'][index],
+			'navs': public_pages['list_type_name'][index]
+			})
+	# print '*'*20
+	# for item in data:
+	# 	print item['news']
 	#渲染页面
 	# return HttpResponse(currentpage_en)
-	return render(request,template_name,{'public_pages':public_pages,'premissions':premissions})
+	return render(request,template_name,{'public_pages':public_pages,'data':data,'premissions':premissions})
 
 # ======================================
 # 	名字：添加资讯
@@ -520,7 +685,7 @@ def info_add(request,template_name):
 	# ueditor编辑器初始化（英文版）
 	form_en = UEditorForm_en()
 	#获取  一级导航
-	product_nav = nav.objects.filter(id__gt=2,level=1)  
+	product_nav = nav.objects.filter(id__gt=3,level=1)  
 	#获取 所有二级导航
 	try:
 		product_second_nav = nav.objects.filter(pid = product_nav[0])
@@ -560,6 +725,14 @@ def info_add_handle(request):
 		img   = request.FILES.get('img',None)
 		content = request.POST.get('content','')
 		content_en = request.POST.get('content_en','')
+		page_title = request.POST.get('page_title','')
+		page_title_en = request.POST.get('page_title_en','')
+		page_keywords = request.POST.get('page_keywords','')
+		page_keywords_en = request.POST.get('page_keywords_en','')
+		page_description = request.POST.get('page_description','')
+		page_description_en = request.POST.get('page_description_en','')
+		url = request.POST.get('url','')
+		url_en = request.POST.get('url_en','')
 		p = news(
 			p_id = p_id,
 			s_id = s_id,
@@ -571,6 +744,14 @@ def info_add_handle(request):
 			img = img,
 			content = content,
 			content_en = content_en,
+			page_title = page_title,
+			page_title_en = page_title_en,
+			page_keywords = page_keywords,
+			page_keywords_en = page_keywords_en,
+			page_description = page_description,
+			page_description_en = page_description_en,
+			url = url,
+			url_en = url_en,
 			)
 		p.save()
 		return HttpResponseRedirect('/backend/info_list/')
@@ -905,6 +1086,12 @@ def edit_info(request, template_name):
 	p_id_name = nav.objects.get(id = p_id).name
 	s_id_name = nav.objects.get(id = s_id).name
 	
+	if types == 'product':
+		edit_type = u'修改佳易得产品'
+	elif types == 'project':
+		edit_type = u'修给工程应用'
+	else:
+		edit_type = u'修改资讯'
 	premissions = public_premissions(request)
 
 	# ueditor编辑器初始化
@@ -919,6 +1106,7 @@ def edit_info(request, template_name):
 		'form_en':form_en,
 		'p_id_name':p_id_name,
 		's_id_name':s_id_name,
+		'edit_type':edit_type,
 		'premissions':premissions,
 	}
 
@@ -939,6 +1127,8 @@ def edit_info_handle(request):
 	if request.method == "POST":
 		ids = request.POST['id']
 		types = request.POST['type']
+		print '*'*200
+		print types
 		title = request.POST['title']
 		title_en = request.POST['title_en']
 		remark = request.POST['remark']
@@ -947,6 +1137,14 @@ def edit_info_handle(request):
 		img = request.FILES.get('img', None)
 		content = request.POST['content']
 		content_en = request.POST['content_en']
+		page_title = request.POST.get('page_title','')
+		page_title_en = request.POST.get('page_title_en','')
+		page_keywords = request.POST.get('page_keywords','')
+		page_keywords_en = request.POST.get('page_keywords_en','')
+		page_description = request.POST.get('page_description','')
+		page_description_en = request.POST.get('page_description_en','')
+		url = request.POST.get('url','')
+		url_en = request.POST.get('url_en','')
 
 		# 如果没有上传图片
 		if not img:
@@ -961,6 +1159,14 @@ def edit_info_handle(request):
 		new.img = img
 		new.content = content
 		new.content_en = content_en
+		page_title = page_title,
+		page_title_en = page_title_en,
+		page_keywords = page_keywords,
+		page_keywords_en = page_keywords_en,
+		page_description = page_description,
+		page_description_en = page_description_en,
+		url = url,
+		url_en = url_en,
 		new.save()
 
 		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':types})
@@ -994,10 +1200,21 @@ def navigation_edit_handle(request):
 		ids = request.POST['id']
 		name = request.POST['name']
 		name_en=request.POST['name_en']
-
+		title = request.POST.get('title','')
+		title_en = request.POST.get('title_en','')
+		keywords = request.POST.get('keywords','')
+		keywords_en = request.POST.get('keywords_en','')
+		description = request.POST.get('description','')
+		description_en = request.POST.get('description_en','')
 		navs = nav.objects.get(id = ids)
 		navs.name = name
 		navs.name_en=name_en
+		navs.title = title
+		navs.title_en = title_en
+		navs.keywords = keywords
+		navs.keywords_en = keywords_en
+		navs.description = description
+		navs.description = description_en
 		navs.save()
 
 		return render(request, "backend_href.html", {'title':'修改成功 :)', 'href':'navigation'})
@@ -1032,11 +1249,15 @@ def job_edit_handle(request):
 	if request.method == "POST":
 		ids = request.POST.get('id', '')
 		position = request.POST['position']
+		position_en = request.POST.get('position_en','')
 		content = request.POST['content']
-
+		content_en = request.POST.get('content_en',
+			'')
 		jobs = job.objects.get(id = ids)
 		jobs.position = position
+		jobs.postition_en = position_en
 		jobs.content = content
+		jobs.content_en = content_en
 		jobs.save()
 
 		return render(request, "backend_href.html", {'title':"修改成功 :)", 'href':"job"})
@@ -1075,3 +1296,130 @@ def admin_changePwd_handle(request):
 			return render(request, "backend_href.html", {'title':"旧密码输入不一致 :(", 'href':"home"})
 
 	return render(request, "backend_href.html", {'title':"请求失误 :(", 'href':"home"})
+
+# ======================================
+# 	名字：产品优势列表
+#   功能：列表
+#   人员：黄晓佳
+#   日期：2014.09.06
+# --------------------------------------
+def advantages_list(request, template_name):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	advantangeslist = advantages.objects.all()
+	premissions = public_premissions(request)
+	return render(request,template_name,{'advantangeslist':advantangeslist,'premissions':premissions})
+
+# ======================================
+# 	名字：产品优势修改
+#   功能：修改
+#   人员：黄晓佳
+#   日期：2014.09.06
+# --------------------------------------
+@csrf_exempt
+def advantages_edit(request, template_name):
+	if not request.user.is_authenticated():
+		return redirect('/backend/login/')
+	premissions = public_premissions(request)
+
+	if request.method == "GET":
+		ids = request.GET.get('id', '')
+		adv = advantages.objects.get(id = ids)
+		return render(request,template_name,{'premissions':premissions, 'adv':adv})
+
+# ======================================
+# 	名字：产品优势修改表单处理
+#   功能：修改表单处理
+#   人员：黄晓佳
+#   日期：2014.09.06
+# --------------------------------------
+@csrf_exempt
+def advantages_edit_handle(request):
+	if request.method == "POST":
+		ids = request.POST.get('id', '')
+		problem = request.POST['problem']
+		big_title = request.POST['big_title']
+		big_title_en = request.POST['big_title_en']
+		title1 = request.POST['title1']
+		title1_en = request.POST['title1_en']
+		title2 = request.POST['title2']
+		title2_en = request.POST['title2_en']
+		solution1 = request.POST['solution1']
+		solution2 = request.POST['solution2']
+		solution3 = request.POST['solution3']
+		solution4 = request.POST['solution4']
+		problem_en = request.POST['problem_en']
+		solution1_en = request.POST['solution1_en']
+		solution2_en = request.POST['solution2_en']
+		solution3_en = request.POST['solution3_en']
+		solution4_en = request.POST['solution4_en']
+
+		adv = advantages.objects.get(id = ids)
+		adv.problem = problem
+		adv.big_title = big_title
+		adv.big_title_en = big_title_en
+		adv.title1 = title1
+		adv.title1_en = title1_en
+		adv.title2 = title2
+		adv.title2_en = title2_en
+		adv.solution1 = solution1
+		adv.solution2 = solution2
+		adv.solution3 = solution3
+		adv.solution4 = solution4
+		adv.problem_en = problem_en
+		adv.solution1_en = solution1_en
+		adv.solution2_en = solution2_en
+		adv.solution3_en = solution3_en
+		adv.solution4_en = solution4_en
+		adv.save()
+
+		return render(request, "backend_href.html", {'title':"修改产品优势成功 :)", 'href':"advantages"})
+
+	return render(request, "backend_href.html", {'title':"请求失误 :(", 'href':"advantages"})
+
+# # ======================================
+# # 	名字：各个页面关键字描述添加
+# #   功能：页面关键字添加
+# #   人员：杨凯
+# #   日期：2014.09.12
+# # --------------------------------------
+# def page_keyword_list(request,template_name):
+# 	keyword_list = page_keywords.objects.all()
+# 	return render(request,template_name,{'keyword_list':keyword_list})
+
+# # ======================================
+# # 	名字：各个页面关键字描述添加
+# #   功能：页面关键字添加
+# #   人员：杨凯
+# #   日期：2014.09.12
+# # --------------------------------------
+# def page_keyword_edit(request,template_name):
+# 	keyword_list = nav.objects.filter(level=1)
+# 	return render(request,template_name,{'keyword_list':keyword_list})
+
+# # ======================================
+# # 	名字：各个页面关键字描述添加处理
+# #   功能：页面关键字添加表单处理
+# #   人员：杨凯
+# #   日期：2014.09.12
+# # --------------------------------------
+# def page_keyword_edit_handle(request):
+# 	if method.request == "POST":
+# 		nav_id = request.POST.get('id','')
+# 		title = request.POST.get('title','')
+# 		title_en = request.POST.get('title_en','')
+# 		keywords = request.POST.get('keywords','')
+# 		keywords_en = request.POST.get('keywords_en','')
+# 		description = request.POST.get('description','')
+# 		description_en = request.POSTE.get('descrption_en','')
+# 		p = nav(
+# 			nav_id = nav_id,
+# 			title = title,
+# 			title_en = title_en,
+# 			keywords = keywords,
+# 			keywords_en = keywords_en,
+# 			description = description,
+# 			description_en =description_en,
+# 		)
+# 		p.save()
+# 		return HttpResponseRedirect('/backend/page__keyword_list/')
